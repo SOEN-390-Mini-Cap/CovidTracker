@@ -9,6 +9,6 @@ export class BaseController implements interfaces.Controller {
     private index(req: restify.Request, res: restify.Response): void {
         res.json(200, {
             status: "ok",
-        })
+        });
     }
 }
