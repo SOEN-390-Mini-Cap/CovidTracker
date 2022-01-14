@@ -1,0 +1,14 @@
+{
+    "name": "covid-tracker-server",
+    "version": "1.0.0",
+    "description": "The server for CovidTracker",
+    "main": "index.js",
+    "scripts": {
+        "start": "node build/index.js",
+        "build": "tsc",
+        "dev": "tsc -w"
+    },
+    "devDependencies": {
+        "typescript": "^4.5.4"
+    }
+}
