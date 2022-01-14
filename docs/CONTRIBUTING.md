@@ -14,7 +14,7 @@ The `<jira-id>` is the id of the Jira issue the ticket is for i.e. `COV-1`
 
 This is referring to the pull request title which should describe in short what the PR is doing as well as including the Jira id: `<jira-id>: short description`
 
-An example is: `COV-1 define basic contribution standards`
+An example is: `COV-1: define basic contribution standards`
 
 Be sure that when you go to squash and merge your pull request the naming of that commit to main is consistent with the pull request name
 
