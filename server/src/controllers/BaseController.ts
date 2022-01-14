@@ -7,7 +7,9 @@ import { injectable, inject } from 'inversify';
 export class BaseController implements interfaces.Controller {
 
     @Get('/')
-    private index(req: restify.Request): string {
-        return "hi";
+    private index(req: restify.Request, res: restify.Response): void {
+        res.json(200, {
+            "status": "ok"
+        });
     }
 }

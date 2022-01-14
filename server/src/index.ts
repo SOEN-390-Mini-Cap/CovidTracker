@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 import { interfaces, InversifyRestifyServer, TYPE } from 'inversify-restify-utils';
-import { BaseController } from "./BaseController";
+import { BaseController } from "./controllers/BaseController";
 
 const container = new Container();
 container.bind<interfaces.Controller>(TYPE.Controller).to(BaseController).whenTargetNamed('BaseController');
