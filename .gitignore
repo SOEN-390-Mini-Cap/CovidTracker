@@ -1,6 +1,8 @@
 # server
 server/node_modules
 server/build
+server/.nyc_output
+server/coverage
 
 # general
 .idea
