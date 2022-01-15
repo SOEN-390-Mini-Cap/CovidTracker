@@ -4,16 +4,10 @@
         "target": "es2020",
         "lib": ["es2020"],
         "outDir": "build",
-        "rootDir": "./src",
         "sourceMap": true,
-        "types": ["mocha", "node"],
-        "typeRoots": ["node_modules/@types"],
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true
     },
-    "include": [
-        "src/**/*.ts"
-    ],
     "exclude": [
     ]
 }

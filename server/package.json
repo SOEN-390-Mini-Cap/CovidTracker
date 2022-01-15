@@ -8,7 +8,7 @@
         "build": "tsc",
         "dev": "nodemon --exec ts-node src/index.ts",
         "test:unit": "mocha src tests",
-        "coverage": "nyc mocha src tests",
+        "coverage": "nyc npm run test:unit",
         "lint:fix": "eslint '*/**/*.{js,ts}' --quiet --fix"
     },
     "dependencies": {
@@ -29,7 +29,7 @@
         "eslint": "^8.6.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "mocha": "^8.2.1",
+        "mocha": "^9.1.4",
         "nodemon": "^2.0.15",
         "nyc": "^15.1.0",
         "prettier": "^2.5.1",
