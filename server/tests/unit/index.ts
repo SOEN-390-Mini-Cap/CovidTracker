@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import {myFunc} from "../../src/test";
 
-describe("Index", () => {
+describe("index.ts", () => {
     it("should always pass", async () => {
-        expect(myFunc()).to.equal(true);
+        expect(true).to.equal(true);
     });
 });
