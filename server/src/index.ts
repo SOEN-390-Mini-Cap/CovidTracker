@@ -3,15 +3,20 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { interfaces, InversifyRestifyServer, TYPE } from "inversify-restify-utils";
 import { BaseController } from "./controllers/BaseController";
-import { SignUpController } from "./controllers/SignUpController";
+import { AuthenticationController } from "./controllers/AuthenticationController";
+import { plugins } from "restify";
 
 const container = new Container();
 container.bind<interfaces.Controller>(TYPE.Controller).to(BaseController).whenTargetNamed("BaseController");
-container.bind<interfaces.Controller>(TYPE.Controller).to(SignUpController).whenTargetNamed("SignUpController");
+container
+    .bind<interfaces.Controller>(TYPE.Controller)
+    .to(AuthenticationController)
+    .whenTargetNamed("AuthenticationController");
 
 const server = new InversifyRestifyServer(container);
 
 const app = server.build();
+app.use(plugins.bodyParser());
 
 <<<<<<< HEAD
 app.listen(process.env.PORT, () => {
