@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "reflect-metadata";
 import { Container } from "inversify";
 import { interfaces, InversifyRestifyServer, TYPE } from "inversify-restify-utils";
@@ -10,6 +11,6 @@ const server = new InversifyRestifyServer(container);
 
 const app = server.build();
 
-app.listen(3000, () => {
-    console.log("Server has started on port 3000");
+app.listen(process.env.PORT, () => {
+    console.log(`Server has started on port ${process.env.PORT}`);
 });

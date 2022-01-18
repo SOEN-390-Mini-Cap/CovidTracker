@@ -3,6 +3,10 @@ server/node_modules
 server/build
 server/.nyc_output
 server/coverage
+server/.env
+
+# database
+pgdata
 
 # general
 .idea

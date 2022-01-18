@@ -1,17 +1,19 @@
-FROM node:16-alpine
-
+FROM node:16-slim AS base
 WORKDIR /code
+EXPOSE 80
 
-COPY package.json .
-COPY package-lock.json .
-COPY tsconfig.json .
+FROM base AS dependencies
+COPY package.json package-lock.json ./
+RUN npm install --only=production --silent
 
-RUN npm install
-
-COPY src .
-
+FROM dependencies AS development
+RUN npm install --silent
+COPY . .
 RUN npm run build
 
-EXPOSE 8080
-
+FROM base AS production
+COPY --from=dependencies /code/node_modules /code/node_modules
+COPY --from=development /code/build /code/build
+COPY --from=development /code/package.json /code
+COPY --from=development /code/.env /code
 CMD ["npm", "run", "start"]

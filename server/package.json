@@ -4,14 +4,15 @@
     "description": "The server for CovidTracker",
     "main": "index.js",
     "scripts": {
-        "start": "node build/index.js",
+        "start": "node ./build/src/index.js",
         "build": "tsc",
-        "dev": "nodemon --exec ts-node src/index.ts",
+        "dev": "nodemon --exec ts-node ./src/index.ts",
         "test:unit": "mocha src tests",
         "coverage": "nyc npm run test:unit",
         "lint:fix": "eslint '*/**/*.{js,ts}' --quiet --fix"
     },
     "dependencies": {
+        "dotenv": "^14.2.0",
         "inversify": "6.0.1",
         "inversify-restify-utils": "3.4.1",
         "reflect-metadata": "^0.1.13",

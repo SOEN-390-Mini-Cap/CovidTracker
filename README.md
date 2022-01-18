@@ -1,5 +1,35 @@
 # CovidTracker
 
+## Running
+
+### Local development
+
+#### Server
+
+### Production
+
+#### Server
+
+To build the server for production we will build the docker image with the production target
+
+```
+# Windows
+
+
+# Linux
+sudo docker build --target production -t covid-tracker-server .
+```
+
+We can then create a container from the production image 
+
+```
+# Windows
+
+
+# Linux
+sudo docker run -p 8080:80 covid-tracker-server
+```
+
 ## Maintainers
 | Name                | StudentId | GitHub Username  | email                          |
 |---------------------|-----------|------------------|--------------------------------|

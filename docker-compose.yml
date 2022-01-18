@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+    server:
+        image: covid-tracker-server
+        build:
+            context: ./server
+            target: development
+        volumes:
+            - /code/node_modules
+            - ./server:/code
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+        command: npm run dev
+    db:
+        image: postgres
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: covid_tracker_db
+        volumes:
+            - ./pgdata/:/var/lib/postgresql/data/
+        ports:
+            - "5432:5432"
