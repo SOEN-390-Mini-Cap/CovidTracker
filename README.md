@@ -30,9 +30,9 @@ This will start
 ```
 npm i
 ```
-2. Run unit tests
+2. Run tests
 ```
-npm run test:unit
+npm run test
 ```
 
 #### Docker
@@ -53,9 +53,9 @@ sudo docker-compose up -d server
 # Linux
 sudo docker-compose exec server sh
 ```
-3. Run unit tests
+3. Run tests
 ```
-npm run test:unit
+npm run test
 ```
 
 ### Linting and formatting
