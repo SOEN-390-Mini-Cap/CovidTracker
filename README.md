@@ -11,6 +11,8 @@ Before you continue, ensure you have installed the following requirements:
 
 ### Setup
 
+**Note:** On a Linux environment, run all docker and docker-compose commands as `sudo`
+
 1. Clone the repository
     ```sh
     $ git clone https://github.com/SOEN-390-Mini-Cap/CovidTracker.git
@@ -24,15 +26,16 @@ Before you continue, ensure you have installed the following requirements:
     $ cd server
     $ npm i
     ```
-4. Create the docker container
+4. Create the docker container and log output
     ```sh
     $ docker-compose up -d server
+    $ docker-compose logs -f server
     ```
-5. Connect to the database on `localhost:5432` in pgAdmin
+5. (Optional) Connect to the database on `localhost:5432` in pgAdmin
 
 You can now access the server at http://localhost:8080
 
-**Note:** 
+**Ports:**
 
 By default, the server and database will be exposed on `localhost:8080` and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:
 - Server from `8080:80` to `<new-port>:80`
@@ -51,7 +54,7 @@ $ npm run test:unit
 
 1. Start the docker container
     ```sh
-    $ docker-compose start server db
+    $ docker-compose up -d server
     ```
 2. Exec into the docker container
     ```sh
