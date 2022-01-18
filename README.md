@@ -1,97 +1,89 @@
 # CovidTracker
 
-## Server
+## Getting Started
 
-### Initial setup
+### Prerequisites
 
-Make a copy of `.env.example`, rename it to `.env`, and fill out any missing secret values (ask someone on the team if you don't know what the value should be)
+Before you continue, ensure you have installed the following requirements:
+- [Docker](https://www.docker.com/)
+- [pgAdmin](https://www.pgadmin.org/)
+- [npm](https://www.npmjs.com/)
 
-By default, the server will be exposed on `localhost:8080` if you have a port conflict with that change the docker-compose entry port for the server service from "8080:80" to "<new-port>:80"
+### Setup
 
-### Running the API
+**Note:** On a Linux environment, run all docker and docker-compose commands as `sudo`
 
-Create the docker container for the server and database with
-```
-# Windows
+1. Clone the repository
+    ```sh
+    $ git clone https://github.com/SOEN-390-Mini-Cap/CovidTracker.git
+    ```
+2. Copy `.env.sample`, rename to `.env` and edit the following lines
+    ```
+    TBD
+    ```
+3. Install all dependencies
+    ```sh
+    $ cd server
+    $ npm i
+    ```
+4. Create the docker container and log output
+    ```sh
+    $ docker-compose up -d server
+    $ docker-compose logs -f server
+    ```
+5. (Optional) Connect to the database on `localhost:5432` in pgAdmin
 
+You can now access the server at http://localhost:8080
 
-# Linux
-sudo docker-compose up -d server
-```
-This will start
-- API on `localhost:8080`
-- PostgreSQL database on `localhost:5432`
+**Ports:**
 
-### Running tests
+By default, the server and database will be exposed on `localhost:8080` and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:
+- Server from `8080:80` to `<new-port>:80`
+- Database from `5432:5432` to `<new-port>:5432`.
+
+### Running the Tests
 
 #### Locally
 
-1. Install server dependencies inside `/server` folder
+Run all tests with the following command in the `server` directory
 ```
-npm i
-```
-2. Run tests
-```
-npm run test
+$ npm run test
 ```
 
 #### Docker
 
-1. Start docker container with docker-compose
-```
-# Windows
+1. Start the docker container
+    ```sh
+    $ docker-compose up -d server
+    ```
+2. Exec into the docker container
+    ```sh
+    $ docker-compose exec server sh
+    ```
+3. Run all tests with the following command
+    ```sh
+    $ npm run test
+    ```
 
+### Linting and Formatting
 
-# Linux
-sudo docker-compose up -d server
-```
-2. Exec into the docker container with
-```
-# Windows
-
-
-# Linux
-sudo docker-compose exec server sh
-```
-3. Run tests
-```
-npm run test
-```
-
-### Linting and formatting
-
-1. Install server dependencies inside `/server` folder
-```
-npm i
-```
-2. Run lint and formatter
-```
-npm run lint:fix
+Run linter and formatter with the following command in the `server` directory
+```sh
+$ npm run lint:fix
 ```
 
-### Building for production
+## Building for Production
 
-To build the server for production we will build the docker image with the production target
+1. Build the docker image with the production target
+    ```
+    $ docker build --target production -t covid-tracker-server-prod .
+    ```
+2. Create a container from the production image
+    ```
+    $ docker run -p 8080:80 covid-tracker-server-prod
+    ```
 
-```
-# Windows
-
-
-# Linux
-sudo docker build --target production -t covid-tracker-server-prod .
-```
-
-We can then create a container from the production image
-
-```
-# Windows
-
-
-# Linux
-sudo docker run -p 8080:80 covid-tracker-server-prod
-```
-
-## Maintainers
+## Team
 | Name                | StudentId | GitHub Username  | email                          |
 |---------------------|-----------|------------------|--------------------------------|
 | Jason Gerard        | 40079266  | jason-gerard     | jasongerard321@gmail.com       |
