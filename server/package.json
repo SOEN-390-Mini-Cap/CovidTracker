@@ -12,7 +12,9 @@
         "test:integration": "PORT=8080 mocha ./src ./tests/integration",
         "coverage": "nyc npm run test:unit",
         "lint": "eslint '*/**/*.{js,ts}' --max-warnings=0",
-        "lint:fix": "eslint '*/**/*.{js,ts}' --fix"
+        "lint:fix": "eslint '*/**/*.{js,ts}' --fix",
+        "db:init": "ts-node ./db/initDB.ts",
+        "db:seed": "ts-node ./db/seedDB.ts"
     },
     "dependencies": {
         "dotenv": "^14.2.0",
