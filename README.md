@@ -47,7 +47,7 @@ By default, the server and database will be exposed on `localhost:8080` and `loc
 
 Run all tests with the following command in the `server` directory
 ```
-$ npm run test:unit
+$ npm run test
 ```
 
 #### Docker
@@ -62,7 +62,7 @@ $ npm run test:unit
     ```
 3. Run all tests with the following command
     ```sh
-    $ npm run test:unit
+    $ npm run test
     ```
 
 ### Linting and Formatting
