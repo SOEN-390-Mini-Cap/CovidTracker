@@ -77,6 +77,22 @@ Run linter and formatter with the following command in the `server` directory
 $ npm run lint:fix
 ```
 
+### Resetting the database
+
+If you run into issues with the database or need to reset it for any reason follow the steps below
+
+1. Delete the `pgdata` folder, this will delete the persistent docker postgresql volume
+2. Start up the database through docker
+    ```sh
+    $ docker-compose up -d db
+    ```
+3. Initialize and seed the database
+    ```sh
+    $ cd server
+    $ npm run db:init
+    $ npm run db:seed
+    ```
+
 ## Building for Production
 
 1. Build the docker image with the production target
