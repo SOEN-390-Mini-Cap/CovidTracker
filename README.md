@@ -31,7 +31,12 @@ Before you continue, ensure you have installed the following requirements:
     $ docker-compose up -d server
     $ docker-compose logs -f server
     ```
-5. (Optional) Connect to the database on `localhost:5432` in pgAdmin
+5. (Optional) Initializing and seeding the database
+    ```sh
+    $ npm run db:init
+    $ npm run db:seed
+    ```
+8. (Optional) Connect to the database on `localhost:5432` in pgAdmin
 
 You can now access the server at http://localhost:8080
 
