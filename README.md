@@ -19,7 +19,11 @@ Before you continue, ensure you have installed the following requirements:
     ```
 2. Copy `.env.sample`, rename to `.env` and edit the following lines
     ```
-    TBD
+    PGHOST=localhost
+    PGUSER=postgres
+    PGDATABASE=covid_tracker_db
+    PGPASSWORD=postgres
+    PGPORT=5432
     ```
 3. Install all dependencies
     ```sh
@@ -33,10 +37,11 @@ Before you continue, ensure you have installed the following requirements:
     ```
 5. (Optional) Initializing and seeding the database
     ```sh
+    $ docker-compose exec server sh
     $ npm run db:init
     $ npm run db:seed
     ```
-8. (Optional) Connect to the database on `localhost:5432` in pgAdmin
+6. (Optional) Connect to the database on `localhost:5432` in pgAdmin
 
 You can now access the server at http://localhost:8080
 
@@ -77,18 +82,18 @@ Run linter and formatter with the following command in the `server` directory
 $ npm run lint:fix
 ```
 
-### Resetting the database
+### Resetting the Database
 
 If you run into issues with the database or need to reset it for any reason follow the steps below
 
 1. Delete the `pgdata` folder, this will delete the persistent docker postgresql volume
-2. Start up the database through docker
+2. Start up the server and database through docker
     ```sh
-    $ docker-compose up -d db
+    $ docker-compose up -d server
     ```
-3. Initialize and seed the database
+3. Exec into the server docker container and then initialize and seed the database
     ```sh
-    $ cd server
+    $ docker-compose exec server sh
     $ npm run db:init
     $ npm run db:seed
     ```
