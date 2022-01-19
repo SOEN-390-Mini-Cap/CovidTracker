@@ -19,12 +19,17 @@ const app = server.build();
 app.use(plugins.bodyParser());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.listen(process.env.PORT, () => {
     console.log(`Server has started on port ${process.env.PORT}`);
 =======
 app.listen(8080, () => {
     console.log("Server has started on port 8080");
 >>>>>>> 7ec314b... added new signup controller with a post request
+=======
+app.listen(process.env.PORT, () => {
+    console.log(`Server has started on port ${process.env.PORT}`);
+>>>>>>> cb6d16a... fix merge conflict
 });
 
 export { app };
