@@ -5,6 +5,8 @@ import { interfaces, InversifyRestifyServer, TYPE } from "inversify-restify-util
 import { BaseController } from "./controllers/BaseController";
 import { AuthenticationController } from "./controllers/AuthenticationController";
 import { plugins } from "restify";
+import { AuthenticationService } from "./services/AuthenticationService";
+import { AuthenticationRepository } from "./repositories/AuthenticationRepository";
 
 const container = new Container();
 container.bind<interfaces.Controller>(TYPE.Controller).to(BaseController).whenTargetNamed("BaseController");
@@ -12,6 +14,14 @@ container
     .bind<interfaces.Controller>(TYPE.Controller)
     .to(AuthenticationController)
     .whenTargetNamed("AuthenticationController");
+
+//register Repositories.
+
+container.bind(AuthenticationRepository).toSelf();
+
+//regsiter services.
+
+container.bind(AuthenticationService).toSelf();
 
 const server = new InversifyRestifyServer(container);
 
