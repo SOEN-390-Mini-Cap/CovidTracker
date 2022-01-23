@@ -1,18 +1,18 @@
 import "reflect-metadata";
 import * as restify from "restify";
 import { Controller, interfaces, Post } from "inversify-restify-utils";
-import { injectable } from "inversify";
+import { inject, injectable, named } from "inversify";
 import { AuthenticationService } from "../services/AuthenticationService";
 import * as Joi from "joi";
 
 @Controller("/")
 @injectable()
 export class AuthenticationController implements interfaces.Controller {
-    private readonly _authenticationService: AuthenticationService;
-
-    constructor(_authService: AuthenticationService) {
-        this._authenticationService = _authService;
-    }
+    constructor(
+        @inject("Service")
+        @named("AuthenticationService")
+        private readonly _authenticationService: AuthenticationService,
+    ) {}
 
     @Post("/signup")
     private async signUp(req: restify.Request, res: restify.Response): Promise<any> {
