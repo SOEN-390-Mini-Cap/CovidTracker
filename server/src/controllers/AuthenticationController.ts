@@ -36,7 +36,11 @@ export class AuthenticationController implements interfaces.Controller {
             return res.send(400, error || "Data is not in json format.");
         }
 
-        await this._authenticationService.createUser(req.body);
-        return res.send(200, req.body.email);
+        const e = await this._authenticationService.createUser(req.body);
+        console.log(e);
+        if (!e) {
+            return res.send(200, req.body.email);
+        }
+        return res.send(500, "New user was not created.");
     }
 }

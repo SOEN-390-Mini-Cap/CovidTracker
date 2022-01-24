@@ -3,6 +3,6 @@ export interface User {
     password: string;
     first_name: string;
     last_name: string;
-    time_stamp: Date;
+    date_of_birth: Date;
     created_on: Date;
 }
