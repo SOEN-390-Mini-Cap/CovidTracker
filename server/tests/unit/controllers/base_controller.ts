@@ -19,7 +19,7 @@ describe("base_controller.ts", () => {
         req = {};
     });
 
-    describe("BaseController::index", () => {
+    describe("Base_controller::index", () => {
         it("should call res.json with 200 status ok", async () => {
             await (controller as any).index(req, res);
 
