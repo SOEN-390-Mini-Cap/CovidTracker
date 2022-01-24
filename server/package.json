@@ -13,8 +13,8 @@
         "coverage": "nyc npm run test:unit",
         "lint": "eslint '*/**/*.{js,ts}' --max-warnings=0",
         "lint:fix": "eslint '*/**/*.{js,ts}' --fix",
-        "db:init": "DOTENV_CONFIG_PATH=.env.dev ts-node ./db/initDB.ts -r dotenv/config",
-        "db:seed": "DOTENV_CONFIG_PATH=.env.dev ts-node ./db/seedDB.ts -r dotenv/config"
+        "db:init": "DOTENV_CONFIG_PATH=.env.dev ts-node db/init_db.ts -r dotenv/config",
+        "db:seed": "DOTENV_CONFIG_PATH=.env.dev ts-node db/seed_db.ts -r dotenv/config"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",

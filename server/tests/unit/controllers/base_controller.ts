@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { BaseController } from "../../../src/controllers/BaseController";
+import { BaseController } from "../../../src/controllers/base_controller";
 import { createSandbox, SinonStub } from "sinon";
 
-describe("BaseController.ts", () => {
+describe("base_controller.ts", () => {
     const controller = new BaseController();
     const sandbox = createSandbox();
     const res: any = {
@@ -19,7 +19,7 @@ describe("BaseController.ts", () => {
         req = {};
     });
 
-    describe("BaseController::index", () => {
+    describe("Base_controller::index", () => {
         it("should call res.json with 200 status ok", async () => {
             await (controller as any).index(req, res);
 

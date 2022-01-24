@@ -2,7 +2,7 @@ import "reflect-metadata";
 import * as restify from "restify";
 import { Controller, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
-import { AuthenticationService } from "../services/AuthenticationService";
+import { AuthenticationService } from "../services/authentication_service";
 import * as Joi from "joi";
 
 @Controller("/")

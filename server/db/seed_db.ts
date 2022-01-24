@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { Pool } from "pg";
-import { users } from "./seed_data/UserData";
-import { userRoles } from "./seed_data/UserRoleData";
-import { ROLES } from "../src/entities/Roles";
+import { users } from "./seed_data/user_data";
+import { userRoles } from "./seed_data/user_role_data";
+import { ROLES } from "../src/entities/roles";
 
 (async () => {
     const pool = new Pool();
