@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { injectable } from "inversify";
 import { Pool } from "pg";
+import { User } from "../entities/user";
+
 @injectable()
 export class AuthenticationRepository {
     async createUser(email: string, hash: string, first_name: string, last_name: string, date_of_birth: Date) {
@@ -20,5 +22,12 @@ export class AuthenticationRepository {
             return e;
         }
         return;
+    }
+
+    async getUserByEmail(email: string): Promise<any> {
+        return {
+            userId: 1,
+            password: 'Test1?G3432324'
+        };
     }
 }
