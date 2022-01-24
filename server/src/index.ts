@@ -7,15 +7,21 @@ import { AuthenticationController } from "./controllers/authentication_controlle
 import { plugins } from "restify";
 import { AuthenticationService } from "./services/authentication_service";
 import { AuthenticationRepository } from "./repositories/authentication_repository";
+import { Pool } from "pg";
 
 const container = new Container();
+
 container.bind<interfaces.Controller>(TYPE.Controller).to(BaseController).whenTargetNamed("BaseController");
 container
     .bind<interfaces.Controller>(TYPE.Controller)
     .to(AuthenticationController)
     .whenTargetNamed("AuthenticationController");
 
-//register Repositories.
+container
+    .bind<AuthenticationService>("Service")
+    .to(AuthenticationService)
+    .inSingletonScope()
+    .whenTargetNamed("AuthenticationService");
 
 container
     .bind<AuthenticationRepository>("Repository")
@@ -23,13 +29,7 @@ container
     .inSingletonScope()
     .whenTargetNamed("AuthenticationRepository");
 
-//regsiter services.
-
-container
-    .bind<AuthenticationService>("Service")
-    .to(AuthenticationService)
-    .inSingletonScope()
-    .whenTargetNamed("AuthenticationService");
+container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
 
 const server = new InversifyRestifyServer(container);
 

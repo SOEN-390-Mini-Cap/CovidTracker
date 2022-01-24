@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import { users } from "./seed_data/user_data";
 import { userRoles } from "./seed_data/user_role_data";
 import { ROLES } from "../src/entities/roles";
+import * as bcrypt from "bcrypt";
 
 (async () => {
     const pool = new Pool();
@@ -21,9 +22,11 @@ import { ROLES } from "../src/entities/roles";
     // add users
     await Promise.all(
         users.map(async (user) => {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+
             const res = await client.query(`
             INSERT INTO users (email, password, first_name, last_name, date_of_birth) 
-                VALUES ('${user.email}', '${user.password}', '${user.first_name}', '${user.last_name}', '${user.date_of_birth}');
+                VALUES ('${user.email}', '${hashedPassword}', '${user.first_name}', '${user.last_name}', '${user.date_of_birth}');
         `);
             console.log(res);
         }),

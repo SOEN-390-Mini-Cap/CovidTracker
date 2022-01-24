@@ -1,9 +1,9 @@
 export interface User {
     userId: string;
     email: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-    date_of_birth: Date;
-    created_on: Date;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: Date;
+    password?: string;
+    createdOn?: Date;
 }
