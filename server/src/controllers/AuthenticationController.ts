@@ -16,7 +16,6 @@ export class AuthenticationController implements interfaces.Controller {
 
     @Post("/signup")
     private async signUp(req: restify.Request, res: restify.Response): Promise<any> {
-        //To Do: implement actual data validation.
         const schema: Joi.ObjectSchema = Joi.object({
             email: Joi.string().email(),
             // Password requires upper case and lower case letter as well as number and special character.
@@ -37,9 +36,8 @@ export class AuthenticationController implements interfaces.Controller {
         }
 
         const e = await this._authenticationService.createUser(req.body);
-        console.log(e);
         if (!e) {
-            return res.send(200, req.body.email);
+            return res.send(200, "New user has been created.");
         }
         return res.send(500, "New user was not created.");
     }

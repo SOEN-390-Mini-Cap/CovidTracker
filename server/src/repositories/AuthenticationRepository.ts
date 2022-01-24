@@ -15,6 +15,7 @@ export class AuthenticationRepository {
             await client.query(sql);
 
             await client.query("COMMIT");
+            client.release();
         } catch (e) {
             return e;
         }
