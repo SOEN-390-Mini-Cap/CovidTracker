@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 import { User } from "../entities/user";
 import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
-import { DatabaseUser } from "../entities/database/DatabaseUser";
 import { RequestUser } from "../entities/request/RequestUser";
 
 @injectable()
@@ -62,12 +61,12 @@ export class UserRepository {
             INNER JOIN roles on user_roles.role_id = roles.role_id
             WHERE users.email = $1
         `;
-        const { rows } = await client.query<DatabaseUser>(sql, [email]).finally(async () => client.release());
+        const res = await client.query(sql, [email]).finally(async () => client.release());
 
-        return this.buildUser(rows);
+        return this.buildUser(res);
     }
 
-    private buildUser(rows: DatabaseUser[]): User {
+    private buildUser({ rows }: QueryResult): User {
         if (!rows) {
             return null;
         }
