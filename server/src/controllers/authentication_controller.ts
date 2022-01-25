@@ -23,7 +23,7 @@ export class AuthenticationController implements interfaces.Controller {
         });
 
         const token = await this.authenticationService
-            .createUser(
+            .signUp(
                 {
                     firstName: reqData.firstName,
                     lastName: reqData.lastName,
@@ -57,7 +57,7 @@ export class AuthenticationController implements interfaces.Controller {
             return;
         });
 
-        const token = await this.authenticationService.createSession(email, password).catch((error) => {
+        const token = await this.authenticationService.signIn(email, password).catch((error) => {
             res.json(500, { error: error.toString() });
             return;
         });

@@ -7,7 +7,7 @@ import { AddressReqData } from "../controllers/authentication_controller";
 export class AddressRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async createAddress(userId: string, addressData: AddressReqData): Promise<void> {
+    async add(userId: string, addressData: AddressReqData): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `

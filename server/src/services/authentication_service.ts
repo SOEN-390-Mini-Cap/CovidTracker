@@ -18,20 +18,20 @@ export class AuthenticationService {
         private readonly addressRepository: AddressRepository,
     ) {}
 
-    async createUser(userData: UserReqData, addressData: AddressReqData): Promise<Token> {
+    async signUp(userData: UserReqData, addressData: AddressReqData): Promise<Token> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const userId = await this.userRepository.createUser({
+        const userId = await this.userRepository.add({
             ...userData,
             password: hashedPassword,
         });
 
-        await this.addressRepository.createAddress(userId, addressData);
+        await this.addressRepository.add(userId, addressData);
 
         return this.generateToken(userId);
     }
 
-    async createSession(email: string, password: string): Promise<Token> {
-        const user = await this.userRepository.getUserByEmail(email);
+    async signIn(email: string, password: string): Promise<Token> {
+        const user = await this.userRepository.findByEmail(email);
         if (!user) {
             throw new Error("Invalid email and / or password");
         }

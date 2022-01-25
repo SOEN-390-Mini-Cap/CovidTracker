@@ -8,7 +8,7 @@ import { UserReqData } from "../controllers/authentication_controller";
 export class UserRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async createUser(userData: UserReqData): Promise<string> {
+    async add(userData: UserReqData): Promise<string> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -37,7 +37,7 @@ export class UserRepository {
         return res.rows[0].user_id;
     }
 
-    async getUserByEmail(email: string): Promise<User> {
+    async findByEmail(email: string): Promise<User> {
         const client = await this.pool.connect();
 
         const sql = "SELECT * FROM users WHERE email=$1";
