@@ -14,22 +14,21 @@ export class AuthenticationService {
         private readonly authenticationRepository: AuthenticationRepository,
     ) {}
 
-    async createUser(_body: any) {
-        const { email, password, firstName, lastName, dateOfBirth }: User = _body;
-        const salt: string = bcrypt.genSaltSync(8);
-        const hash: string = await bcrypt.hash(password, salt);
-        return this.authenticationRepository.createUser(email, hash, firstName, lastName, dateOfBirth);
+    async createUser(user: User): Promise<Token> {
+        user.password = await bcrypt.hash(user.password, 10);
+
+        const userId = await this.authenticationRepository.createUser(user);
+        return this.generateToken(userId);
     }
 
     async createSession(email: string, password: string): Promise<Token> {
         const user = await this.authenticationRepository.getUserByEmail(email);
-        console.log(user);
 
         if (!user) {
             throw new Error("no user");
         }
 
-        const isMatch = await bcrypt.compare(password, user.password).catch(e => {
+        const isMatch = await bcrypt.compare(password, user.password).catch((e) => {
             console.log("error in compare", user.password);
             throw new Error("here");
         });

@@ -15,20 +15,15 @@ export class AuthenticationController implements interfaces.Controller {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    @Post("/signup")
+    @Post("/sign_up")
     private async signUp(req: Request, res: Response): Promise<any> {
-        const { error } = await signUpSchema.validateAsync(req.body);
+        const user = (await signUpSchema.validateAsync(req.body).catch((error) => {
+            res.json(400, error);
+            return;
+        })) as User;
 
-        if (!req.is("application/json") || error) {
-            // indicate error
-            return res.send(400, error || "Data is not in json format.");
-        }
-
-        const e = await this.authenticationService.createUser(req.body);
-        if (!e) {
-            return res.send(200, "New user has been created.");
-        }
-        return res.send(500, "New user was not created.");
+        const token = await this.authenticationService.createUser(user);
+        res.send(201, token);
     }
 
     @Post("/sign_in")
@@ -38,9 +33,7 @@ export class AuthenticationController implements interfaces.Controller {
             return;
         });
 
-        console.log(email, password);
         const token = await this.authenticationService.createSession(email, password);
-        console.log("here", token);
         res.json(200, { token });
     }
 }
@@ -51,10 +44,9 @@ const signUpSchema = Joi.object({
     password: Joi.string()
         .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()?+=_]).{8,30}$"))
         .required(),
-    first_name: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(2).max(25).required(),
-    last_name: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(2).max(25).required(),
-    date_of_birth: Joi.date().required(),
-    created_on: Joi.date().timestamp(),
+    firstName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
+    lastName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
+    dateOfBirth: Joi.date().iso().required(),
 });
 
 const signInSchema = Joi.object({
