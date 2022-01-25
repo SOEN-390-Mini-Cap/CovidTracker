@@ -5,6 +5,8 @@ import { inject, injectable, named } from "inversify";
 import { AuthenticationService } from "../services/authentication_service";
 import * as Joi from "joi";
 import { GENDERS } from "../entities/gender";
+import { RequestUser } from "../entities/request/RequestUser";
+import { RequestAddress } from "../entities/request/RequestAddress";
 
 @Controller("/")
 @injectable()
@@ -17,52 +19,50 @@ export class AuthenticationController implements interfaces.Controller {
 
     @Post("/sign_up")
     private async signUp(req: Request, res: Response): Promise<void> {
-        const reqData = await signUpSchema.validateAsync(req.body).catch((error) => {
-            res.json(400, { error });
+        const { value, error } = signUpSchema.validate(req.body);
+
+        if (error) {
+            res.json(400, error);
             return;
-        });
+        }
 
-        const token = await this.authenticationService
-            .signUp(
-                {
-                    firstName: reqData.firstName,
-                    lastName: reqData.lastName,
-                    phoneNumber: reqData.phoneNumber,
-                    gender: reqData.gender,
-                    dateOfBirth: reqData.dateOfBirth,
-                    email: reqData.email,
-                    password: reqData.password,
-                },
-                {
-                    streetAddress: reqData.streetAddress,
-                    streetAddressLineTwo: reqData.streetAddressLineTwo,
-                    city: reqData.city,
-                    postalCode: reqData.postalCode,
-                    province: reqData.province,
-                    country: "canada",
-                },
-            )
-            .catch((error) => {
-                res.json(500, { error: error.toString() });
-                return;
-            });
+        const userData: RequestUser = {
+            firstName: value.firstName,
+            lastName: value.lastName,
+            phoneNumber: value.phoneNumber,
+            gender: value.gender,
+            dateOfBirth: value.dateOfBirth,
+            email: value.email,
+            password: value.password,
+        };
+        const addressData: RequestAddress = {
+            streetAddress: value.streetAddress,
+            streetAddressLineTwo: value.streetAddressLineTwo,
+            city: value.city,
+            postalCode: value.postalCode,
+            province: value.province,
+            country: "canada",
+        };
 
-        res.send(201, { token });
+        await this.authenticationService
+            .signUp(userData, addressData)
+            .then((token) => res.json(201, { token }))
+            .catch((error) => res.json(500, { error: error.toString() }));
     }
 
     @Post("/sign_in")
     private async signIn(req: Request, res: Response): Promise<void> {
-        const { email, password } = await signInSchema.validateAsync(req.body).catch((error) => {
-            res.json(400, { error });
-            return;
-        });
+        const { value, error } = signInSchema.validate(req.body);
 
-        const token = await this.authenticationService.signIn(email, password).catch((error) => {
-            res.json(500, { error: error.toString() });
+        if (error) {
+            res.json(400, error);
             return;
-        });
+        }
 
-        res.json(200, { token });
+        await this.authenticationService
+            .signIn(value.email, value.password)
+            .then((token) => res.json(200, { token }))
+            .catch((error) => res.json(500, { error: error.toString() }));
     }
 }
 
@@ -87,9 +87,9 @@ const signUpSchema = Joi.object({
     province: Joi.string().required(),
     email: Joi.string().email().required(),
     password: passwordSchema,
-});
+}).required();
 
 const signInSchema = Joi.object({
     email: Joi.string().email().required(),
     password: passwordSchema,
-});
+}).required();

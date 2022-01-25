@@ -57,8 +57,8 @@ export class UserRepository {
                 created_on,
                 role_name
             FROM users
-            INNER JOIN user_roles ON users.user_id = user_roles.user_id
-            INNER JOIN roles on user_roles.role_id = roles.role_id
+            LEFT JOIN user_roles ON users.user_id = user_roles.user_id
+            LEFT JOIN roles on user_roles.role_id = roles.role_id
             WHERE users.email = $1
         `;
         const res = await client.query(sql, [email]).finally(async () => client.release());
@@ -67,12 +67,12 @@ export class UserRepository {
     }
 
     private buildUser({ rows }: QueryResult): User {
-        if (!rows) {
+        if (rows.length == 0) {
             return null;
         }
 
         const firstRow = rows[0];
-        const roles: Role[] = rows.map((row) => Role[row.role_name]);
+        const roles: Role[] = firstRow.role_name ? rows.map((row) => Role[row.role_name]) : [];
 
         return {
             userId: firstRow.user_id,
