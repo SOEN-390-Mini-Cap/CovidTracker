@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Pool } from "pg";
 import { users } from "./seed_data/user_data";
 import { userRoles } from "./seed_data/user_role_data";
-import { ROLES } from "../src/entities/roles";
+import { ROLES } from "../src/entities/role";
 import * as bcrypt from "bcrypt";
 
 (async () => {
