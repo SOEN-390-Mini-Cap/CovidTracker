@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { Pool } from "pg";
-import { AddressReqData } from "../controllers/authentication_controller";
+import { RequestAddress } from "../entities/request/RequestAddress";
 
 @injectable()
 export class AddressRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async add(userId: string, addressData: AddressReqData): Promise<void> {
+    async add(userId: string, addressData: RequestAddress): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `

@@ -1,6 +1,6 @@
 export enum Gender {
-    MALE = "male",
-    FEMALE = "female",
+    MALE = "MALE",
+    FEMALE = "FEMALE",
 }
 
 export const GENDERS = Object.values(Gender);

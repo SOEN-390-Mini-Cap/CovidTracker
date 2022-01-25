@@ -5,7 +5,8 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { Token } from "../entities/token";
 import { AddressRepository } from "../repositories/address_repository";
-import { AddressReqData, UserReqData } from "../controllers/authentication_controller";
+import { RequestUser } from "../entities/request/RequestUser";
+import { RequestAddress } from "../entities/request/RequestAddress";
 
 @injectable()
 export class AuthenticationService {
@@ -18,7 +19,7 @@ export class AuthenticationService {
         private readonly addressRepository: AddressRepository,
     ) {}
 
-    async signUp(userData: UserReqData, addressData: AddressReqData): Promise<Token> {
+    async signUp(userData: RequestUser, addressData: RequestAddress): Promise<Token> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         const userId = await this.userRepository.add({
             ...userData,

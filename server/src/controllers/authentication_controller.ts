@@ -4,7 +4,7 @@ import { Controller, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { AuthenticationService } from "../services/authentication_service";
 import * as Joi from "joi";
-import { Gender, GENDERS } from "../entities/gender";
+import { GENDERS } from "../entities/gender";
 
 @Controller("/")
 @injectable()
@@ -93,22 +93,3 @@ const signInSchema = Joi.object({
     email: Joi.string().email().required(),
     password: passwordSchema,
 });
-
-export interface UserReqData {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    gender: Gender;
-    dateOfBirth: Date;
-}
-
-export interface AddressReqData {
-    streetAddress: string;
-    streetAddressLineTwo?: string;
-    city: string;
-    postalCode: string;
-    province: string;
-    country: string;
-}
