@@ -75,8 +75,10 @@ const passwordSchema = Joi.string()
 const signUpSchema = Joi.object({
     firstName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
     lastName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
-    phoneNumber: Joi.string().length(14).regex(/^\d+$/).required(),
-    gender: Joi.string().valid(GENDERS).required(),
+    phoneNumber: Joi.string().length(10).regex(/^\d+$/).required(),
+    gender: Joi.string()
+        .valid(...GENDERS)
+        .required(),
     dateOfBirth: Joi.date().iso().required(),
     streetAddress: Joi.string().required(),
     streetAddressLineTwo: Joi.string(),

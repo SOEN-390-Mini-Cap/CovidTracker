@@ -5,7 +5,7 @@ import { User } from "../entities/user";
 import { UserReqData } from "../controllers/authentication_controller";
 
 @injectable()
-export class AuthenticationRepository {
+export class UserRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
     async createUser(userData: UserReqData): Promise<string> {
@@ -20,26 +20,28 @@ export class AuthenticationRepository {
                 phone_number,
                 gender,
                 date_of_birth
-            ) VALUES (
-                '${userData.email}',
-                '${userData.password}',
-                '${userData.firstName}',
-                '${userData.lastName}',
-                '${userData.phoneNumber}',
-                '${userData.gender}',
-                '${userData.dateOfBirth.toISOString()}'
-            ) RETURNING user_id
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id
         `;
-        const res = await client.query(sql).finally(async () => client.release());
 
+        const res = await client
+            .query(sql, [
+                userData.email,
+                userData.password,
+                userData.firstName,
+                userData.lastName,
+                userData.phoneNumber,
+                userData.gender,
+                userData.dateOfBirth.toISOString(),
+            ])
+            .finally(async () => client.release());
         return res.rows[0].user_id;
     }
 
     async getUserByEmail(email: string): Promise<User> {
         const client = await this.pool.connect();
 
-        const sql = `SELECT * FROM users WHERE email='${email}'`;
-        const res = await client.query(sql).finally(async () => client.release());
+        const sql = "SELECT * FROM users WHERE email=$1";
+        const res = await client.query(sql, [email]).finally(async () => client.release());
 
         return this.buildUser(res);
     }

@@ -1,2 +1,6 @@
-export const GENDERS = ["male", "female"] as const;
-export type Gender = typeof GENDERS[number];
+export enum Gender {
+    MALE = "male",
+    FEMALE = "female",
+}
+
+export const GENDERS = Object.values(Gender);

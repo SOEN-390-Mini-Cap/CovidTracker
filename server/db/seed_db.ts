@@ -25,8 +25,8 @@ import * as bcrypt from "bcrypt";
             const hashedPassword = await bcrypt.hash(user.password, 10);
 
             const res = await client.query(`
-            INSERT INTO users (email, password, first_name, last_name, date_of_birth) 
-                VALUES ('${user.email}', '${hashedPassword}', '${user.first_name}', '${user.last_name}', '${user.date_of_birth}');
+            INSERT INTO users (email, password, first_name, last_name, phone_number, gender, date_of_birth) 
+                VALUES ('${user.email}', '${hashedPassword}', '${user.first_name}', '${user.last_name}', '${user.phone_number}', '${user.gender}', '${user.date_of_birth}');
         `);
             console.log(res);
         }),

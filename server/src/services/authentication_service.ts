@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
-import { AuthenticationRepository } from "../repositories/authentication_repository";
+import { UserRepository } from "../repositories/user_repository";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { Token } from "../entities/token";
@@ -11,8 +11,8 @@ import { AddressReqData, UserReqData } from "../controllers/authentication_contr
 export class AuthenticationService {
     constructor(
         @inject("Repository")
-        @named("AuthenticationRepository")
-        private readonly authenticationRepository: AuthenticationRepository,
+        @named("UserRepository")
+        private readonly userRepository: UserRepository,
         @inject("Repository")
         @named("AddressRepository")
         private readonly addressRepository: AddressRepository,
@@ -20,7 +20,7 @@ export class AuthenticationService {
 
     async createUser(userData: UserReqData, addressData: AddressReqData): Promise<Token> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const userId = await this.authenticationRepository.createUser({
+        const userId = await this.userRepository.createUser({
             ...userData,
             password: hashedPassword,
         });
@@ -31,7 +31,7 @@ export class AuthenticationService {
     }
 
     async createSession(email: string, password: string): Promise<Token> {
-        const user = await this.authenticationRepository.getUserByEmail(email);
+        const user = await this.userRepository.getUserByEmail(email);
         if (!user) {
             throw new Error("Invalid email and / or password");
         }

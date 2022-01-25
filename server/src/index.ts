@@ -6,7 +6,7 @@ import { BaseController } from "./controllers/base_controller";
 import { AuthenticationController } from "./controllers/authentication_controller";
 import { plugins } from "restify";
 import { AuthenticationService } from "./services/authentication_service";
-import { AuthenticationRepository } from "./repositories/authentication_repository";
+import { UserRepository } from "./repositories/user_repository";
 import { Pool } from "pg";
 import { AddressRepository } from "./repositories/address_repository";
 
@@ -24,11 +24,7 @@ container
     .inSingletonScope()
     .whenTargetNamed("AuthenticationService");
 
-container
-    .bind<AuthenticationRepository>("Repository")
-    .to(AuthenticationRepository)
-    .inSingletonScope()
-    .whenTargetNamed("AuthenticationRepository");
+container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
 
 container
     .bind<AddressRepository>("Repository")

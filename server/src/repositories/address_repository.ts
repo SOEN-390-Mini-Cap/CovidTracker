@@ -19,16 +19,19 @@ export class AddressRepository {
                 province,
                 postal_code,
                 country        
-            ) VALUES (
-                '${userId}',
-                '${addressData.streetAddress}',
-                '${addressData.streetAddressLineTwo}',
-                '${addressData.city}',
-                '${addressData.province}',
-                '${addressData.postalCode}',
-                '${addressData.country}'
-            )
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
         `;
-        await client.query(sql).finally(async () => client.release());
+
+        await client
+            .query(sql, [
+                userId,
+                addressData.streetAddress,
+                addressData.streetAddressLineTwo,
+                addressData.city,
+                addressData.province,
+                addressData.postalCode,
+                addressData.country,
+            ])
+            .finally(async () => client.release());
     }
 }
