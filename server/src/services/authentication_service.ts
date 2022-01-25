@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
-import { AuthenticationRepository } from "../repositories/AuthenticationRepository";
+import { AuthenticationRepository } from "../repositories/authentication_repository";
 import * as bcrypt from "bcrypt";
-import { User } from "../entities/User";
+import { User } from "../entities/user";
 
 @injectable()
 export class AuthenticationService {

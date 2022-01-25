@@ -2,11 +2,11 @@ import "dotenv/config";
 import "reflect-metadata";
 import { Container } from "inversify";
 import { interfaces, InversifyRestifyServer, TYPE } from "inversify-restify-utils";
-import { BaseController } from "./controllers/BaseController";
-import { AuthenticationController } from "./controllers/AuthenticationController";
+import { BaseController } from "./controllers/base_controller";
+import { AuthenticationController } from "./controllers/authentication_controller";
 import { plugins } from "restify";
-import { AuthenticationService } from "./services/AuthenticationService";
-import { AuthenticationRepository } from "./repositories/AuthenticationRepository";
+import { AuthenticationService } from "./services/authentication_service";
+import { AuthenticationRepository } from "./repositories/authentication_repository";
 
 const container = new Container();
 container.bind<interfaces.Controller>(TYPE.Controller).to(BaseController).whenTargetNamed("BaseController");

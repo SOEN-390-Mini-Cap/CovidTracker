@@ -109,6 +109,13 @@ If you run into issues with the database or need to reset it for any reason foll
     $ docker run -p 8080:80 covid-tracker-server-prod
     ```
 
+## Server
+
+### Style Guide
+
+The server for this project uses the TypeScript language and follows the style guide defined by Google:
+https://google.github.io/styleguide/tsguide.html
+
 ## Team
 | Name                | StudentId | GitHub Username  | email                          |
 |---------------------|-----------|------------------|--------------------------------|

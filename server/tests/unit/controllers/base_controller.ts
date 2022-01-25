@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { BaseController } from "../../../src/controllers/BaseController";
+import { BaseController } from "../../../src/controllers/base_controller";
 import { createSandbox, SinonStub } from "sinon";
 
-describe("BaseController.ts", () => {
+describe("base_controller.ts", () => {
     const controller = new BaseController();
     const sandbox = createSandbox();
     const res: any = {

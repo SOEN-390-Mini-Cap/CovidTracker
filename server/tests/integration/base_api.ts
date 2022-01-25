@@ -2,7 +2,7 @@ import { agent } from "supertest";
 import { app } from "../../src";
 import { expect } from "chai";
 
-describe("BaseController.ts API", () => {
+describe("base_controller.ts API", () => {
     describe("index endpoint", () => {
         it("should return 200 status ok", async () => {
             const res = await agent(app).get("/");
