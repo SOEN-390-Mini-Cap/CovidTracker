@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 import { User } from "../entities/user";
 
 @injectable()
@@ -46,17 +46,23 @@ export class AuthenticationRepository {
         `;
         const res = await client.query(sql).finally(async () => client.release());
 
-        return this.buildUser(res.rows[0]);
+        return this.buildUser(res);
     }
 
-    private buildUser(row: any): User {
+    private buildUser(res: QueryResult<any>): User {
+        const rawUser = res.rows[0];
+
+        if (!rawUser) {
+            return null;
+        }
+
         return {
-            userId: row.user_id,
-            email: row.email,
-            firstName: row.first_name,
-            lastName: row.last_name,
-            dateOfBirth: row.date_of_birth,
-            password: row.password,
+            userId: rawUser.user_id,
+            email: rawUser.email,
+            firstName: rawUser.first_name,
+            lastName: rawUser.last_name,
+            dateOfBirth: rawUser.date_of_birth,
+            password: rawUser.password,
         };
     }
 }

@@ -15,26 +15,25 @@ export class AuthenticationService {
     ) {}
 
     async createUser(user: User): Promise<Token> {
-        user.password = await bcrypt.hash(user.password, 10);
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        const hashedUser = {
+            ...user,
+            password: hashedPassword,
+        } as User;
 
-        const userId = await this.authenticationRepository.createUser(user);
+        const userId = await this.authenticationRepository.createUser(hashedUser);
         return this.generateToken(userId);
     }
 
     async createSession(email: string, password: string): Promise<Token> {
         const user = await this.authenticationRepository.getUserByEmail(email);
-
         if (!user) {
-            throw new Error("no user");
+            throw new Error("Invalid email and / or password");
         }
 
-        const isMatch = await bcrypt.compare(password, user.password).catch((e) => {
-            console.log("error in compare", user.password);
-            throw new Error("here");
-        });
-
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            throw new Error("no match");
+            throw new Error("Invalid email and / or password");
         }
 
         return this.generateToken(user.userId);
@@ -45,7 +44,7 @@ export class AuthenticationService {
             {
                 userId,
             },
-            "secret",
+            process.env.JWT_SECRET,
             { expiresIn: "1h" },
         );
     }
