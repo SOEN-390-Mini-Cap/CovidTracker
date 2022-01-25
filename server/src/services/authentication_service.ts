@@ -2,9 +2,10 @@ import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
 import { AuthenticationRepository } from "../repositories/authentication_repository";
 import * as bcrypt from "bcrypt";
-import { User } from "../entities/user";
 import * as jwt from "jsonwebtoken";
 import { Token } from "../entities/token";
+import { AddressRepository } from "../repositories/address_repository";
+import { AddressReqData, UserReqData } from "../controllers/authentication_controller";
 
 @injectable()
 export class AuthenticationService {
@@ -12,16 +13,20 @@ export class AuthenticationService {
         @inject("Repository")
         @named("AuthenticationRepository")
         private readonly authenticationRepository: AuthenticationRepository,
+        @inject("Repository")
+        @named("AddressRepository")
+        private readonly addressRepository: AddressRepository,
     ) {}
 
-    async createUser(user: User): Promise<Token> {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-        const hashedUser = {
-            ...user,
+    async createUser(userData: UserReqData, addressData: AddressReqData): Promise<Token> {
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        const userId = await this.authenticationRepository.createUser({
+            ...userData,
             password: hashedPassword,
-        } as User;
+        });
 
-        const userId = await this.authenticationRepository.createUser(hashedUser);
+        await this.addressRepository.createAddress(userId, addressData);
+
         return this.generateToken(userId);
     }
 
