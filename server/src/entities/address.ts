@@ -1,8 +1,10 @@
 export interface Address {
+    userId: number;
+    addressId: number;
     streetAddress: string;
-    streetAddressLineTwo?: string;
+    streetAddressLineTwo: string;
     city: string;
-    province: string;
     postalCode: string;
+    province: string;
     country: string;
 }

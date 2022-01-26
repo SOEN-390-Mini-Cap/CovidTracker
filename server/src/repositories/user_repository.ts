@@ -12,7 +12,7 @@ import { Address } from "../entities/address";
 export class UserRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async addUser(userData: RequestUser): Promise<string> {
+    async addUser(userData: RequestUser): Promise<number> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -75,7 +75,7 @@ export class UserRepository {
         return this.buildUser(res);
     }
 
-    async addAddress(userId: string, addressData: RequestAddress): Promise<void> {
+    async addAddress(userId: number, addressData: RequestAddress): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -112,6 +112,8 @@ export class UserRepository {
         const roles: Role[] = firstRow.role_name ? rows.map((row) => Role[row.role_name]) : [];
         const addresses: Address[] = firstRow.street_address
             ? rows.map((row) => ({
+                  addressId: row.address_id,
+                  userId: row.user_id,
                   streetAddress: row.street_address,
                   streetAddressLineTwo: row.street_address_line_two,
                   city: row.city,

@@ -41,7 +41,7 @@ export class AuthenticationService {
         return this.generateToken(user.userId);
     }
 
-    private async generateToken(userId: string): Promise<Token> {
+    private async generateToken(userId: number): Promise<Token> {
         return jwt.sign(
             {
                 userId,
