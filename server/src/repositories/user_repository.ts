@@ -5,12 +5,14 @@ import { User } from "../entities/user";
 import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
 import { RequestUser } from "../entities/request/RequestUser";
+import { RequestAddress } from "../entities/request/RequestAddress";
+import { Address } from "../entities/address";
 
 @injectable()
 export class UserRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async add(userData: RequestUser): Promise<string> {
+    async addUser(userData: RequestUser): Promise<string> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -41,7 +43,7 @@ export class UserRepository {
         return res.rows[0].user_id;
     }
 
-    async findByEmail(email: string): Promise<User> {
+    async findUserByEmail(email: string): Promise<User> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -55,15 +57,50 @@ export class UserRepository {
                 gender,
                 date_of_birth,
                 created_on,
-                role_name
-            FROM users
-            LEFT JOIN user_roles ON users.user_id = user_roles.user_id
-            LEFT JOIN roles on user_roles.role_id = roles.role_id
-            WHERE users.email = $1
+                role_name,
+                street_address,
+                street_address_line_two,
+                city,
+                province,
+                postal_code,
+                country
+            FROM users, user_roles, roles, addresses
+            WHERE users.user_id = user_roles.user_id
+              AND user_roles.role_id = roles.role_id
+              AND users.user_id = addresses.user_id
+              AND users.email = $1;
         `;
         const res = await client.query(sql, [email]).finally(async () => client.release());
 
         return this.buildUser(res);
+    }
+
+    async addAddress(userId: string, addressData: RequestAddress): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO addresses (
+                user_id,
+                street_address,
+                street_address_line_two,
+                city,
+                province,
+                postal_code,
+                country        
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `;
+
+        await client
+            .query(sql, [
+                userId,
+                addressData.streetAddress,
+                addressData.streetAddressLineTwo,
+                addressData.city,
+                addressData.province,
+                addressData.postalCode,
+                addressData.country,
+            ])
+            .finally(async () => client.release());
     }
 
     private buildUser({ rows }: QueryResult): User {
@@ -73,6 +110,16 @@ export class UserRepository {
 
         const firstRow = rows[0];
         const roles: Role[] = firstRow.role_name ? rows.map((row) => Role[row.role_name]) : [];
+        const addresses: Address[] = firstRow.street_address
+            ? rows.map((row) => ({
+                  streetAddress: row.street_address,
+                  streetAddressLineTwo: row.street_address_line_two,
+                  city: row.city,
+                  province: row.province,
+                  postalCode: row.postal_code,
+                  country: row.country,
+              }))
+            : [];
 
         return {
             userId: firstRow.user_id,
@@ -85,6 +132,7 @@ export class UserRepository {
             dateOfBirth: new Date(firstRow.date_of_birth),
             createdOn: new Date(firstRow.created_on),
             roles,
+            addresses,
         };
     }
 }
