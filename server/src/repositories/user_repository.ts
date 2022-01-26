@@ -58,6 +58,7 @@ export class UserRepository {
                 date_of_birth,
                 created_on,
                 role_name,
+                address_id,
                 street_address,
                 street_address_line_two,
                 city,
