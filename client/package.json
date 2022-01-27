@@ -1,7 +1,15 @@
 {
-  "name": "vuexy-react-admin-dashboard",
+  "name": "covid-tracker-client",
   "version": "8.0.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js src/**/*.jsx",
+    "lint:fix": "eslint src/**/*.js --fix"
+  },
   "dependencies": {
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.1.1",
@@ -87,22 +95,14 @@
     "yarn": "^1.21.1",
     "yup": "^0.32.8"
   },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.js src/**/*.jsx",
-    "lint:fix": "eslint src/**/*.js --fix"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "devDependencies": {
     "@types/sortablejs": "^1.10.6",
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.0",
     "sass-loader": "8.0.2"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -115,6 +115,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "homepage": ""
+  }
 }
