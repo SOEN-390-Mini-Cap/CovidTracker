@@ -3,6 +3,11 @@ import { Redirect } from "react-router-dom";
 
 const PagesRoutes = [
     {
+        path: "/home",
+        component: lazy(() => import("../../views/pages/Home")),
+        layout: "BlankLayout",
+    },
+    {
         path: "/login",
         component: lazy(() => import("../../views/pages/authentication/Login")),
         layout: "BlankLayout",
