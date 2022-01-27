@@ -28,6 +28,11 @@ import { Form, Input, Label, Button, Card, CardBody } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
 
 const Login = () => {
+    const defaultValues = {
+        password: "",
+        loginEmail: "",
+    };
+
     // ** Hooks
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,10 +42,12 @@ const Login = () => {
         setError,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({ defaultValues });
 
     const onSubmit = (data) => {
         if (Object.values(data).every((field) => field.length > 0)) {
+            console.log(data);
+
             useJwt
                 .login({ email: data.loginEmail, password: data.password })
                 .then((res) => {
