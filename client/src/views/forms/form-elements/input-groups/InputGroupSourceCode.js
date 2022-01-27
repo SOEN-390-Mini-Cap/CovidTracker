@@ -1,7 +1,7 @@
 export const inputGroupBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Search } from 'react-feather'
 import InputPasswordToggle from '@components/input-password-toggle'
@@ -43,14 +43,14 @@ const InputGroupBasic = () => {
 
 export default InputGroupBasic
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const inputGroupMerged = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Search } from 'react-feather'
 import InputPasswordToggle from '@components/input-password-toggle'
@@ -92,14 +92,14 @@ const InputGroupMerged = () => {
 
 export default InputGroupMerged
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const inputGroupCBRadio = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { InputGroup, Input, InputGroupText, Row, Col, Input } from 'reactstrap'
 
@@ -149,14 +149,14 @@ const InputGroupCbAndRadio = () => {
 
 export default InputGroupCbAndRadio
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const inputGroupButtons = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, InputGroup, Input,  Row, Col } from 'reactstrap'
 import { Search } from 'react-feather'
@@ -189,14 +189,14 @@ const InputGroupButtons = () => {
 
 export default InputGroupButtons
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const inputGroupDropdowns = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import {
   Row,
@@ -277,14 +277,14 @@ const InputGroupDropdowns = () => {
 
 export default InputGroupDropdowns
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const inputGroupSizes = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { InputGroup, InputGroupText, Input } from 'reactstrap'
 
@@ -311,6 +311,6 @@ const InputGroupSizes = () => {
 
 export default InputGroupSizes
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

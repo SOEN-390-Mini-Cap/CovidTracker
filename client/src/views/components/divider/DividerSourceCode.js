@@ -1,7 +1,7 @@
 export const dividerDefault = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 
 const DividerDefault = () => {
@@ -24,14 +24,14 @@ const DividerDefault = () => {
 }
 export default DividerDefault
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dividerText = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 
 const DividerText = () => {
@@ -43,14 +43,14 @@ const DividerText = () => {
 }
 export default DividerText
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dividerPosition = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import { Fragment } from 'react'
 
 const DividerPosition = () => {
@@ -81,14 +81,14 @@ const DividerPosition = () => {
 export default DividerPosition
 
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dividerColors = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 
 const DividerColors = () => {
@@ -126,14 +126,14 @@ const DividerColors = () => {
 }
 export default DividerColors
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dividerIcon = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Fragment } from 'react'
 import { ArrowDown, Star, Check, XCircle, Clock } from 'react-feather'
@@ -176,14 +176,14 @@ const DividerIcon = () => {
 export default DividerIcon
 
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dividerStyle = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 
 const DividerStyle = () => {
@@ -205,6 +205,6 @@ const DividerStyle = () => {
 }
 export default DividerStyle
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

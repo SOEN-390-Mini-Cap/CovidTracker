@@ -1,7 +1,7 @@
 export const paginationBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 
@@ -34,14 +34,14 @@ const PaginationBasic = () => {
 }
 export default PaginationBasic
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationSeparated = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -85,14 +85,14 @@ const PaginationSeparated = () => {
 }
 export default PaginationSeparated
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationIconsAndText = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -131,14 +131,14 @@ const PaginationIconsAndText = () => {
 }
 export default PaginationIconsAndText
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationIcons = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -176,14 +176,14 @@ const PaginationIcons = () => {
 }
 export default PaginationIcons
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationSuccess = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -228,14 +228,14 @@ const PaginationSuccess = () => {
 export default PaginationSuccess
 
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationDanger = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -280,14 +280,14 @@ const PaginationDanger = () => {
 export default PaginationDanger
 
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationInfo = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -332,14 +332,14 @@ const PaginationInfo = () => {
 export default PaginationInfo
 
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationWarning = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { ChevronLeft, ChevronRight } from 'react-feather'
@@ -383,14 +383,14 @@ const PaginationWarning = () => {
 }
 export default PaginationWarning
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationPositions = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import {
   Pagination,
@@ -468,14 +468,14 @@ const PaginationPositions = () => {
 }
 export default PaginationPositions
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const paginationSizes = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import {
   Pagination,
@@ -550,6 +550,6 @@ const PaginationPositions = () => {
 }
 export default PaginationPositions
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

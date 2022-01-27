@@ -1,6 +1,6 @@
 export const accordionUncontrolled = (
-  <pre>
-    <code className='language-jsx'>{`import { UncontrolledAccordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
+    <pre>
+        <code className="language-jsx">{`import { UncontrolledAccordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionUncontrolled = () => {
   return (
@@ -35,12 +35,12 @@ const AccordionUncontrolled = () => {
 
 export default AccordionUncontrolled
 `}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const accordionControlled = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionBasic = () => {
@@ -81,12 +81,12 @@ const AccordionBasic = () => {
 }
 
 export default AccordionBasic`}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const accordionWithoutArrow = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionWithoutArrow = () => {
@@ -136,12 +136,12 @@ const AccordionWithoutArrow = () => {
 
 export default AccordionWithoutArrow
 `}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const accordionBorder = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionBorder = () => {
@@ -192,12 +192,12 @@ const AccordionBorder = () => {
 }
 export default AccordionBorder
 `}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const accordionMargin = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionMargin = () => {
@@ -248,12 +248,12 @@ const AccordionMargin = () => {
   )
 }
 export default AccordionMargin`}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const accordionHover = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap'
 
 const AccordionHover = () => {
@@ -304,5 +304,5 @@ const AccordionHover = () => {
 }
 export default AccordionHover
 `}</code>
-  </pre>
-)
+    </pre>
+);

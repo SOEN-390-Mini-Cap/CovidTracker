@@ -1,7 +1,7 @@
 export const dropdownControlled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 
@@ -28,14 +28,14 @@ const toggleDropdown = () => {
   )
 }
 export default DropdownControlled`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownUncontrolled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -56,14 +56,14 @@ const DropdownUncontrolled = () => {
   )
 }
 export default DropdownUncontrolled`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -145,14 +145,14 @@ const DropdownBasic = () => {
 }
 
 export default DropdownBasic`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownSplit = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -240,14 +240,14 @@ const DropdownSplit = () => {
   )
 }
 export default DropdownSplit`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownOutline = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -333,14 +333,14 @@ const DropdownOutline = () => {
 }
 
 export default DropdownOutline`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownFlat = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -423,14 +423,14 @@ const DropdownFlat = () => {
 }
 
 export default DropdownFlat`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownGradient = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -511,14 +511,14 @@ const DropdownGradient = () => {
   )
 }
 export default DropdownGradient`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownSizes = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle, Row, Col } from 'reactstrap'
 
@@ -600,14 +600,14 @@ const DropdownSizes = () => {
   )
 }
 export default DropdownSizes`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownDirections = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
@@ -658,14 +658,14 @@ const DropdownDirections = () => {
   )
 }
 export default DropdownDirections`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const dropdownVariations = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import { useState } from 'react'
 import {
   Form,
@@ -827,6 +827,6 @@ const DropdownVariations = () => {
 }
 
 export default DropdownVariations`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

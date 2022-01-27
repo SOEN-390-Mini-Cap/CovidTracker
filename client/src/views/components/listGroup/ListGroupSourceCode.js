@@ -1,7 +1,7 @@
 export const listGroupSimple = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -18,14 +18,14 @@ const ListGroupSimple = () => {
 }
 export default ListGroupSimple
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupDisabled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -42,14 +42,14 @@ const ListGroupDisabled = () => {
 }
 export default ListGroupDisabled
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupNumbered = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -65,14 +65,14 @@ const ListGroupNumbered = () => {
 export default ListGroupNumbered
 
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupIcons = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { Facebook, Instagram, Twitter } from 'react-feather'
@@ -103,14 +103,14 @@ const ListGroupIcons = () => {
 }
 export default ListGroupIcons
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupBadges = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem, Badge } from 'reactstrap'
 
@@ -140,14 +140,14 @@ const ListGroupBadges = () => {
 }
 export default ListGroupBadges
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupTag = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -177,14 +177,14 @@ const ListGroupTag = () => {
 }
 export default ListGroupTag
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupContextual = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -213,14 +213,14 @@ const ListGroupContextual = () => {
 }
 export default ListGroupContextual
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupCustom = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -266,14 +266,14 @@ const ListGroupCustom = () => {
 export default ListGroupCustom
 
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupFlush = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -294,14 +294,14 @@ const ListGroupFlush = () => {
 }
 export default ListGroupFlush
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupHorizontal = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -317,14 +317,14 @@ const ListGroupHorizontal = () => {
 }
 export default ListGroupHorizontal
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const listGroupNavigation = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import { ListGroup, ListGroupItem, Row, Col, TabContent, TabPane, CardText } from 'reactstrap'
@@ -435,6 +435,6 @@ const ListGroupNavigation = () => {
   )
 }
 export default ListGroupNavigation`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

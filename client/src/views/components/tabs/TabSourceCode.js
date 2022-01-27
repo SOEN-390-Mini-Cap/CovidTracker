@@ -1,7 +1,7 @@
 export const tabsBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -90,14 +90,14 @@ const TabsBasic = () => {
 }
 export default TabsBasic
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsVerticalLeft = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -172,14 +172,14 @@ const TabsVerticalLeft = () => {
 }
 export default TabsVerticalLeft
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsVerticalRight = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -254,14 +254,14 @@ const TabsVerticalRight = () => {
 }
 export default TabsVerticalRight
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsFilled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -372,14 +372,14 @@ const TabsFilled = () => {
 }
 export default TabsFilled
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsJustified = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -490,14 +490,14 @@ const TabsJustified = () => {
 }
 export default TabsJustified
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsCentered = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -593,14 +593,14 @@ const TabsCentered = () => {
 }
 export default TabsCentered
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tabsEnd = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -696,6 +696,6 @@ const TabsEnd = () => {
 }
 export default TabsEnd
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

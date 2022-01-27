@@ -1,33 +1,33 @@
 // ** React Imports
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
 // ** Custom Components
-import Breadcrumbs from '@components/breadcrumbs'
+import Breadcrumbs from "@components/breadcrumbs";
 
 // ** Reactstrap Imports
-import { Row, Col } from 'reactstrap'
+import { Row, Col } from "reactstrap";
 
 // ** Demo Components
-import RepeatingForm from './RepeatingForm'
-import RepeatingFormAnimated from './RepeatingFormAnimated'
+import RepeatingForm from "./RepeatingForm";
+import RepeatingFormAnimated from "./RepeatingFormAnimated";
 
 // ** Styles
-import 'react-slidedown/lib/slidedown.css'
+import "react-slidedown/lib/slidedown.css";
 
 const FormRepeater = () => {
-  return (
-    <Fragment>
-      <Breadcrumbs breadCrumbTitle='Form Repeater' breadCrumbParent='Form' breadCrumbActive='Form Repeater' />
-      <Row>
-        <Col sm={12}>
-          <RepeatingForm />
-        </Col>
-        <Col sm={12}>
-          <RepeatingFormAnimated />
-        </Col>
-      </Row>
-    </Fragment>
-  )
-}
+    return (
+        <Fragment>
+            <Breadcrumbs breadCrumbTitle="Form Repeater" breadCrumbParent="Form" breadCrumbActive="Form Repeater" />
+            <Row>
+                <Col sm={12}>
+                    <RepeatingForm />
+                </Col>
+                <Col sm={12}>
+                    <RepeatingFormAnimated />
+                </Col>
+            </Row>
+        </Fragment>
+    );
+};
 
-export default FormRepeater
+export default FormRepeater;

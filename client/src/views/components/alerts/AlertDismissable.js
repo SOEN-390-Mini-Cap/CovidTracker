@@ -1,21 +1,21 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState } from "react";
 
 // ** Reactstrap Imports
-import { Alert } from 'reactstrap'
+import { Alert } from "reactstrap";
 
 const AlertDismissable = () => {
-  // ** State
-  const [visible, setVisible] = useState(true)
+    // ** State
+    const [visible, setVisible] = useState(true);
 
-  return (
-    <div className='demo-spacing-0'>
-      <Alert color='primary' isOpen={visible} toggle={() => setVisible(false)}>
-        <div className='alert-body'>
-          Chupa chups topping bonbon. Jelly-o toffee I love. Sweet I love wafer I love wafer.
+    return (
+        <div className="demo-spacing-0">
+            <Alert color="primary" isOpen={visible} toggle={() => setVisible(false)}>
+                <div className="alert-body">
+                    Chupa chups topping bonbon. Jelly-o toffee I love. Sweet I love wafer I love wafer.
+                </div>
+            </Alert>
         </div>
-      </Alert>
-    </div>
-  )
-}
-export default AlertDismissable
+    );
+};
+export default AlertDismissable;

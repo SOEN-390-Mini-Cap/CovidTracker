@@ -1,7 +1,7 @@
 export const basicExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import AutoComplete from '@components/autocomplete'
 
@@ -48,14 +48,14 @@ const AutoCompleteBasic = () => {
 }
 export default AutoCompleteBasic
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const sectionExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import AutoComplete from '@components/autocomplete'
 
@@ -143,14 +143,14 @@ const AutoCompleteSections = () => {
 }
 export default AutoCompleteSections
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const ajaxExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import AutoComplete from '@components/autocomplete'
@@ -176,14 +176,14 @@ const AutoCompleteAjax = () => {
 }
 export default AutoCompleteAjax
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const customRenderExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import AutoComplete from '@components/autocomplete'
@@ -263,14 +263,14 @@ const AutoCompleteRender = () => {
 }
 export default AutoCompleteRender
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const defaultSuggestionsExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import AutoComplete from '@components/autocomplete'
 
@@ -318,14 +318,14 @@ const AutoCompleteDefaultSuggestions = () => {
 }
 export default AutoCompleteDefaultSuggestions
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const searchLimitExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import AutoComplete from '@components/autocomplete'
 
@@ -372,6 +372,6 @@ const AutoCompleteSearchLimit = () => {
 }
 export default AutoCompleteSearchLimit
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

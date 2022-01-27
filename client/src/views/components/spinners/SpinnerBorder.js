@@ -1,7 +1,7 @@
 // ** Reactstrap Imports
-import { Spinner } from 'reactstrap'
+import { Spinner } from "reactstrap";
 
 const SpinnerBorder = () => {
-  return <Spinner />
-}
-export default SpinnerBorder
+    return <Spinner />;
+};
+export default SpinnerBorder;

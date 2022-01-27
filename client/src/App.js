@@ -1,6 +1,6 @@
 // ** Router Import
-import Router from './router/Router'
+import Router from "./router/Router";
 
-const App = () => <Router />
+const App = () => <Router />;
 
-export default App
+export default App;

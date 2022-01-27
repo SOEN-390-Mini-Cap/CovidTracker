@@ -1,7 +1,7 @@
 // ** Reactstrap Imports
-import { Spinner } from 'reactstrap'
+import { Spinner } from "reactstrap";
 
 const SpinnerGrowing = () => {
-  return <Spinner type='grow' />
-}
-export default SpinnerGrowing
+    return <Spinner type="grow" />;
+};
+export default SpinnerGrowing;

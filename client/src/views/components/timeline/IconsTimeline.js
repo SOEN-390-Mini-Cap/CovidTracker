@@ -1,23 +1,23 @@
 // ** Custom Components
-import Timeline from '@components/timeline'
+import Timeline from "@components/timeline";
 
 // ** Reactstrap Imports
-import { Card, CardBody, CardHeader, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 
 // ** Timeline Data
-import { iconsData } from './data'
+import { iconsData } from "./data";
 
 const IconsTimeline = () => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle tag='h4'>Icons</CardTitle>
-      </CardHeader>
-      <CardBody>
-        <Timeline data={iconsData} />
-      </CardBody>
-    </Card>
-  )
-}
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle tag="h4">Icons</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Timeline data={iconsData} />
+            </CardBody>
+        </Card>
+    );
+};
 
-export default IconsTimeline
+export default IconsTimeline;

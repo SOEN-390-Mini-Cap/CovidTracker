@@ -1,90 +1,90 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState } from "react";
 
 // ** Custom Components
-import AutoComplete from '@components/autocomplete'
+import AutoComplete from "@components/autocomplete";
 
 const AutoCompleteSections = () => {
-  // ** State
-  const [suggestions] = useState([
-    {
-      groupTitle: '1970s',
-      data: [
+    // ** State
+    const [suggestions] = useState([
         {
-          title: 'C'
-        }
-      ]
-    },
-    {
-      groupTitle: '1980s',
-      data: [
-        {
-          title: 'C++'
+            groupTitle: "1970s",
+            data: [
+                {
+                    title: "C",
+                },
+            ],
         },
         {
-          title: 'Perl'
-        }
-      ]
-    },
-    {
-      groupTitle: '1990s',
-      data: [
-        {
-          title: 'Haskell'
+            groupTitle: "1980s",
+            data: [
+                {
+                    title: "C++",
+                },
+                {
+                    title: "Perl",
+                },
+            ],
         },
         {
-          title: 'Python'
+            groupTitle: "1990s",
+            data: [
+                {
+                    title: "Haskell",
+                },
+                {
+                    title: "Python",
+                },
+                {
+                    title: "Java",
+                },
+                {
+                    title: "Javascript",
+                },
+                {
+                    title: "PHP",
+                },
+                {
+                    title: "Ruby",
+                },
+            ],
         },
         {
-          title: 'Java'
+            groupTitle: "2000s",
+            data: [
+                {
+                    title: "C#",
+                },
+                {
+                    title: "Scala",
+                },
+                {
+                    title: "Clojure",
+                },
+                {
+                    title: "Go",
+                },
+            ],
         },
         {
-          title: 'Javascript'
+            groupTitle: "2010s",
+            data: [
+                {
+                    title: "Elm",
+                },
+            ],
         },
-        {
-          title: 'PHP'
-        },
-        {
-          title: 'Ruby'
-        }
-      ]
-    },
-    {
-      groupTitle: '2000s',
-      data: [
-        {
-          title: 'C#'
-        },
-        {
-          title: 'Scala'
-        },
-        {
-          title: 'Clojure'
-        },
-        {
-          title: 'Go'
-        }
-      ]
-    },
-    {
-      groupTitle: '2010s',
-      data: [
-        {
-          title: 'Elm'
-        }
-      ]
-    }
-  ])
+    ]);
 
-  return (
-    <AutoComplete
-      grouped={true}
-      filterKey='title'
-      placeholder="Type 'c'"
-      className='form-control'
-      suggestions={suggestions}
-      filterHeaderKey='groupTitle'
-    />
-  )
-}
-export default AutoCompleteSections
+    return (
+        <AutoComplete
+            grouped={true}
+            filterKey="title"
+            placeholder="Type 'c'"
+            className="form-control"
+            suggestions={suggestions}
+            filterHeaderKey="groupTitle"
+        />
+    );
+};
+export default AutoCompleteSections;

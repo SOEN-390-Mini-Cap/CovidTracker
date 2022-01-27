@@ -1,7 +1,7 @@
 export const pillBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import {
@@ -137,14 +137,14 @@ const PillBasic = () => {
 }
 export default PillBasic
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillsFilled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -222,14 +222,14 @@ const PillFilled = () => {
 }
 export default PillFilled
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillsJustified = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -307,14 +307,14 @@ const PillsJustified = () => {
 }
 export default PillsJustified
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillsCentered = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -392,14 +392,14 @@ const PillCentered = () => {
 }
 export default PillCentered
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillsEnd = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -477,14 +477,14 @@ const PillEnd = () => {
 }
 export default PillEnd
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillsVertical = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap'
 
@@ -566,14 +566,14 @@ const PillsVertical = () => {
 }
 export default PillsVertical
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const pillThemes = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Nav, NavItem, NavLink } from 'reactstrap'
 
@@ -668,6 +668,6 @@ const PillThemes = () => {
 }
 export default PillThemes
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

@@ -1,7 +1,7 @@
 export const tooltipControlled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { Button, Tooltip } from 'reactstrap'
 
@@ -26,14 +26,14 @@ const TooltipControlled = () => {
 }
 export default TooltipControlled
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tooltipUncontrolled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, UncontrolledTooltip } from 'reactstrap'
 
@@ -51,14 +51,14 @@ const TooltipUncontrolled = () => {
 }
 export default TooltipUncontrolled
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const tooltipPosition = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Button, UncontrolledTooltip } from 'reactstrap'
 
@@ -97,6 +97,6 @@ const TooltipPosition = () => {
 }
 export default TooltipPosition
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

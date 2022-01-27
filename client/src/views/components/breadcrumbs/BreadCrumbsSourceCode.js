@@ -1,7 +1,7 @@
 export const breadcrumbsDefault = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
@@ -25,14 +25,14 @@ const BreadcrumbsDefault = () => {
 }
 export default BreadcrumbsDefault
     `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const breadcrumbsStyles = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
@@ -105,14 +105,14 @@ const BreadcrumbsStyles = () => {
 export default BreadcrumbsStyles
 
       `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const breadcrumbsAlignment = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
@@ -165,6 +165,6 @@ const BreadcrumbsAlignment = () => {
 export default BreadcrumbsAlignment
 
       `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

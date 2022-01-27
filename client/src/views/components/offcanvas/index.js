@@ -1,44 +1,44 @@
 // ** React Imports
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect } from "react";
 
 // ** Third Party Components
-import Prism from 'prismjs'
+import Prism from "prismjs";
 
 // ** Reactstrap Imports
-import { Row, Col } from 'reactstrap'
+import { Row, Col } from "reactstrap";
 
 // ** Custom Components
-import Card from '@components/card-snippet'
-import BreadCrumbs from '@components/breadcrumbs'
+import Card from "@components/card-snippet";
+import BreadCrumbs from "@components/breadcrumbs";
 
 // ** Source Code
-import { offCanvasPlacement, offCanvasOptions } from './OffCanvasSourceCode'
+import { offCanvasPlacement, offCanvasOptions } from "./OffCanvasSourceCode";
 
 // ** Demo Components
-import OffCanvasOptions from './OffCanvasOptions'
-import OffCanvasPlacement from './OffCanvasPlacement'
+import OffCanvasOptions from "./OffCanvasOptions";
+import OffCanvasPlacement from "./OffCanvasPlacement";
 
 const OffCanvas = () => {
-  useEffect(() => {
-    Prism.highlightAll()
-  }, [])
+    useEffect(() => {
+        Prism.highlightAll();
+    }, []);
 
-  return (
-    <Fragment>
-      <BreadCrumbs breadCrumbTitle='Offcanvas' breadCrumbParent='Components' breadCrumbActive='Offcanvas' />
-      <Row className='match-height'>
-        <Col sm='12'>
-          <Card title='Placement' code={offCanvasPlacement}>
-            <OffCanvasPlacement />
-          </Card>
-        </Col>
-        <Col sm='12'>
-          <Card title='Options' code={offCanvasOptions}>
-            <OffCanvasOptions />
-          </Card>
-        </Col>
-      </Row>
-    </Fragment>
-  )
-}
-export default OffCanvas
+    return (
+        <Fragment>
+            <BreadCrumbs breadCrumbTitle="Offcanvas" breadCrumbParent="Components" breadCrumbActive="Offcanvas" />
+            <Row className="match-height">
+                <Col sm="12">
+                    <Card title="Placement" code={offCanvasPlacement}>
+                        <OffCanvasPlacement />
+                    </Card>
+                </Col>
+                <Col sm="12">
+                    <Card title="Options" code={offCanvasOptions}>
+                        <OffCanvasOptions />
+                    </Card>
+                </Col>
+            </Row>
+        </Fragment>
+    );
+};
+export default OffCanvas;

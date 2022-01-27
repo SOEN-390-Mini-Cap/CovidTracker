@@ -1,7 +1,7 @@
 export const progressBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 const ProgressBasic = () => {
@@ -32,14 +32,14 @@ const ProgressBasic = () => {
 }
 export default ProgressBasic
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const progressColored = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 
@@ -58,14 +58,14 @@ const ProgressColored = () => {
 }
 export default ProgressColored
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const progressMultipleStacked = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 
@@ -86,14 +86,14 @@ const ProgressMultipleStacked = () => {
 }
 export default ProgressMultipleStacked
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const progressLabeled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 
@@ -124,14 +124,14 @@ const ProgressLabeled = () => {
 }
 export default ProgressLabeled
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const progressStriped = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 const ProgressStriped = () => {
@@ -147,14 +147,14 @@ const ProgressStriped = () => {
 }
 export default ProgressStriped
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const progressAnimated = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Progress } from 'reactstrap'
 
@@ -171,6 +171,6 @@ const ProgressAnimated = () => {
 }
 export default ProgressAnimated
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

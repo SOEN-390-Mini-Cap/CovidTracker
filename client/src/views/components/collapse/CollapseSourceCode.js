@@ -1,6 +1,6 @@
 export const collapseBasic = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Collapse, Button } from 'reactstrap'
 
 import collapseImg from '@src/assets/images/slider/04.jpg'
@@ -36,12 +36,12 @@ const CollapseBasic = () => {
 
 export default CollapseBasic
 `}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const collapseMultipleTargets = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Row, Col, Collapse, Button } from 'reactstrap'
 
 import collapseImg1 from '@src/assets/images/slider/06.jpg'
@@ -104,12 +104,12 @@ const CollapseMultipleTargets = () => {
 
 export default CollapseMultipleTargets
 `}</code>
-  </pre>
-)
+    </pre>
+);
 
 export const collapseHorizontal = (
-  <pre>
-    <code className='language-jsx'>{`import { useState } from 'react'
+    <pre>
+        <code className="language-jsx">{`import { useState } from 'react'
 import { Collapse, Button } from 'reactstrap'
 
 import collapseImg from '@src/assets/images/slider/08.jpg'
@@ -138,5 +138,5 @@ const CollapseHorizontal = () => {
 
 export default CollapseHorizontal
 `}</code>
-  </pre>
-)
+    </pre>
+);

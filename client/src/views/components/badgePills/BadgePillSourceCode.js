@@ -1,7 +1,7 @@
 export const badgePillLight = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -31,14 +31,14 @@ const BadgePillLight = () => {
 }
 export default BadgePillLight
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgePillGlow = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -71,14 +71,14 @@ const BadgePillGlow = () => {
 }
 export default BadgePillGlow
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgePillContextual = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -111,14 +111,14 @@ const BadgePillContextual = () => {
 }
 export default BadgePillContextual
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgePillNotification = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 import { Bell } from 'react-feather'
@@ -150,14 +150,14 @@ const BadgePillNotification = () => {
 export default BadgePillNotification
 
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgePillLink = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 import { Link } from 'react-feather'
@@ -172,14 +172,14 @@ const BadgePillLink = () => {
 }
 export default BadgePillLink
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgePillBlock = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -192,6 +192,6 @@ const BadgePillBlock = () => {
 }
 export default BadgePillBlock
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

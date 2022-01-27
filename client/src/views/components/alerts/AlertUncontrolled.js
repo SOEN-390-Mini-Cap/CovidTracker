@@ -1,15 +1,15 @@
 // ** Reactstrap Imports
-import { UncontrolledAlert } from 'reactstrap'
+import { UncontrolledAlert } from "reactstrap";
 
 const AlertUncontrolled = () => {
-  return (
-    <div className='demo-spacing-0'>
-      <UncontrolledAlert color='primary'>
-        <div className='alert-body'>
-          Chupa chups topping bonbon. Jelly-o toffee I love. Sweet I love wafer I love wafer.
+    return (
+        <div className="demo-spacing-0">
+            <UncontrolledAlert color="primary">
+                <div className="alert-body">
+                    Chupa chups topping bonbon. Jelly-o toffee I love. Sweet I love wafer I love wafer.
+                </div>
+            </UncontrolledAlert>
         </div>
-      </UncontrolledAlert>
-    </div>
-  )
-}
-export default AlertUncontrolled
+    );
+};
+export default AlertUncontrolled;

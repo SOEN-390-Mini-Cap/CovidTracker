@@ -1,7 +1,7 @@
 export const defaultAlert = (
-  <pre className='language-jsx'>
-    <code className='language-jsx'>
-      {`
+    <pre className="language-jsx">
+        <code className="language-jsx">
+            {`
 
 import { Alert } from 'reactstrap'
 
@@ -19,14 +19,14 @@ const DefaultAlert = () => {
 }
 export default DefaultAlert
   `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertTitle = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Alert } from 'reactstrap'
 
@@ -40,14 +40,14 @@ const AlertTitle = () => {
 }
 export default AlertTitle
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertColors = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Alert } from 'reactstrap'
 
@@ -108,14 +108,14 @@ const AlertColors = () => {
 }
 export default AlertColors
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertDismissable = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { Alert } from 'reactstrap'
 
@@ -134,14 +134,14 @@ const AlertDismissable = () => {
 }
 export default AlertDismissable
     `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertUncontrolled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledAlert } from 'reactstrap'
 
@@ -158,14 +158,14 @@ const AlertUncontrolled = () => {
 }
 export default AlertUncontrolled
       `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertIcon = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Alert } from 'reactstrap'
 import { Star } from 'react-feather'
@@ -186,14 +186,14 @@ const AlertIcon = () => {
 }
 export default AlertIcon
         `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const alertExample = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import { Alert,  Label, Input } from 'reactstrap'
 import { AlertCircle } from 'react-feather'
@@ -236,6 +236,6 @@ const AlertExample = () => {
 }
 export default AlertExample
         `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

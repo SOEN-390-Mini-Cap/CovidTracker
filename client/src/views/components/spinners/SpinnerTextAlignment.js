@@ -1,11 +1,11 @@
 // ** Reactstrap Imports
-import { Spinner } from 'reactstrap'
+import { Spinner } from "reactstrap";
 
 const SpinnerTextAlignment = () => {
-  return (
-    <div className='text-center'>
-      <Spinner />
-    </div>
-  )
-}
-export default SpinnerTextAlignment
+    return (
+        <div className="text-center">
+            <Spinner />
+        </div>
+    );
+};
+export default SpinnerTextAlignment;

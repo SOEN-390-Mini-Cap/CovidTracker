@@ -1,7 +1,7 @@
 export const carouselBasic = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import {
   Carousel,
@@ -88,14 +88,14 @@ const CarouselBasic = () => {
 
 export default CarouselBasic
     `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const carouselCaptions = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 import React, { useState } from 'react'
 import {
   Carousel,
@@ -193,14 +193,14 @@ const CarouselCaptions = () => {
 
 export default CarouselCaptions
     `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const carouselUncontrolled = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledCarousel } from 'reactstrap'
 import sliderImage1 from '@src/assets/images/slider/06.jpg'
@@ -227,14 +227,14 @@ const CarouselUncontrolled = () => {
 }
 export default CarouselUncontrolled
         `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const carouselInterval = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledCarousel } from 'reactstrap'
 import sliderImage1 from '@src/assets/images/slider/05.jpg'
@@ -263,14 +263,14 @@ const CarouselInterval = () => {
   return <UncontrolledCarousel items={images} interval='500' />
 }
 export default CarouselInterval`}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const carouselKeyboard = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledCarousel } from 'reactstrap'
 import { carouselKeyboard } from './CarouselSourceCode'
@@ -301,14 +301,14 @@ const CarouselKeyboard = () => {
 }
 export default CarouselKeyboard
             `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const carouselPause = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { UncontrolledCarousel } from 'reactstrap'
 import sliderImage1 from '@src/assets/images/slider/02.jpg'
@@ -344,6 +344,6 @@ const CarouselPause = () => {
 }
 export default CarouselPause
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

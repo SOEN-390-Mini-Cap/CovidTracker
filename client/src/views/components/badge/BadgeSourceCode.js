@@ -1,7 +1,7 @@
 export const badgeContextual = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -34,14 +34,14 @@ const BadgeContextual = () => {
 }
 export default BadgeContextual
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgeGlow = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -74,14 +74,14 @@ const BadgeGlow = () => {
 }
 export default BadgeGlow
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgeLight = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -114,14 +114,14 @@ const BadgeLight = () => {
 }
 export default BadgeLight
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgeIcons = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 import { Star } from 'react-feather'
@@ -162,14 +162,14 @@ const BadgeIcons = () => {
 }
 export default BadgeIcons
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgeLink = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 import { Link } from 'react-feather'
@@ -184,14 +184,14 @@ const BadgeLink = () => {
 }
 export default BadgeLink
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const badgeBlock = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import { Badge } from 'reactstrap'
 
@@ -204,6 +204,6 @@ const BadgeBlock = () => {
 }
 export default BadgeBlock
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);

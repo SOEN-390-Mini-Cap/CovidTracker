@@ -1,7 +1,7 @@
 export const avatarSizes = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 import avatarImg from '@src/assets/images/portrait/small/avatar-s-20.jpg'
@@ -18,14 +18,14 @@ const AvatarSizes = () => {
 }
 export default AvatarSizes
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarInitials = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 
@@ -41,14 +41,14 @@ const AvatarInitials = () => {
 }
 export default AvatarInitials
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarColors = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 
@@ -66,14 +66,14 @@ const AvatarColors = () => {
 }
 export default AvatarColors
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarLightColors = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 
@@ -91,14 +91,14 @@ const AvatarLightColors = () => {
 }
 export default AvatarLightColors
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarIcons = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 import { GitHub, Calendar, Inbox, Camera, Award, Star } from 'react-feather'
@@ -117,14 +117,14 @@ const AvatarIcons = () => {
 }
 export default AvatarIcons
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarStatus = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import Avatar from '@components/avatar'
 import { GitHub } from 'react-feather'
@@ -142,14 +142,14 @@ const AvatarStatus = () => {
 }
 export default AvatarStatus
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarGroup = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import AvatarGroup from '@components/avatar-group'
 
@@ -177,14 +177,14 @@ const AvatarGroupComponent = () => {
 
 export default AvatarGroupComponent
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
 
 export const avatarGroupTooltip = (
-  <pre>
-    <code className='language-jsx'>
-      {`
+    <pre>
+        <code className="language-jsx">
+            {`
 
 import AvatarGroup from '@components/avatar-group'
 
@@ -217,6 +217,6 @@ const AvatarGroupComponent = () => {
 
 export default AvatarGroupComponent
 `}
-    </code>
-  </pre>
-)
+        </code>
+    </pre>
+);
