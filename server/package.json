@@ -1,5 +1,5 @@
 {
-    "name": "covid-tracker-server",
+    "name": "covid-tracker-serverf",
     "version": "1.0.0",
     "description": "The server for CovidTracker",
     "main": "index.js",
@@ -25,7 +25,8 @@
         "jsonwebtoken": "^8.5.1",
         "pg": "^8.7.1",
         "reflect-metadata": "^0.1.13",
-        "restify": "8.6.0"
+        "restify": "8.6.0",
+        "restify-cors-middleware2": "^2.1.2"
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "^1.0.2",

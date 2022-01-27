@@ -1,31 +1,25 @@
-// ** React Imports
-import { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-
-// ** Custom Hooks
-import useJwt from "@src/auth/jwt/useJwt";
-
-// ** Third Party Components
 import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-
-// ** Actions
 import { handleLogin } from "@store/authentication";
-
-// ** Context
-import { AbilityContext } from "@src/utility/context/Can";
-
-// ** Custom Components
 import InputPasswordToggle from "@components/input-password-toggle";
-
-// ** Utils
 import { getHomeRouteForLoggedInUser } from "@utils";
-
-// ** Reactstrap Imports
 import { Form, Input, Label, Button, Card, CardBody } from "reactstrap";
-
-// ** Styles
 import "@styles/react/pages/page-authentication.scss";
+import axios from "axios";
+
+async function signIn(data) {
+    const res = await axios.post("http://localhost:8080/sign_in", {
+        password: data.password,
+        email: data.loginEmail,
+    });
+
+    if (res.status !== 200) {
+        throw new Error("error message");
+    }
+
+    return res.data;
+}
 
 const Login = () => {
     const defaultValues = {
@@ -36,7 +30,6 @@ const Login = () => {
     // ** Hooks
     const dispatch = useDispatch();
     const history = useHistory();
-    const ability = useContext(AbilityContext);
     const {
         control,
         setError,
@@ -44,23 +37,18 @@ const Login = () => {
         formState: { errors },
     } = useForm({ defaultValues });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (Object.values(data).every((field) => field.length > 0)) {
-            console.log(data);
-
-            useJwt
-                .login({ email: data.loginEmail, password: data.password })
-                .then((res) => {
-                    const data = {
-                        ...res.data.userData,
-                        accessToken: res.data.accessToken,
-                        refreshToken: res.data.refreshToken,
-                    };
-                    dispatch(handleLogin(data));
-                    ability.update(res.data.userData.ability);
-                    history.push(getHomeRouteForLoggedInUser(data.role));
+            await signIn(data)
+                .then((data) => {
+                    dispatch(
+                        handleLogin({
+                            accessToken: data.token,
+                        }),
+                    );
+                    history.push(getHomeRouteForLoggedInUser("admin"));
                 })
-                .catch((err) => console.log(err));
+                .catch((error) => console.log(error));
         } else {
             for (const key in data) {
                 if (data[key].length === 0) {
