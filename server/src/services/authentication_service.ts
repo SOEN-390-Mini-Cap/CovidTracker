@@ -1,21 +1,53 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
-import { AuthenticationRepository } from "../repositories/authentication_repository";
+import { UserRepository } from "../repositories/user_repository";
 import * as bcrypt from "bcrypt";
-import { User } from "../entities/user";
+import * as jwt from "jsonwebtoken";
+import { Token } from "../entities/token";
+import { RequestUser } from "../entities/request/RequestUser";
+import { RequestAddress } from "../entities/request/RequestAddress";
 
 @injectable()
 export class AuthenticationService {
     constructor(
         @inject("Repository")
-        @named("AuthenticationRepository")
-        private readonly _authenticationRepository: AuthenticationRepository,
+        @named("UserRepository")
+        private readonly userRepository: UserRepository,
     ) {}
 
-    async createUser(_body: any) {
-        const { email, password, first_name, last_name, date_of_birth }: User = _body;
-        const salt: string = bcrypt.genSaltSync(8);
-        const hash: string = await bcrypt.hash(password, salt);
-        return this._authenticationRepository.createUser(email, hash, first_name, last_name, date_of_birth);
+    async signUp(userData: RequestUser, addressData: RequestAddress): Promise<Token> {
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        const userId = await this.userRepository.addUser({
+            ...userData,
+            password: hashedPassword,
+        });
+
+        await this.userRepository.addAddress(userId, addressData);
+
+        return this.generateToken(userId);
+    }
+
+    async signIn(email: string, password: string): Promise<Token> {
+        const user = await this.userRepository.findUserByEmail(email);
+        if (!user) {
+            throw new Error("Invalid email and / or password");
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            throw new Error("Invalid email and / or password");
+        }
+
+        return this.generateToken(user.userId);
+    }
+
+    private async generateToken(userId: number): Promise<Token> {
+        return jwt.sign(
+            {
+                userId,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" },
+        );
     }
 }

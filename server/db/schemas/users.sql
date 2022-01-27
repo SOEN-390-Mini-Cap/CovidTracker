@@ -4,6 +4,8 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    date_of_birth TIMESTAMP NOT NULL,
-    created_on TIMESTAMP NOT NULL DEFAULT current_timestamp
+    phone_number VARCHAR(50) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    date_of_birth TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
 );

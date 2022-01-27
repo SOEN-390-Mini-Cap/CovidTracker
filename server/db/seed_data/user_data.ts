@@ -1,16 +1,22 @@
+import { Gender } from "../../src/entities/gender";
+
 export const users = [
     {
         email: "test@test.com",
-        password: "test123",
+        password: "Test123!",
         first_name: "john",
         last_name: "smith",
-        date_of_birth: "2000-01-19 02:26:39.131000 +00:00",
+        phone_number: "514-245-6532",
+        gender: Gender.MALE,
+        date_of_birth: "2001-01-19T02:26:39.131Z",
     },
     {
         email: "test2@test.com",
-        password: "test123",
+        password: "Test123!",
         first_name: "john2",
         last_name: "smith",
-        date_of_birth: "2001-01-19 02:26:39.131000 +00:00",
+        phone_number: "514-245-6532",
+        gender: Gender.FEMALE,
+        date_of_birth: "2001-01-19T02:26:39.131Z",
     },
 ];

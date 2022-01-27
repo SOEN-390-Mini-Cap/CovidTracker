@@ -1,8 +1,17 @@
+import { Address } from "./address";
+import { Gender } from "./gender";
+import { Role } from "./role";
+
 export interface User {
+    userId: number;
     email: string;
     password: string;
-    first_name: string;
-    last_name: string;
-    date_of_birth: Date;
-    created_on: Date;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    gender: Gender;
+    dateOfBirth: Date;
+    createdOn: Date;
+    roles: Role[];
+    addresses: Address[];
 }
