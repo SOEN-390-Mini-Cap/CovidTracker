@@ -27,4 +27,7 @@ module.exports = {
             "@hooks": path.resolve(__dirname, "src/utility/hooks"),
         },
     },
+    eslint: {
+        enable: false,
+    },
 };

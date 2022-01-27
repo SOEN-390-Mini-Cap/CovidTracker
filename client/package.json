@@ -3,7 +3,7 @@
     "version": "8.0.0",
     "private": true,
     "scripts": {
-        "start": "DISABLE_ESLINT_PLUGIN=true craco start",
+        "start": "craco start",
         "build": "craco build",
         "test": "craco test",
         "eject": "react-scripts eject",
