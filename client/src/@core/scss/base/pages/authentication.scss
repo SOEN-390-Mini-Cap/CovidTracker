@@ -21,6 +21,7 @@ $auth-1-inner-max-width: 400px !default;
     .auth-inner {
       position: relative;
       &:before {
+        display: none;
         width: 244px;
         height: 243px;
         content: ' ';
@@ -33,6 +34,7 @@ $auth-1-inner-max-width: 400px !default;
         }
       }
       &:after {
+        display: none;
         width: 272px;
         height: 272px;
         content: ' ';

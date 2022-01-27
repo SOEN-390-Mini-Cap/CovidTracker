@@ -113,8 +113,6 @@ export const columns = [
         minWidth: "230px",
         sortField: "billing",
         selector: (row) => row.billing,
-        sortField: "billing",
-        selector: (row) => row.billing,
         cell: (row) => <span className="text-capitalize">{row.billing}</span>,
     },
     {

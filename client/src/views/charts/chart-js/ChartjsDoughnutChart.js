@@ -21,7 +21,7 @@ const ChartjsRadarChart = ({ tooltipShadow, successColorShade, warningLightColor
                 callbacks: {
                     label(context) {
                         console.log(context);
-                        const label = context.label || "";
+                        let label = context.label || "";
                         if (label) {
                             label += "Ronak: ";
                         }

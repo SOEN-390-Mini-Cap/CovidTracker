@@ -53,6 +53,7 @@ const SecurityTabContent = () => {
     // ** Hooks
     const {
         control,
+        setError,
         handleSubmit,
         formState: { errors },
     } = useForm({

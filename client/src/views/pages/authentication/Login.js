@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext, Fragment } from "react";
+import { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 // ** Custom Hooks
@@ -7,9 +7,7 @@ import useJwt from "@src/auth/jwt/useJwt";
 
 // ** Third Party Components
 import { useDispatch } from "react-redux";
-import { Slide } from "react-toastify";
 import { useForm, Controller } from "react-hook-form";
-import { Facebook, Twitter, Mail, GitHub, HelpCircle, Coffee } from "react-feather";
 
 // ** Actions
 import { handleLogin } from "@store/authentication";
@@ -18,27 +16,13 @@ import { handleLogin } from "@store/authentication";
 import { AbilityContext } from "@src/utility/context/Can";
 
 // ** Custom Components
-import Avatar from "@components/avatar";
 import InputPasswordToggle from "@components/input-password-toggle";
 
 // ** Utils
 import { getHomeRouteForLoggedInUser } from "@utils";
 
 // ** Reactstrap Imports
-import {
-    Row,
-    Col,
-    Form,
-    Input,
-    Label,
-    Alert,
-    Button,
-    CardText,
-    CardTitle,
-    UncontrolledTooltip,
-    Card,
-    CardBody,
-} from "reactstrap";
+import { Form, Input, Label, Button, Card, CardBody } from "reactstrap";
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
