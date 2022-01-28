@@ -16,13 +16,10 @@ export class AuthenticationService {
     ) {}
 
     async signUp(userData: RequestUser, addressData: RequestAddress): Promise<Token> {
-        const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const userId = await this.userRepository.addUser({
-            ...userData,
-            password: hashedPassword,
-        });
+        const addressId = await this.userRepository.addAddress(addressData);
 
-        await this.userRepository.addAddress(userId, addressData);
+        userData.password = await bcrypt.hash(userData.password, 10);
+        const userId = await this.userRepository.addUser(userData, addressId);
 
         return this.generateToken(userId);
     }

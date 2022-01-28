@@ -6,13 +6,12 @@ import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
 import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
-import { Address } from "../entities/address";
 
 @injectable()
 export class UserRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async addUser(userData: RequestUser): Promise<number> {
+    async addUser(userData: RequestUser, addressId: number): Promise<number> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -23,9 +22,10 @@ export class UserRepository {
                 last_name,
                 phone_number,
                 gender,
-                date_of_birth
+                date_of_birth,
+                address_id
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING user_id
         `;
 
@@ -38,6 +38,7 @@ export class UserRepository {
                 userData.phoneNumber,
                 userData.gender,
                 userData.dateOfBirth.toISOString(),
+                addressId,
             ])
             .finally(async () => client.release());
         return res.rows[0].user_id;
@@ -58,7 +59,7 @@ export class UserRepository {
                 date_of_birth,
                 created_on,
                 role_name,
-                address_id,
+                users.address_id,
                 street_address,
                 street_address_line_two,
                 city,
@@ -68,7 +69,7 @@ export class UserRepository {
             FROM users, user_roles, roles, addresses
             WHERE users.user_id = user_roles.user_id
               AND user_roles.role_id = roles.role_id
-              AND users.user_id = addresses.user_id
+              AND users.address_id = addresses.address_id
               AND users.email = $1;
         `;
         const res = await client.query(sql, [email]).finally(async () => client.release());
@@ -76,24 +77,40 @@ export class UserRepository {
         return this.buildUser(res);
     }
 
-    async addAddress(userId: number, addressData: RequestAddress): Promise<void> {
+    async addAddress(addressData: RequestAddress): Promise<number> {
         const client = await this.pool.connect();
 
+        // This statement will insert if the unique constraint between all
+        // values is satisfied else it will do nothing, either way it
+        // will return the address_id
         const sql = `
             INSERT INTO addresses (
-                user_id,
                 street_address,
                 street_address_line_two,
                 city,
                 province,
                 postal_code,
-                country        
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+                country
+            ) VALUES ($1, $2, $3, $4, $5, $6)
+            ON CONFLICT (
+                street_address,
+                street_address_line_two,
+                city,
+                province,
+                postal_code,
+                country
+            ) DO UPDATE SET
+                street_address = $1,
+                street_address_line_two = $2,
+                city = $3,
+                province = $4,
+                postal_code = $5,
+                country = $6
+            RETURNING address_id;
         `;
 
-        await client
+        const res = await client
             .query(sql, [
-                userId,
                 addressData.streetAddress,
                 addressData.streetAddressLineTwo,
                 addressData.city,
@@ -102,6 +119,7 @@ export class UserRepository {
                 addressData.country,
             ])
             .finally(async () => client.release());
+        return res.rows[0].address_id;
     }
 
     private buildUser({ rows }: QueryResult): User {
@@ -111,18 +129,6 @@ export class UserRepository {
 
         const firstRow = rows[0];
         const roles: Role[] = firstRow.role_name ? rows.map((row) => Role[row.role_name]) : [];
-        const addresses: Address[] = firstRow.street_address
-            ? rows.map((row) => ({
-                  addressId: row.address_id,
-                  userId: row.user_id,
-                  streetAddress: row.street_address,
-                  streetAddressLineTwo: row.street_address_line_two,
-                  city: row.city,
-                  province: row.province,
-                  postalCode: row.postal_code,
-                  country: row.country,
-              }))
-            : [];
 
         return {
             userId: firstRow.user_id,
@@ -135,7 +141,16 @@ export class UserRepository {
             dateOfBirth: new Date(firstRow.date_of_birth),
             createdOn: new Date(firstRow.created_on),
             roles,
-            addresses,
+            address: {
+                addressId: firstRow.address_id,
+                userId: firstRow.user_id,
+                streetAddress: firstRow.street_address,
+                streetAddressLineTwo: firstRow.street_address_line_two,
+                city: firstRow.city,
+                province: firstRow.province,
+                postalCode: firstRow.postal_code,
+                country: firstRow.country,
+            },
         };
     }
 }

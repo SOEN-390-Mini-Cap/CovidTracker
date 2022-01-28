@@ -5,72 +5,59 @@ import { userRoles } from "./seed_data/user_role_data";
 import { ROLES } from "../src/entities/role";
 import * as bcrypt from "bcrypt";
 import { addresses } from "./seed_data/address_data";
+import { container } from "../src/registry";
+import { UserRepository } from "../src/repositories/user_repository";
 
 (async () => {
+    const userRepository = container.getNamed<UserRepository>("Repository", "UserRepository");
+
     const pool = new Pool();
     const client = await pool.connect();
+
+    await client.query("BEGIN");
 
     // add roles
     await Promise.all(
         ROLES.map(async (role) => {
-            const res = await client.query(`
-            INSERT INTO roles (role_name) VALUES ('${role}');
-        `);
-            console.log(res);
+            await client.query(`
+                INSERT INTO roles (role_name) VALUES ('${role}');
+            `);
         }),
     );
 
-    // add users
-    await Promise.all(
-        users.map(async (user) => {
-            const hashedPassword = await bcrypt.hash(user.password, 10);
-
-            const res = await client.query(`
-            INSERT INTO users (email, password, first_name, last_name, phone_number, gender, date_of_birth) 
-                VALUES ('${user.email}', '${hashedPassword}', '${user.first_name}', '${user.last_name}', '${user.phone_number}', '${user.gender}', '${user.date_of_birth}');
-        `);
-            console.log(res);
-        }),
-    );
-
-    // add user roles
-    await Promise.all(
-        userRoles.map(async (userRole) => {
-            const res = await client.query(`
-            INSERT INTO user_roles (user_id, role_id) VALUES ('${userRole.user_id}', '${userRole.role_id}');
-        `);
-            console.log(res);
-        }),
-    );
+    console.log("Finished seeding roles");
 
     // add addresses
     await Promise.all(
         addresses.map(async (address) => {
-            const res = await client.query(
-                `
-                INSERT INTO addresses (
-                    user_id,
-                    street_address,
-                    street_address_line_two,
-                    city,
-                    province,
-                    postal_code,
-                    country
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-            `,
-                [
-                    address.userId,
-                    address.streetAddress,
-                    address.streetAddressLineTwo,
-                    address.city,
-                    address.province,
-                    address.postalCode,
-                    address.country,
-                ],
-            );
-            console.log(res);
+            await userRepository.addAddress(address).catch((e) => console.log(e));
         }),
     );
+
+    console.log("Finished seeding addresses");
+
+    // add users
+    await Promise.all(
+        users.map(async ({ userData, addressId }) => {
+            userData.password = await bcrypt.hash(userData.password, 10);
+            await userRepository.addUser(userData, addressId);
+        }),
+    );
+
+    console.log("Finished seeding users");
+
+    // add user roles
+    await Promise.all(
+        userRoles.map(async (userRole) => {
+            await client.query(`
+                INSERT INTO user_roles (user_id, role_id) VALUES ('${userRole.user_id}', '${userRole.role_id}');
+            `);
+        }),
+    );
+
+    console.log("Finished seeding user roles");
+
+    await client.query("COMMIT");
 
     console.log("Finished seeding database...");
 
