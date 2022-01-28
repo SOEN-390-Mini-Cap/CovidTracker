@@ -8,6 +8,7 @@ import { Form, Input, Label, Button, Card, CardBody } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
 import axios from "axios";
 
+
 async function signIn(data) {
     const res = await axios.post("http://localhost:8080/sign_in", {
         password: data.password,
@@ -137,7 +138,7 @@ const Login = () => {
 
                         <p className="text-center mt-2">
                             <span className="me-25">Don't have an account?</span>
-                            <Link to="/pages/register-basic">
+                            <Link to="/Register">
                                 <span>Sign Up</span>
                             </Link>
                         </p>
