@@ -13,5 +13,5 @@ export interface User {
     dateOfBirth: Date;
     createdOn: Date;
     roles: Role[];
-    addresses: Address[];
+    address: Address;
 }
