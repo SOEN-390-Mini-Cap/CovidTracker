@@ -80,6 +80,9 @@ export class UserRepository {
     async addAddress(addressData: RequestAddress): Promise<number> {
         const client = await this.pool.connect();
 
+        // This statement will insert if the unique constraint between all
+        // values is satisfied else it will do nothing, either way it
+        // will return the address_id
         const sql = `
             INSERT INTO addresses (
                 street_address,
@@ -87,15 +90,29 @@ export class UserRepository {
                 city,
                 province,
                 postal_code,
-                country        
+                country
             ) VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING address_id
+            ON CONFLICT (
+                street_address,
+                street_address_line_two,
+                city,
+                province,
+                postal_code,
+                country
+            ) DO UPDATE SET
+                street_address = $1,
+                street_address_line_two = $2,
+                city = $3,
+                province = $4,
+                postal_code = $5,
+                country = $6
+            RETURNING address_id;
         `;
 
         const res = await client
             .query(sql, [
                 addressData.streetAddress,
-                addressData.streetAddressLineTwo,
+                addressData.streetAddressLineTwo || "",
                 addressData.city,
                 addressData.province,
                 addressData.postalCode,
