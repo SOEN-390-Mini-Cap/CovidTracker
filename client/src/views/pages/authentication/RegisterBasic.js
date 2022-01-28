@@ -13,7 +13,18 @@ import { Card, CardBody, CardTitle, CardText, Form, Label, Input, Button } from 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
 
+const colourOptions = [
+    { value: "ocean", label: "Ocean" },
+    { value: "blue", label: "Blue" },
+    { value: "purple", label: "Purple" },
+    { value: "red", label: "Red" },
+    { value: "orange", label: "Orange" },
+];
+
+
+
 const RegisterBasic = () => {
+    
     return (
         <div className="auth-wrapper auth-basic px-2">
             <div className="auth-inner my-2">
