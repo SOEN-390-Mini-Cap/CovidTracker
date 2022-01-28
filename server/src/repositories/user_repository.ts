@@ -112,7 +112,7 @@ export class UserRepository {
         const res = await client
             .query(sql, [
                 addressData.streetAddress,
-                addressData.streetAddressLineTwo || "",
+                addressData.streetAddressLineTwo,
                 addressData.city,
                 addressData.province,
                 addressData.postalCode,

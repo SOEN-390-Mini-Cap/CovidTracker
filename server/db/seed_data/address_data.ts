@@ -1,7 +1,7 @@
 export const addresses = [
     {
         streetAddress: "1000th street",
-        streetAddressLineTwo: null,
+        streetAddressLineTwo: "",
         city: "Montreal",
         province: "Quebec",
         postalCode: "A1B 2C3",
@@ -9,7 +9,7 @@ export const addresses = [
     },
     {
         streetAddress: "1001th street",
-        streetAddressLineTwo: null,
+        streetAddressLineTwo: "",
         city: "Montreal",
         province: "Quebec",
         postalCode: "A1B 2C3",

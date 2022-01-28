@@ -37,7 +37,7 @@ export class AuthenticationController implements interfaces.Controller {
         };
         const addressData: RequestAddress = {
             streetAddress: value.streetAddress,
-            streetAddressLineTwo: value.streetAddressLineTwo,
+            streetAddressLineTwo: value.streetAddressLineTwo || "",
             city: value.city,
             postalCode: value.postalCode,
             province: value.province,
