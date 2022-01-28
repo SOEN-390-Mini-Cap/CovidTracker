@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { inject, injectable, named } from "inversify";
-import { UserRepository } from "../repositories/user_repository";
+import {inject, injectable, named} from "inversify";
+import {UserRepository} from "../repositories/user_repository";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { Token } from "../entities/token";
-import { RequestUser } from "../entities/request/RequestUser";
-import { RequestAddress } from "../entities/request/RequestAddress";
+import {Token} from "../entities/token";
+import {RequestUser} from "../entities/request/RequestUser";
+import {RequestAddress} from "../entities/request/RequestAddress";
 
 @injectable()
 export class AuthenticationService {
