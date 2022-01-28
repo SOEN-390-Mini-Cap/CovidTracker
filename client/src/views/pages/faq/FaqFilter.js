@@ -14,9 +14,7 @@ const FaqFilter = ({ searchTerm, setSearchTerm, getFAQData }) => {
         <div id="faq-search-filter">
             <Card
                 className="faq-search"
-                style={{
-                    backgroundImage: `url(${require("@src/assets/images/banner/banner.png").default})`,
-                }}
+
             >
                 <CardBody className="text-center">
                     <h2 className="text-primary">Let's answer some questions</h2>

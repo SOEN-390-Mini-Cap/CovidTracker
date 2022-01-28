@@ -105,10 +105,6 @@ const AccountTabs = ({ data }) => {
         }
     };
 
-    const handleImgReset = () => {
-        setAvatar(require("@src/assets/images/avatars/avatar-blank.png").default);
-    };
-
     return (
         <Fragment>
             <Card>
@@ -132,7 +128,7 @@ const AccountTabs = ({ data }) => {
                                     Upload
                                     <Input type="file" onChange={onChange} hidden accept="image/*" />
                                 </Button>
-                                <Button className="mb-75" color="secondary" size="sm" outline onClick={handleImgReset}>
+                                <Button className="mb-75" color="secondary" size="sm" outline >
                                     Reset
                                 </Button>
                                 <p className="mb-0">Allowed JPG, GIF or PNG. Max size of 800kB</p>

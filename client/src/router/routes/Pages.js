@@ -132,10 +132,6 @@ const PagesRoutes = [
         component: lazy(() => import("../../views/pages/api-key")),
     },
     {
-        path: "/pages/modal-examples",
-        component: lazy(() => import("../../views/pages/modal-examples")),
-    },
-    {
         path: "/pages/blog/list",
         exact: true,
         component: lazy(() => import("../../views/pages/blog/list")),
@@ -165,10 +161,6 @@ const PagesRoutes = [
         path: "/pages/blog/edit",
         exact: true,
         component: () => <Redirect to="/pages/blog/edit/1" />,
-    },
-    {
-        path: "/pages/pricing",
-        component: lazy(() => import("../../views/pages/pricing")),
     },
     {
         path: "/misc/coming-soon",

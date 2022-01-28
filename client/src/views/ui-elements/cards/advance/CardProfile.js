@@ -5,17 +5,16 @@ import Avatar from "@components/avatar";
 import { Card, CardBody, CardImg, Badge } from "reactstrap";
 
 // ** Images
-import coverImg from "@src/assets/images/banner/banner-12.jpg";
-import profileImg from "@src/assets/images/portrait/small/avatar-s-9.jpg";
+
 
 const CardProfile = () => {
     return (
         <Card className="card-profile">
-            <CardImg className="img-fluid" src={coverImg} top />
+            <CardImg className="img-fluid"  top />
             <CardBody>
                 <div className="profile-image-wrapper">
                     <div className="profile-image">
-                        <Avatar img={profileImg} />
+                        <Avatar />
                     </div>
                 </div>
                 <h3>Curtis Stone</h3>
