@@ -30,7 +30,7 @@ import { UserRepository } from "../src/repositories/user_repository";
     // add addresses
     await Promise.all(
         addresses.map(async (address) => {
-            await userRepository.addAddress(address).catch(e => console.log(e));
+            await userRepository.addAddress(address).catch((e) => console.log(e));
         }),
     );
 

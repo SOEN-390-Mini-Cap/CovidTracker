@@ -1,6 +1,6 @@
 export interface Address {
-    userId: number;
     addressId: number;
+    userId: number;
     streetAddress: string;
     streetAddressLineTwo: string;
     city: string;
