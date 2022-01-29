@@ -8,7 +8,6 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { User, Lock, Bookmark, Bell, Link } from "react-feather";
 
 // ** User Components
-import InvoiceList from "./InvoiceList";
 import SecurityTab from "./SecurityTab";
 import Connections from "./Connections";
 import BillingPlanTab from "./BillingTab";
@@ -55,7 +54,6 @@ const UserTabs = ({ active, toggleTab }) => {
                 <TabPane tabId="1">
                     <UserProjectsList />
                     <UserTimeline />
-                    <InvoiceList />
                 </TabPane>
                 <TabPane tabId="2">
                     <SecurityTab />

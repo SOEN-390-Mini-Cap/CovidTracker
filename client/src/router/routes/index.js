@@ -2,7 +2,6 @@ import AppRoutes from "./Apps";
 import FormRoutes from "./Forms";
 import PagesRoutes from "./Pages";
 import TablesRoutes from "./Tables";
-import ChartsRoutes from "./Charts";
 import DashboardRoutes from "./Dashboards";
 import UiElementRoutes from "./UiElements";
 import ExtensionsRoutes from "./Extensions";
@@ -21,7 +20,6 @@ const Routes = [
     ...PageLayoutsRoutes,
     ...FormRoutes,
     ...TablesRoutes,
-    ...ChartsRoutes,
 ];
 
 export { DefaultRoute, Routes };

@@ -137,7 +137,7 @@ const Login = () => {
 
                         <p className="text-center mt-2">
                             <span className="me-25">Don't have an account?</span>
-                            <Link to="/pages/register-basic">
+                            <Link to="/register">
                                 <span>Sign Up</span>
                             </Link>
                         </p>

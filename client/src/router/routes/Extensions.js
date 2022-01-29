@@ -34,10 +34,6 @@ const ExtensionsRoutes = [
         component: lazy(() => import("../../views/extensions/context-menu")),
     },
     {
-        path: "/extensions/swiper",
-        component: lazy(() => import("../../views/extensions/swiper")),
-    },
-    {
         path: "/access-control",
         component: lazy(() => import("../../views/extensions/access-control")),
         meta: {

@@ -18,9 +18,6 @@ import {
     ModalHeader,
 } from "reactstrap";
 
-// ** Demo Components
-import PricingCard from "@src/views/pages/pricing/PricingCards";
-
 // ** Third Party Components
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -164,7 +161,7 @@ const BillingCurrentPlan = () => {
                         </div>
                         <h6 className="ms-50 mb-0">Annually</h6>
                     </div>
-                    <PricingCard bordered data={data} duration={duration} />
+
                     <div className="text-center">
                         <p>Still not convinced? Start with a 14-day FREE trial!</p>
                         <Button color="primary" onClick={() => setShow(!show)}>
