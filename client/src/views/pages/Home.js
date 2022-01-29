@@ -11,22 +11,21 @@ function Home() {
 
     const signOut = () => {
         dispatch(handleLogout());
-        history.push("./login");
+        history.push("/login");
     };
 
     return (
         <div>
             <Navbar>
-                <Container>
-                    <Navbar.Brand href="./home">Covid Tracker</Navbar.Brand>
-                    <Navbar.Toggle />
-                    <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>Signed in as: John Doe</Navbar.Text>
-                        <Button variant="primary" style={{ marginLeft: "10px" }} onClick={signOut}>
-                            Sign Out
-                        </Button>
-                    </Navbar.Collapse>
-                </Container>
+                <Navbar.Brand href="./home" style={{ marginLeft: "10px" }}>
+                    Covid Tracker
+                </Navbar.Brand>
+                <Navbar.Toggle />
+                <Navbar.Collapse className="justify-content-end">
+                    <Button variant="primary" style={{ marginRight: "10px" }} onClick={signOut}>
+                        Sign Out
+                    </Button>
+                </Navbar.Collapse>
             </Navbar>
         </div>
     );
