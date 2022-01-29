@@ -8,6 +8,8 @@ import Wizard from "@components/wizard";
 import PersonalSignUp from "./steps-with-validation/PersonalSignUp";
 import AccountSignUp from "./steps-with-validation/AccountSignUp";
 
+import { User, Home } from "react-feather";
+
 const WizardSignUp = () => {
     // ** Ref
     const ref = useRef(null);
@@ -20,12 +22,14 @@ const WizardSignUp = () => {
         {
             id: "personal",
             title: "Personal ",
+            icon: <User size={18} />,
             content: <PersonalSignUp stepper={stepper} />,
         },
 
         {
             id: "account",
             title: "Account",
+            icon: <Home size={18} />,
             content: <AccountSignUp stepper={stepper} />,
         },
     ];
