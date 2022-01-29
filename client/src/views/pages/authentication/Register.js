@@ -21,8 +21,8 @@ import { AbilityContext } from "@src/utility/context/Can";
 import InputPasswordToggle from "@components/input-password-toggle";
 
 // ** Reactstrap Imports
-import { Row, Col, CardTitle, CardText, Label, Button, Form, Input, FormFeedback } from "reactstrap";
-import WizardHorizontal from "@src/views/forms/wizard/WizardHorizontal";
+import { Row, Col, CardBody, CardText, Label, Button, Form, Input, FormFeedback, Card } from "reactstrap";
+import WizardSignUp from "@src/views/forms/wizard/WizardSignUp";
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
 // ** Third Party Components
@@ -51,14 +51,14 @@ const defaultValues = {
     firstName: "",
     lastName: "",
     phone: "",
-    gender:"",
+    gender: "",
     dateOfBirth: "",
-    address1:"",
-    address2:"",
+    address1: "",
+    address2: "",
     city: "",
     postalCode: "",
     province: "",
-    
+
 };
 
 const Register = () => {
@@ -134,234 +134,14 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-wrapper auth-cover">
-           
-            <Row className="auth-inner m-0">
-            
-                <Col className="d-none d-lg-flex align-items-center p-5" lg="4" sm="12">
-               
-                </Col>
-
+        <div className="auth-wrapper auth-basic px-2">
+            <div className="auth-inner my-2">
                 <Col sm="12">
-                    <WizardHorizontal />
+                    <WizardSignUp />
                 </Col>
-                
-            </Row>
-            
+            </div>
         </div>
     );
 };
 
 export default Register;
-
-
-/*
- <Col className="d-flex align-items-center auth-bg px-2 p-lg-5" lg="4" sm="12">
-                    <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
-                        
-                        <CardTitle tag="h2" className="fw-bold mb-1">
-                        <Link className="brand-logo" to="/" onClick={(e) => e.preventDefault()}>
-                            {logo}
-                        </Link>
-                        </CardTitle>
-                        <CardText className="mb-2">Make your app management easy and fun!</CardText>
-                        
-                        <Form action="/" className="auth-register-form mt-2" onSubmit={handleSubmit(onSubmit)}>
-                       <Row> 
-                           <Col> 
-                                <div className="mb-1">
-                                    <Label className="form-label" for="register-firstName">
-                                        First Name
-                                    </Label>
-                                    <Controller
-                                        id="firstName"
-                                        name="firstName"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Input
-                                                type="firstName"
-                                                placeholder="Bruce"
-                                                invalid={errors.firstName && true}
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                    {errors.firstName ? <FormFeedback>{errors.firstName.message}</FormFeedback> : null}
-                                 </div>
-                            </Col>
-
-                         <Col>
-                                <div className="mb-1">
-                                    <Label className="form-label" for="register-lastName">
-                                        Last Name
-                                    </Label>
-                                    <Controller
-                                        id="lastName"
-                                        name="lastName"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Input
-                                                autoFocus
-                                                placeholder="Wayne"
-                                                invalid={errors.lastName && true}
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                    {errors.lastName ? <FormFeedback>{errors.lastName.message}</FormFeedback> : null}
-                                </div>
-                            </Col>
-                            
-                        </Row>
-                            
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-phone">
-                                    Phone Number
-                                </Label>
-                                <Controller
-                                    id="phone"
-                                    name="phone"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="999-999-9999"
-                                            invalid={errors.phone && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.phone ? <FormFeedback>{errors.phone.message}</FormFeedback> : null}
-                            </div>
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-gender">
-                                    Gender
-                                </Label>
-                                <Controller
-                                    id="gender"
-                                    name="gender"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Gender"
-                                            invalid={errors.gender && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
-                            </div>
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-address1">
-                                Address
-                                </Label>
-                                <Controller
-                                    id="address1"
-                                    name="address1"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Address"
-                                            invalid={errors.address1 && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.address1 ? <FormFeedback>{errors.address1.message}</FormFeedback> : null}
-                            </div>
-                            
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-address2">
-                                Address 2
-                                </Label>
-                                <Controller
-                                    id="address2"
-                                    name="address2"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Address 2"
-                                            invalid={errors.address2 && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.address2 ? <FormFeedback>{errors.address2.message}</FormFeedback> : null}
-                            </div>
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-city">
-                                City
-                                </Label>
-                                <Controller
-                                    id="city"
-                                    name="city"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="City"
-                                            invalid={errors.city && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
-                            </div>
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-postalCode">
-                                Postal Code
-                                </Label>
-                                <Controller
-                                    id="postalCode"
-                                    name="postalCode"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Postal Code"
-                                            invalid={errors.postalCode && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.postalCode ? <FormFeedback>{errors.postalCode.message}</FormFeedback> : null}
-                            </div>
-                            <div className="mb-1">
-                                <Label className="form-label" for="register-province">
-                                Province
-                                </Label>
-                                <Controller
-                                    id="province"
-                                    name="province"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Province"
-                                            invalid={errors.province && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.province ? <FormFeedback>{errors.province.message}</FormFeedback> : null}
-                            </div>
-                            
-                            
-                            <Button type="submit" block color="primary">
-                                Next
-                            </Button>
-                        </Form>
-                        <p className="text-center mt-2">
-                            <span className="me-25">Already have an account?</span>
-                            <Link to="/Login">
-                                <span>Sign in instead</span>
-                            </Link>
-                        </p>
-                        
-                        
-                    </Col>
-                </Col>
-*/
