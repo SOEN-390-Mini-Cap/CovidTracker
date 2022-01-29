@@ -11,7 +11,9 @@ Before you continue, ensure you have installed the following requirements:
 
 ### Setup
 
-**Note:** On a Linux environment, run all docker and docker-compose commands as `sudo`
+*Note:* On a Linux environment, run all docker and docker-compose commands as `sudo`
+
+#### Server
 
 1. Clone the repository
     ```sh
@@ -27,7 +29,7 @@ Before you continue, ensure you have installed the following requirements:
     $ docker-compose up -d server
     $ docker-compose logs -f server
     ```
-4. (Optional) Initializing and seeding the database
+4. Initializing and seeding the database
     ```sh
     $ docker-compose exec server sh
     $ npm run db:init
@@ -37,11 +39,25 @@ Before you continue, ensure you have installed the following requirements:
 
 You can now access the server at http://localhost:8080
 
-**Ports:**
+Ports: 
 
-By default, the server and database will be exposed on `localhost:8080` and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:
-- Server from `8080:80` to `<new-port>:80`
-- Database from `5432:5432` to `<new-port>:5432`.
+>    By default, the server and database will be exposed on `localhost:8080` and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:  
+> - Server from `8080:80` to `<new-port>:80`  
+> - Database from `5432:5432` to `<new-port>:5432`.
+
+#### Client
+
+1. Install all dependencies
+    ```sh
+    $ cd client
+    $ npm install --force --legacy-peer-deps
+    ```
+2. Start the client
+    ```sh
+    $ npm run start
+    ```
+
+You can now access the client at http://localhost:3000
 
 ### Running the Tests
 
