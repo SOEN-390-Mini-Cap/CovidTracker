@@ -16,16 +16,6 @@ const PagesRoutes = [
         },
     },
     {
-        path: "/pages/login-basic",
-        component: lazy(() => import("../../views/pages/authentication/LoginBasic")),
-        layout: "BlankLayout",
-    },
-    {
-        path: "/pages/login-cover",
-        component: lazy(() => import("../../views/pages/authentication/LoginCover")),
-        layout: "BlankLayout",
-    },
-    {
         path: "/register",
         component: lazy(() => import("../../views/pages/authentication/Register")),
         layout: "BlankLayout",
