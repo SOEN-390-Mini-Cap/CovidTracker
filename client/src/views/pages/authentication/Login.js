@@ -19,6 +19,8 @@ async function signIn(data) {
     return res.data;
 }
 
+const formatErrorMessage = (err) => err.charAt(0).toUpperCase() + err.slice(1);
+
 const Login = () => {
     const defaultValues = {
         password: "",
@@ -28,7 +30,7 @@ const Login = () => {
 
     const SignInSchema = yup.object().shape({
         email: yup.string().email().required(),
-        password: yup.string().min(8).required(),
+        password: yup.string().required().min(8),
     });
 
     // ** Hooks
@@ -88,7 +90,7 @@ const Login = () => {
                             {logo}
                         </Link>
                         <Form className="auth-login-form sign-in-form" onSubmit={handleSubmit(onSubmit)}>
-                            {errors.req && <FormFeedback className="d-block">{errors.req.message}</FormFeedback>}
+                            {errors.req && <FormFeedback className="d-block">{formatErrorMessage(errors.req.message)}</FormFeedback>}
                             <div className="mb-1">
                                 <Label className="form-label" for="login-email">
                                     Email
@@ -102,7 +104,9 @@ const Login = () => {
                                     )}
                                 />
                                 {errors.email && (
-                                    <FormFeedback className="d-block">{errors.email.message}</FormFeedback>
+                                    <FormFeedback className="d-block">
+                                        {formatErrorMessage(errors.email.message)}
+                                    </FormFeedback>
                                 )}
                             </div>
                             <div className="mb-1">
@@ -123,7 +127,9 @@ const Login = () => {
                                     )}
                                 />
                                 {errors.password && (
-                                    <FormFeedback className="d-block">{errors.password.message}</FormFeedback>
+                                    <FormFeedback className="d-block">
+                                        {formatErrorMessage(errors.password.message)}
+                                    </FormFeedback>
                                 )}
                             </div>
                             <div className="d-flex justify-content-between">
