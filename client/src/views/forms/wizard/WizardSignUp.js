@@ -17,20 +17,22 @@ const WizardSignUp = () => {
     // ** State
     const [stepper, setStepper] = useState(null);
 
+    const [globalData, setGlobalData] = useState(null);
+
     const steps = [
 
         {
             id: "personal",
             title: "Personal ",
             icon: <User size={18} />,
-            content: <PersonalSignUp stepper={stepper} />,
+            content: <PersonalSignUp stepper={stepper} setGlobalData={setGlobalData}/>,
         },
 
         {
             id: "account",
             title: "Account",
             icon: <Home size={18} />,
-            content: <AccountSignUp stepper={stepper} />,
+            content: <AccountSignUp stepper={stepper} globalData={globalData}/>,
         },
     ];
 

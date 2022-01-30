@@ -92,6 +92,7 @@ const Register = () => {
         source = require(`@src/assets/images/pages/${illustration}`).default;
 
     const onSubmit = (data) => {
+        console.log("RTETET");
         const tempData = { ...data };
         delete tempData.terms;
         if (Object.values(tempData).every((field) => field.length > 0) && data.terms === true) {

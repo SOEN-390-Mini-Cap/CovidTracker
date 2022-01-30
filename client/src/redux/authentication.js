@@ -19,7 +19,6 @@ export const authSlice = createSlice({
     },
     reducers: {
         handleLogin: (state, action) => {
-            console.log(state, action);
             state.userData = action.payload;
             state[config.storageTokenKeyName] = action.payload[config.storageTokenKeyName];
             localStorage.setItem("userData", JSON.stringify(action.payload));
