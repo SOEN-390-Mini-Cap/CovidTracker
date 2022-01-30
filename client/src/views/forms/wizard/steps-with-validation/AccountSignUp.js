@@ -1,21 +1,48 @@
 // ** React Imports
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // ** Utils
 import { isObjEmpty } from "@utils";
 
 // ** Custom Components
 import InputPasswordToggle from "@components/input-password-toggle";
+import { handleLogin } from "@store/authentication";
+import { getHomeRouteForLoggedInUser } from "@utils";
 
 // ** Third Party Components
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { ArrowLeft } from "react-feather";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 // ** Reactstrap Imports
 import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
+
+async function signUp(data) {
+    const res = await axios.post("http://localhost:8080/sign_up", {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phoneNumber: data.phone.replaceAll('-', ''),
+            gender: data.gender.value.toUpperCase(),
+            dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+            email: data.email,
+            password: data.password,
+            streetAddress: data.address1,
+            streetAddressLineTwo: data.address2,
+            city: data.city,
+            postalCode: data.postalCode,
+            province: data.province.value
+    });
+
+    if (res.status !== 201) {
+        throw new Error("error message");
+    }
+
+    return res.data;
+}
 
 const defaultValues = {
     email: "",
@@ -24,7 +51,7 @@ const defaultValues = {
     confirmPassword: "",
 };
 
-const AccountSignUp = ({ stepper }) => {
+const AccountSignUp = ({ stepper, globalData }) => {
     const SignupSchema = yup.object().shape({
         email: yup.string().email().required('Enter a valid email.'),
         password: yup.string().required('Enter a password'),
@@ -45,9 +72,26 @@ const AccountSignUp = ({ stepper }) => {
         resolver: yupResolver(SignupSchema),
     });
 
-    const onSubmit = () => {
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const onSubmit = async (data) => {
+
+        globalData = Object.assign({}, globalData, data)
+        console.log(globalData);
+
         if (isObjEmpty(errors)) {
-            stepper.next();
+            await signUp(globalData)
+            .then((globalData) => {
+                dispatch(
+                    handleLogin({
+                        accessToken: globalData.token,
+                    }),
+                );
+                history.push(getHomeRouteForLoggedInUser("admin"));
+            })
+            .catch((error) => console.log(error));
         }
     };
 

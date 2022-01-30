@@ -31,7 +31,7 @@ const defaultValues = {
     province: null,
 };
 
-const PersonalSignUp = ({ stepper }) => {
+const PersonalSignUp = ({ stepper, setGlobalData }) => {
 
     const [data, setData] = useState(null);
     // ** Hooks
@@ -43,6 +43,7 @@ const PersonalSignUp = ({ stepper }) => {
     } = useForm({ defaultValues });
 
     const onSubmit = (data) => {
+        setGlobalData(data);
         setData(data);
         if (Object.values(data).every((field) => field.length > 0)) {
             stepper.next();
