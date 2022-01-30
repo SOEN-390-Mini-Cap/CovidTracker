@@ -7,103 +7,81 @@ import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { ArrowRight } from "react-feather";
 import classnames from "classnames";
-
+import * as yup from "yup";
 // ** Utils
 import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import { Label, Row, Col, Button, Form, Input, FormFeedback } from "reactstrap";
-import NumberFormat from 'react-number-format';
 
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { isObjEmpty } from "../../../../utility/Utils";
 
 const defaultValues = {
     lastName: "",
     firstName: "",
     phone: "",
-    gender: null,
+    gender: { value: "Male", label: "Male" },
     dateOfBirth: "",
     address1: "",
     address2: "",
     city: "",
     postalCode: "",
-    province: null,
+    province: { value: "Quebec", label: "Quebec" },
 };
 
 const PersonalSignUp = ({ stepper, setGlobalData }) => {
-
     const [data, setData] = useState(null);
+
+    const fieldRequired = "Field required.";
+
+    const signUpSchema = yup
+        .object()
+        .shape({
+            firstName: yup
+                .string()
+                .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field.")
+                .min(1)
+                .max(25, "First name must be 25 characters or less.")
+                .required(fieldRequired),
+            lastName: yup
+                .string()
+                .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field.")
+                .min(1)
+                .max(25, "Last name must be 25 characters or less.")
+                .required(fieldRequired),
+            phone: yup
+                .string("test")
+                .matches(/^\d{3}-\d{3}-\d{4}$/, "Enter phone number in this format ###-###-####.")
+                .length(12, "Please enter your 10 digits.")
+                .required(fieldRequired),
+            dateOfBirth: yup
+                .string()
+                .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Enter date in this format MM/DD/YYYY")
+                .required(fieldRequired),
+            address1: yup.string().max(100, "Address must be 100 characters or less.").required(fieldRequired),
+            address2: yup.string().max(100, "Address must be 100 characters or less."),
+            city: yup.string().required(fieldRequired),
+            postalCode: yup.string().required(fieldRequired),
+        })
+        .required();
     // ** Hooks
     const {
         control,
-        setError,
         handleSubmit,
         formState: { errors },
-    } = useForm({ defaultValues });
+    } = useForm({
+        defaultValues,
+        resolver: yupResolver(signUpSchema),
+    });
 
     const onSubmit = (data) => {
         setGlobalData(data);
         setData(data);
-        if (Object.values(data).every((field) => field.length > 0)) {
+        if (isObjEmpty(errors)) {
             stepper.next();
-        } else {
-            for (const key in data) {
-                if (key == 'firstName' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a first name.`,
-                    });
-                }
-                if (key == 'lastName' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a last name.`,
-                    });
-                }
-                if (key == 'phone' && data[key].length != 10) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a valid phone number.`,
-                    });
-                }
-                if (key == 'gender' && data.gender === null) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Select a gender.`,
-                    });
-                }
-                if (key == 'dateOfBirth' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a date of birth.`,
-                    });
-                }
-                if (key == 'address1' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter an address.`,
-                    });
-                }
-                if (key == 'city' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a city.`,
-                    });
-                }
-                if (key == 'postalCode' && data[key].length === 0) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Enter a valid post code.`,
-                    });
-                }
-                if (key == 'province' && data.province === null) {
-                    setError(key, {
-                        type: "manual",
-                        message: `Select a province.`,
-                    });
-                }
-            }
         }
     };
 
@@ -129,7 +107,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
     ];
 
     return (
-        <Fragment >
+        <Fragment>
             <Form style={{ margin: "0px 10px" }} onSubmit={handleSubmit(onSubmit)}>
                 <Row className="">
                     <Col md="6" className="mb-1">
@@ -140,9 +118,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             id="firstName"
                             name="firstName"
                             control={control}
-                            render={({ field }) => (
-                                <Input invalid={errors.firstName && true} {...field} />
-                            )}
+                            render={({ field }) => <Input invalid={errors.firstName && true} {...field} />}
                         />
                         {errors.firstName && <FormFeedback>{errors.firstName.message}</FormFeedback>}
                     </Col>
@@ -154,9 +130,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             id="lastName"
                             name="lastName"
                             control={control}
-                            render={({ field }) => (
-                                <Input invalid={errors.lastName && true} {...field} />
-                            )}
+                            render={({ field }) => <Input invalid={errors.lastName && true} {...field} />}
                         />
                         {errors.lastName && <FormFeedback>{errors.lastName.message}</FormFeedback>}
                     </Col>
@@ -171,13 +145,10 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             name="phone"
                             control={control}
                             render={({ field }) => (
-                                <NumberFormat
+                                <Input
                                     className="form-control"
                                     placeholder="999-999-9999"
-                                    format="###-###-####"
-                                    className={classnames("form-control", {
-                                        "is-invalid": data !== null && data.phone == '',
-                                    })}
+                                    invalid={errors.phone && true}
                                     {...field}
                                 />
                             )}
@@ -193,15 +164,17 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             name="gender"
                             control={control}
                             render={({ field }) => (
-                                <Select options={genderOptions}
-                                    className='react-select'
-                                    classNamePrefix='select'
-                                    placeholder=''
+                                <Select
+                                    options={genderOptions}
+                                    className="react-select"
+                                    classNamePrefix="select"
+                                    placeholder=""
                                     theme={selectThemeColors}
                                     className={classnames("react-select", {
                                         "is-invalid": data !== null && data.gender === null,
                                     })}
-                                    {...field} />
+                                    {...field}
+                                />
                             )}
                         />
                         {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
@@ -216,14 +189,10 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         name="dateOfBirth"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                placeholder="MM/DD/YYYY"
-                                invalid={errors.dateOfBirth && true}
-                                {...field}
-                            />
+                            <Input placeholder="MM/DD/YYYY" invalid={errors.dateOfBirth && true} {...field} />
                         )}
                     />
-                    {errors.dateOfBirth ? <FormFeedback>{errors.dateOfBirth.message}</FormFeedback> : null}
+                    {errors.dateOfBirth && <FormFeedback>{errors.dateOfBirth.message}</FormFeedback>}
                 </Col>
                 <hr />
                 <Col className="mb-1">
@@ -234,12 +203,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         id="address1"
                         name="address1"
                         control={control}
-                        render={({ field }) => (
-                            <Input
-                                invalid={errors.address1 && true}
-                                {...field}
-                            />
-                        )}
+                        render={({ field }) => <Input invalid={errors.address1 && true} {...field} />}
                     />
                     {errors.address1 ? <FormFeedback>{errors.address1.message}</FormFeedback> : null}
                 </Col>
@@ -262,7 +226,6 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                     {errors.address2 ? <FormFeedback>{errors.address2.message}</FormFeedback> : null}
                 </Col>
                 <Row>
-
                     <Col className="mb-1">
                         <Label className="form-label" for="city">
                             City
@@ -271,12 +234,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             id="city"
                             name="city"
                             control={control}
-                            render={({ field }) => (
-                                <Input
-                                    invalid={errors.city && true}
-                                    {...field}
-                                />
-                            )}
+                            render={({ field }) => <Input invalid={errors.city && true} {...field} />}
                         />
                         {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
                     </Col>
@@ -289,11 +247,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             name="postalCode"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    placeholder="A1A 1A1"
-                                    invalid={errors.postalCode && true}
-                                    {...field}
-                                />
+                                <Input placeholder="A1A 1A1" invalid={errors.postalCode && true} {...field} />
                             )}
                         />
                         {errors.postalCode ? <FormFeedback>{errors.postalCode.message}</FormFeedback> : null}
@@ -308,26 +262,24 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         name="province"
                         control={control}
                         render={({ field }) => (
-                            <Select options={provinceOptions}
-                                className='react-select'
-                                classNamePrefix='select'
-                                placeholder=''
+                            <Select
+                                options={provinceOptions}
+                                className="react-select"
+                                classNamePrefix="select"
+                                placeholder=""
                                 theme={selectThemeColors}
                                 className={classnames("react-select", {
                                     "is-invalid": data !== null && data.province === null,
                                 })}
-                                {...field} />
+                                {...field}
+                            />
                         )}
                     />
                     {errors.province ? <FormFeedback>{errors.province.message}</FormFeedback> : null}
                 </Col>
 
-
                 <div className="text-center">
-
-                    <Button type="submit" color="primary" className="btn-next col-md-12" onClick={() => {
-                        stepper.next();
-                    }}>
+                    <Button type="submit" color="primary" className="btn-next col-md-12">
                         <span className="align-middle d-sm-inline-block d-none">Next</span>
                         <ArrowRight size={14} className="align-middle ms-sm-25 ms-0"></ArrowRight>
                     </Button>
@@ -339,7 +291,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                     </Link>
                 </p>
             </Form>
-        </Fragment >
+        </Fragment>
     );
 };
 
