@@ -23,18 +23,18 @@ import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
 
 async function signUp(data) {
     const res = await axios.post("http://localhost:8080/sign_up", {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            phoneNumber: data.phone.replaceAll('-', ''),
-            gender: data.gender.value.toUpperCase(),
-            dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-            email: data.email,
-            password: data.password,
-            streetAddress: data.address1,
-            streetAddressLineTwo: data.address2,
-            city: data.city,
-            postalCode: data.postalCode,
-            province: data.province.value
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phone.replaceAll("-", ""),
+        gender: data.gender.value.toUpperCase(),
+        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+        email: data.email,
+        password: data.password,
+        streetAddress: data.address1,
+        streetAddressLineTwo: data.address2,
+        city: data.city,
+        postalCode: data.postalCode,
+        province: data.province.value,
     });
 
     if (res.status !== 201) {
@@ -53,11 +53,11 @@ const defaultValues = {
 
 const AccountSignUp = ({ stepper, globalData }) => {
     const SignupSchema = yup.object().shape({
-        email: yup.string().email().required('Enter a valid email.'),
-        password: yup.string().required('Enter a password'),
+        email: yup.string().email().required("Enter a valid email."),
+        password: yup.string().required("Enter a password"),
         confirmPassword: yup
             .string()
-            .required('Confirm your password')
+            .required("Confirm your password")
             .oneOf([yup.ref(`password`), null], "Passwords must match"),
     });
 
@@ -72,32 +72,29 @@ const AccountSignUp = ({ stepper, globalData }) => {
         resolver: yupResolver(SignupSchema),
     });
 
-
     const dispatch = useDispatch();
     const history = useHistory();
 
     const onSubmit = async (data) => {
-
-        globalData = Object.assign({}, globalData, data)
-        console.log(globalData);
+        globalData = Object.assign({}, globalData, data);
 
         if (isObjEmpty(errors)) {
             await signUp(globalData)
-            .then((globalData) => {
-                dispatch(
-                    handleLogin({
-                        accessToken: globalData.token,
-                    }),
-                );
-                history.push(getHomeRouteForLoggedInUser("admin"));
-            })
-            .catch((error) => console.log(error));
+                .then((globalData) => {
+                    dispatch(
+                        handleLogin({
+                            accessToken: globalData.token,
+                        }),
+                    );
+                    history.push(getHomeRouteForLoggedInUser("admin"));
+                })
+                .catch((error) => console.log(error));
         }
     };
 
     return (
         <Fragment>
-            <Form onSubmit={handleSubmit(onSubmit)} style={{ margin: "0px 10px" }} >
+            <Form onSubmit={handleSubmit(onSubmit)} style={{ margin: "0px 10px" }}>
                 <Col md="12" className="mb-1">
                     <Label className="form-label" for={`email`}>
                         Email
@@ -129,7 +126,8 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.password && true}
-                                {...field} />
+                                {...field}
+                            />
                         )}
                     />
                     {errors.password && <FormFeedback>{errors.password.message}</FormFeedback>}
@@ -146,7 +144,8 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.confirmPassword && true}
-                                {...field} />
+                                {...field}
+                            />
                         )}
                     />
                     {errors.confirmPassword && <FormFeedback>{errors.confirmPassword.message}</FormFeedback>}
