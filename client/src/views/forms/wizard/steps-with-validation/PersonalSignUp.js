@@ -1,17 +1,19 @@
 // ** React Imports
-import { Fragment } from "react";
+import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 
 // ** Third Party Components
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { ArrowRight } from "react-feather";
+import classnames from "classnames";
 
 // ** Utils
 import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import { Label, Row, Col, Button, Form, Input, FormFeedback } from "reactstrap";
+import NumberFormat from 'react-number-format';
 
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
@@ -20,16 +22,18 @@ const defaultValues = {
     lastName: "",
     firstName: "",
     phone: "",
-    gender: "",
+    gender: null,
     dateOfBirth: "",
     address1: "",
     address2: "",
     city: "",
     postalCode: "",
-    province: "",
+    province: null,
 };
 
 const PersonalSignUp = ({ stepper }) => {
+
+    const [data, setData] = useState(null);
     // ** Hooks
     const {
         control,
@@ -39,14 +43,63 @@ const PersonalSignUp = ({ stepper }) => {
     } = useForm({ defaultValues });
 
     const onSubmit = (data) => {
+        setData(data);
         if (Object.values(data).every((field) => field.length > 0)) {
             stepper.next();
         } else {
             for (const key in data) {
-                if (data[key].length === 0) {
+                if (key == 'firstName' && data[key].length === 0) {
                     setError(key, {
                         type: "manual",
-                        message: `Please enter a valid ${key}`,
+                        message: `Enter a first name.`,
+                    });
+                }
+                if (key == 'lastName' && data[key].length === 0) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter a last name.`,
+                    });
+                }
+                if (key == 'phone' && data[key].length != 10) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter a valid phone number.`,
+                    });
+                }
+                if (key == 'gender' && data.gender === null) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Select a gender.`,
+                    });
+                }
+                if (key == 'dateOfBirth' && data[key].length === 0) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter a date of birth.`,
+                    });
+                }
+                if (key == 'address1' && data[key].length === 0) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter an address.`,
+                    });
+                }
+                if (key == 'city' && data[key].length === 0) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter a city.`,
+                    });
+                }
+                if (key == 'postalCode' && data[key].length === 0) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Enter a valid post code.`,
+                    });
+                }
+                if (key == 'province' && data.province === null) {
+                    setError(key, {
+                        type: "manual",
+                        message: `Select a province.`,
                     });
                 }
             }
@@ -75,9 +128,9 @@ const PersonalSignUp = ({ stepper }) => {
     ];
 
     return (
-        <Fragment>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                <Row>
+        <Fragment >
+            <Form style={{ margin: "0px 10px" }} onSubmit={handleSubmit(onSubmit)}>
+                <Row className="">
                     <Col md="6" className="mb-1">
                         <Label className="form-label" for="firstName">
                             First Name
@@ -107,9 +160,9 @@ const PersonalSignUp = ({ stepper }) => {
                         {errors.lastName && <FormFeedback>{errors.lastName.message}</FormFeedback>}
                     </Col>
                 </Row>
-                <Row className="mb-1">
+                <Row className="mb-0">
                     <Col md="7" className="mb-1">
-                        <Label className="form-label" for="register-phone">
+                        <Label className="form-label" for="phone">
                             Phone Number
                         </Label>
                         <Controller
@@ -117,17 +170,21 @@ const PersonalSignUp = ({ stepper }) => {
                             name="phone"
                             control={control}
                             render={({ field }) => (
-                                <Input
+                                <NumberFormat
+                                    className="form-control"
                                     placeholder="999-999-9999"
-                                    invalid={errors.phone && true}
+                                    format="###-###-####"
+                                    className={classnames("form-control", {
+                                        "is-invalid": data !== null && data.phone == '',
+                                    })}
                                     {...field}
                                 />
                             )}
                         />
-                        {errors.phone ? <FormFeedback>{errors.phone.message}</FormFeedback> : null}
+                        {errors.phone && <FormFeedback>{errors.phone.message}</FormFeedback>}
                     </Col>
                     <Col md="5" className="mb-1">
-                        <Label className="form-label" for="register-gender">
+                        <Label className="form-label" for="gender">
                             Gender
                         </Label>
                         <Controller
@@ -140,16 +197,36 @@ const PersonalSignUp = ({ stepper }) => {
                                     classNamePrefix='select'
                                     placeholder=''
                                     theme={selectThemeColors}
-                                    invalid={errors.gender && true}
+                                    className={classnames("react-select", {
+                                        "is-invalid": data !== null && data.gender === null,
+                                    })}
                                     {...field} />
                             )}
                         />
                         {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
                     </Col>
                 </Row>
+                <Col className="mb-2">
+                    <Label className="form-label" for="dateOfBirth">
+                        Date of Birth
+                    </Label>
+                    <Controller
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                placeholder="MM/DD/YYYY"
+                                invalid={errors.dateOfBirth && true}
+                                {...field}
+                            />
+                        )}
+                    />
+                    {errors.dateOfBirth ? <FormFeedback>{errors.dateOfBirth.message}</FormFeedback> : null}
+                </Col>
                 <hr />
                 <Col className="mb-1">
-                    <Label className="form-label" for="register-address1">
+                    <Label className="form-label" for="address1">
                         Address
                     </Label>
                     <Controller
@@ -158,7 +235,6 @@ const PersonalSignUp = ({ stepper }) => {
                         control={control}
                         render={({ field }) => (
                             <Input
-                                placeholder="Address"
                                 invalid={errors.address1 && true}
                                 {...field}
                             />
@@ -167,7 +243,7 @@ const PersonalSignUp = ({ stepper }) => {
                     {errors.address1 ? <FormFeedback>{errors.address1.message}</FormFeedback> : null}
                 </Col>
                 <Col className="mb-1">
-                    <Label className="form-label" for="register-address2">
+                    <Label className="form-label" for="address2">
                         Address 2
                     </Label>
                     <Controller
@@ -176,7 +252,7 @@ const PersonalSignUp = ({ stepper }) => {
                         control={control}
                         render={({ field }) => (
                             <Input
-                                placeholder="Address 2"
+                                placeholder="Apartment, Suite, Unit, Building, Floor, etc."
                                 invalid={errors.address2 && true}
                                 {...field}
                             />
@@ -187,7 +263,7 @@ const PersonalSignUp = ({ stepper }) => {
                 <Row>
 
                     <Col className="mb-1">
-                        <Label className="form-label" for="register-city">
+                        <Label className="form-label" for="city">
                             City
                         </Label>
                         <Controller
@@ -204,7 +280,7 @@ const PersonalSignUp = ({ stepper }) => {
                         {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
                     </Col>
                     <Col className="mb-1">
-                        <Label className="form-label" for="register-postalCode">
+                        <Label className="form-label" for="postalCode">
                             Postal Code
                         </Label>
                         <Controller
@@ -213,7 +289,7 @@ const PersonalSignUp = ({ stepper }) => {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    placeholder="Postal Code"
+                                    placeholder="A1A 1A1"
                                     invalid={errors.postalCode && true}
                                     {...field}
                                 />
@@ -223,7 +299,7 @@ const PersonalSignUp = ({ stepper }) => {
                     </Col>
                 </Row>
                 <Col className="mb-2">
-                    <Label className="form-label" for="register-province">
+                    <Label className="form-label" for="province">
                         Province
                     </Label>
                     <Controller
@@ -236,7 +312,9 @@ const PersonalSignUp = ({ stepper }) => {
                                 classNamePrefix='select'
                                 placeholder=''
                                 theme={selectThemeColors}
-                                invalid={errors.gender && true}
+                                className={classnames("react-select", {
+                                    "is-invalid": data !== null && data.province === null,
+                                })}
                                 {...field} />
                         )}
                     />
@@ -246,7 +324,9 @@ const PersonalSignUp = ({ stepper }) => {
 
                 <div className="text-center">
 
-                    <Button type="submit" color="primary" className="btn-next col-md-12" onClick={() => stepper.next()}>
+                    <Button type="submit" color="primary" className="btn-next col-md-12" onClick={() => {
+                        stepper.next();
+                    }}>
                         <span className="align-middle d-sm-inline-block d-none">Next</span>
                         <ArrowRight size={14} className="align-middle ms-sm-25 ms-0"></ArrowRight>
                     </Button>

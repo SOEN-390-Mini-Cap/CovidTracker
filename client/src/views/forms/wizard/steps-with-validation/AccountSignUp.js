@@ -26,12 +26,11 @@ const defaultValues = {
 
 const AccountSignUp = ({ stepper }) => {
     const SignupSchema = yup.object().shape({
-        username: yup.string().required(),
-        email: yup.string().email().required(),
-        password: yup.string().required(),
+        email: yup.string().email().required('Enter a valid email.'),
+        password: yup.string().required('Enter a password'),
         confirmPassword: yup
             .string()
-            .required()
+            .required('Confirm your password')
             .oneOf([yup.ref(`password`), null], "Passwords must match"),
     });
 
@@ -54,7 +53,7 @@ const AccountSignUp = ({ stepper }) => {
 
     return (
         <Fragment>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(onSubmit)} style={{ margin: "0px 10px" }} >
                 <Col md="12" className="mb-1">
                     <Label className="form-label" for={`email`}>
                         Email
