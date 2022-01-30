@@ -6,11 +6,10 @@ import { Card, CardBody, CardImg, Badge } from "reactstrap";
 
 // ** Images
 
-
 const CardProfile = () => {
     return (
         <Card className="card-profile">
-            <CardImg className="img-fluid"  top />
+            <CardImg className="img-fluid" top />
             <CardBody>
                 <div className="profile-image-wrapper">
                     <div className="profile-image">

@@ -9,3 +9,16 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.sign-in-card-body {
+  padding: 40px 33px;
+}
+
+.auth-wrapper a.sign-in-brand-logo {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sign-in-form {
+  margin-top: 35px;
+}
