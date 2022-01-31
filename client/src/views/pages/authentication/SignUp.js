@@ -2,7 +2,7 @@ import { Col } from "reactstrap";
 import WizardSignUp from "@src/views/forms/wizard/WizardSignUp";
 import "@styles/react/pages/page-authentication.scss";
 
-const Register = () => {
+const SignUp = () => {
     return (
         <div className="auth-wrapper auth-basic px-2">
             <div className="auth-inner my-2">
@@ -14,4 +14,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SignUp;

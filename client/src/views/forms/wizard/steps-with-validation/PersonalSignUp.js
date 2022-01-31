@@ -273,7 +273,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                 </div>
                 <p className="text-center mt-2">
                     <span className="me-25">Already have an account?</span>
-                    <Link to="/login">
+                    <Link to="/sign_in">
                         <span>Sign In</span>
                     </Link>
                 </p>

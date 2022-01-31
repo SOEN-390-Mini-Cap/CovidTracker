@@ -6,16 +6,16 @@ const PagesRoutes = [
         component: lazy(() => import("../../views/pages/Home")),
     },
     {
-        path: "/login",
-        component: lazy(() => import("../../views/pages/authentication/Login")),
+        path: "/sign_in",
+        component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",
         meta: {
             authRoute: true,
         },
     },
     {
-        path: "/register",
-        component: lazy(() => import("../../views/pages/authentication/Register")),
+        path: "/sign_up",
+        component: lazy(() => import("../../views/pages/authentication/SignUp")),
         layout: "BlankLayout",
         meta: {
             authRoute: true,

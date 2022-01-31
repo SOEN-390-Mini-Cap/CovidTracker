@@ -54,7 +54,7 @@ const CustomNavbar = () => {
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
-                            <DropdownItem tag={Link} onClick={signOut} to="/login">
+                            <DropdownItem tag={Link} onClick={signOut} to="/sign_in">
                                 <span className="align-middle">Logout</span>
                             </DropdownItem>
                         </DropdownMenu>
