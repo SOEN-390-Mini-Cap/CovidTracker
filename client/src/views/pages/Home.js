@@ -1,9 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 
 function Home() {
-    return (
-        <Navbar />
-    );
+    return <Navbar />;
 }
 
 export default Home;
