@@ -169,8 +169,8 @@ const AccountSignUp = ({ stepper, globalData }) => {
                     Sign Up
                 </Button>
                 <p className="text-center mt-1">
-                    <Link className="text-center mt-2" onClick={() => stepper.previous()}>
-                        <ChevronLeft size={14} className="align-middle me-sm-25 me-0"></ChevronLeft>
+                    <Link className="text-center mt-2" onClick={() => stepper.previous()} to="#">
+                        <ChevronLeft size={14} className="align-middle me-sm-25 me-0" />
                         <span className="align-middle d-sm-inline-block d-none">Back</span>
                     </Link>
                 </p>
