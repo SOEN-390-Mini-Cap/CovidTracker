@@ -57,10 +57,18 @@ input[type="checkbox"] {
   body .auth-wrapper {
     background-color: white !important;
   }
-  
+
   .auth-wrapper .card {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
   }
+}
+
+.brand-text {
+	color: #6610F2 !important;
+}
+
+.nav-item.nav-toggle {
+	display: none !important;
 }
