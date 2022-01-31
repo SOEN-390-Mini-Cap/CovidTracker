@@ -1,7 +1,7 @@
-import Navbar from "react-bootstrap/Navbar";
+import { getUserData } from "../../utility/Utils";
 
 function Home() {
-    return <Navbar />;
+    return <div>Token: {getUserData().accessToken.substring(0, 30)}...</div>;
 }
 
 export default Home;

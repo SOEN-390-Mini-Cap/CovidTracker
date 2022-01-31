@@ -49,10 +49,8 @@ const CustomNavbar = () => {
                             onClick={(e) => e.preventDefault()}
                         >
                             <div className="user-nav ">
-                                <span className="user-name fw-bold">User</span>
-                                <span className="user-status">
-                                    Token: {getUserData().accessToken.substring(0, 10)}...
-                                </span>
+                                <span className="user-name fw-bold">John Doe</span>
+                                <span className="user-status">User</span>
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
