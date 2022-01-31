@@ -26,7 +26,6 @@ import { useForm, Controller } from "react-hook-form";
 // ** Custom Components
 import AvatarGroup from "@components/avatar-group";
 
-
 // ** Vars
 
 const rolesArr = [
@@ -83,9 +82,7 @@ const RoleCards = () => {
                     <Card>
                         <Row>
                             <Col sm={5}>
-                                <div className="d-flex align-items-end justify-content-center h-100">
-
-                                </div>
+                                <div className="d-flex align-items-end justify-content-center h-100"></div>
                             </Col>
                             <Col sm={7}>
                                 <CardBody className="text-sm-end text-center ps-sm-0">

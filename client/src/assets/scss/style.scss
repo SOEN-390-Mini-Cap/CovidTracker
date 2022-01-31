@@ -9,3 +9,58 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.btn {
+  box-shadow: none !important;
+}
+
+.form-check-input:checked {
+  box-shadow: none !important;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.sign-in-card-body {
+  padding: 40px 33px;
+}
+
+.auth-wrapper a.sign-in-brand-logo {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sign-in-form {
+  margin-top: 35px;
+}
+
+.incorrect-email-pass-error {
+  padding-bottom: 10px;
+}
+
+.remember-me {
+  margin-top: -5px !important;
+  padding-top: -5px !important;
+}
+
+.btn-sign-in {
+  margin-top: 10px !important;
+}
+
+.bb {
+  border: 1px solid red;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  body .auth-wrapper {
+    background-color: white !important;
+  }
+  
+  .auth-wrapper .card {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,10 +1,4 @@
-// ** Redux Imports
 import { createSlice } from "@reduxjs/toolkit";
-
-// ** UseJWT import to get config
-import useJwt from "@src/auth/jwt/useJwt";
-
-const config = useJwt.jwtConfig;
 
 const initialUser = () => {
     const item = window.localStorage.getItem("userData");
@@ -19,18 +13,22 @@ export const authSlice = createSlice({
     },
     reducers: {
         handleLogin: (state, action) => {
-            console.log(state, action);
-            state.userData = action.payload;
-            state[config.storageTokenKeyName] = action.payload[config.storageTokenKeyName];
-            localStorage.setItem("userData", JSON.stringify(action.payload));
-            localStorage.setItem(config.storageTokenKeyName, JSON.stringify(action.payload.accessToken));
+            const userData = {
+                accessToken: action.payload.accessToken,
+            };
+            state.userData = userData;
+
+            // Right now the app gets the logged in status of the user from the cookies
+            // so the user session must be saved in local storage
+            // after we refactor to use redux we can enable the "do not remember me" option
+            // if (action.payload.rememberMe) {
+            //     localStorage.setItem("userData", JSON.stringify(userData));
+            // }
+            localStorage.setItem("userData", JSON.stringify(userData));
         },
         handleLogout: (state) => {
             state.userData = {};
-            state[config.storageTokenKeyName] = null;
-            // ** Remove user, accessToken from localStorage
             localStorage.removeItem("userData");
-            localStorage.removeItem(config.storageTokenKeyName);
         },
     },
 });
