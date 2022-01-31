@@ -81,7 +81,7 @@ const signUpSchema = Joi.object({
         .required(),
     dateOfBirth: Joi.date().iso().required(),
     streetAddress: Joi.string().required(),
-    streetAddressLineTwo: Joi.string(),
+    streetAddressLineTwo: Joi.string().allow(null, ""),
     city: Joi.string().required(),
     postalCode: Joi.string().required(),
     province: Joi.string().required(),
