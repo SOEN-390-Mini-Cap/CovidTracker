@@ -1,43 +1,18 @@
-// ** Core Layout Import
-// !Do not remove the Layout import
 import Layout from "@layouts/VerticalLayout";
-
-// ** Menu Items Array
 import navigation from "@src/navigation/vertical";
-
-import { Link, useHistory } from "react-router-dom";
-import { useEffect, useState, Fragment } from "react";
-
-// ** Reactstrap Imports
+import { Link } from "react-router-dom";
+import { Fragment } from "react";
 import { NavItem, NavLink } from "reactstrap";
-
-// ** Utils
-import { isUserLoggedIn } from "@utils";
-
-// ** Store & Actions
 import { handleLogout } from "@store/authentication";
-
-// ** Reactstrap Imports
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
 import { useDispatch } from "react-redux";
+import { getUserData } from "../utility/Utils";
 
 const CustomNavbar = () => {
-    // ** State
-    const [userData, setUserData] = useState(null);
-
-    //** ComponentDidMount
-    useEffect(() => {
-        if (isUserLoggedIn() !== null) {
-            setUserData(JSON.parse(localStorage.getItem("userData")));
-        }
-    }, []);
-
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const signOut = () => {
         dispatch(handleLogout());
-        history.push("/login");
     };
 
     const logoIcon = (
@@ -75,11 +50,13 @@ const CustomNavbar = () => {
                         >
                             <div className="user-nav ">
                                 <span className="user-name fw-bold">User</span>
-                                <span className="user-status">User</span>
+                                <span className="user-status">
+                                    Token: {getUserData().accessToken.substring(0, 10)}...
+                                </span>
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
-                            <DropdownItem tag={Link} onClick={signOut}>
+                            <DropdownItem tag={Link} onClick={signOut} to="/login">
                                 <span className="align-middle">Logout</span>
                             </DropdownItem>
                         </DropdownMenu>

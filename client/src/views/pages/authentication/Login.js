@@ -29,8 +29,8 @@ const Login = () => {
     };
 
     const SignInSchema = yup.object().shape({
-        email: yup.string().email('Enter a valid email.').required('Enter a valid email.'),
-        password: yup.string().required('Enter a password.'),
+        email: yup.string().email("Enter a valid email.").required("Enter a valid email."),
+        password: yup.string().required("Enter a password."),
     });
 
     // ** Hooks
@@ -90,7 +90,11 @@ const Login = () => {
                             {logo}
                         </Link>
                         <Form className="auth-login-form sign-in-form" onSubmit={handleSubmit(onSubmit)}>
-                            {errors.req && <FormFeedback className="d-block text-center mt-2 mb-0 incorrect-email-pass-error">{formatErrorMessage('Email or password is incorrect.')}</FormFeedback>}
+                            {errors.req && (
+                                <FormFeedback className="d-block text-center mt-2 mb-0 incorrect-email-pass-error">
+                                    {formatErrorMessage("Email or password is incorrect.")}
+                                </FormFeedback>
+                            )}
                             <div className="mb-1">
                                 <Label className="form-label" for="login-email">
                                     Email
@@ -118,7 +122,7 @@ const Login = () => {
                                     name="password"
                                     control={control}
                                     render={({ field }) => (
-                                        <InputPasswordToggle 
+                                        <InputPasswordToggle
                                             className="input-group-merge"
                                             invalid={errors.password && true}
                                             placeholder=""
