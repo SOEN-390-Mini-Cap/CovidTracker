@@ -35,36 +35,33 @@ const defaultValues = {
 const PersonalSignUp = ({ stepper, setGlobalData }) => {
     const [data, setData] = useState(null);
 
-    const fieldRequired = "Field required.";
-
     const signUpSchema = yup
         .object()
         .shape({
             firstName: yup
                 .string()
-                .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field.")
-                .min(1)
-                .max(25, "First name must be 25 characters or less.")
-                .required(fieldRequired),
+                .required('Enter a first name.')
+                .matches(/^[aA-zZ\s]+$/, "First name must only contain alphabetic characters.")
+                .max(32, "First name must be 32 characters or less."),
             lastName: yup
                 .string()
-                .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field.")
-                .min(1)
-                .max(25, "Last name must be 25 characters or less.")
-                .required(fieldRequired),
+                .required('Enter a last name.')
+                .matches(/^[aA-zZ\s]+$/, "Last name must only contain alphabetic characters.")
+                .max(32, "Last name must be 32 characters or less."),
             phone: yup
-                .string("test")
-                .matches(/^\d{3}-\d{3}-\d{4}$/, "Enter phone number in this format ###-###-####.")
-                .length(12, "Please enter your 10 digits.")
-                .required(fieldRequired),
+                .string()
+                .required('Enter a valid phone number.')
+                .matches(/^\d{3}-\d{3}-\d{4}$/, "Enter a valid phone number (###-###-####)."),
             dateOfBirth: yup
                 .string()
-                .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Enter date in this format MM/DD/YYYY")
-                .required(fieldRequired),
-            address1: yup.string().max(100, "Address must be 100 characters or less.").required(fieldRequired),
+                .required('Enter a date of birth.')
+                .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Enter a valid date of birth. (MM/DD/YYYY)."),
+            address1: yup.string().required('Enter an address.').max(100, "Address must be 100 characters or less."),
             address2: yup.string().max(100, "Address must be 100 characters or less."),
-            city: yup.string().required(fieldRequired),
-            postalCode: yup.string().required(fieldRequired),
+            city: yup.string().required('Enter a city.'),
+            postalCode: yup.string().required('Enter a valid postal code.'),
+            // province: yup.string().required('Select a province.'),
+            // gender: yup.string().required('Select a gender.'),
         })
         .required();
     // ** Hooks
@@ -281,13 +278,12 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                 <div className="text-center">
                     <Button type="submit" color="primary" className="btn-next col-md-12">
                         <span className="align-middle d-sm-inline-block d-none">Next</span>
-                        <ArrowRight size={14} className="align-middle ms-sm-25 ms-0"></ArrowRight>
                     </Button>
                 </div>
                 <p className="text-center mt-2">
                     <span className="me-25">Already have an account?</span>
-                    <Link to="/pages/login-basic">
-                        <span>Sign in</span>
+                    <Link to="/login">
+                        <span>Sign In</span>
                     </Link>
                 </p>
             </Form>

@@ -14,7 +14,7 @@ import { getHomeRouteForLoggedInUser } from "@utils";
 // ** Third Party Components
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import { ArrowLeft } from "react-feather";
+import { ChevronLeft } from "react-feather";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 
@@ -53,12 +53,20 @@ const defaultValues = {
 
 const AccountSignUp = ({ stepper, globalData }) => {
     const SignupSchema = yup.object().shape({
-        email: yup.string().email().required("Enter a valid email."),
-        password: yup.string().required("Enter a password"),
+        email: yup
+                .string()
+                .email('Enter a valid email.')
+                .required('Enter a valid email.')
+                .max(32, "Email must be 50 characters or less."),
+        password: yup
+                .string()
+                .required("Enter a password.")
+                .min(8, "Password must be betweeen 8 and 20 characters.")
+                .max(20, "Password must be betweeen 8 and 20 characters."),
         confirmPassword: yup
             .string()
-            .required("Confirm your password")
-            .oneOf([yup.ref(`password`), null], "Passwords must match"),
+            .required("Confirm your password.")
+            .oneOf([yup.ref(`password`), null], "The passwords you entered do not match."),
     });
 
     // ** Hooks
@@ -160,14 +168,16 @@ const AccountSignUp = ({ stepper, globalData }) => {
                 <Button type="submit" color="primary" className="btn-submit col-md-12 mb-0">
                     Sign Up
                 </Button>
-                <Button color="flat-primary" className="btn-prev col-md-12" onClick={() => stepper.previous()}>
-                    <ArrowLeft size={14} className="align-middle me-sm-25 me-0"></ArrowLeft>
-                    <span className="align-middle d-sm-inline-block d-none">Back</span>
-                </Button>
+                <p className="text-center mt-1">
+                    <Link className="text-center mt-2" onClick={() => stepper.previous()}>
+                        <ChevronLeft size={14} className="align-middle me-sm-25 me-0"></ChevronLeft>
+                        <span className="align-middle d-sm-inline-block d-none">Back</span>
+                    </Link>
+                </p>
                 <p className="text-center mt-2">
                     <span className="me-25">Already have an account?</span>
-                    <Link to="/pages/login-basic">
-                        <span>Sign in</span>
+                    <Link to="/login">
+                        <span>Sign In</span>
                     </Link>
                 </p>
             </Form>
