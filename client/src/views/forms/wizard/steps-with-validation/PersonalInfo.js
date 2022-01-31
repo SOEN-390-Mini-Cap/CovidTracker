@@ -19,10 +19,10 @@ const defaultValues = {
     lastName: "",
     firstName: "",
     phone: "",
-    gender:"",
+    gender: "",
     dateOfBirth: "",
-    address1:"",
-    address2:"",
+    address1: "",
+    address2: "",
     city: "",
     postalCode: "",
     province: "",
@@ -108,141 +108,105 @@ const PersonalInfo = ({ stepper }) => {
                 </Row>
                 <Row>
                     <Col md="6" className="mb-1">
-                    <Label className="form-label" for="register-phone">
-                                    Phone Number
-                            </Label>
-                            <Controller
-                                    id="phone"
-                                    name="phone"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                           
-                                            placeholder="999-999-9999"
-                                            invalid={errors.phone && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.phone ? <FormFeedback>{errors.phone.message}</FormFeedback> : null}
+                        <Label className="form-label" for="register-phone">
+                            Phone Number
+                        </Label>
+                        <Controller
+                            id="phone"
+                            name="phone"
+                            control={control}
+                            render={({ field }) => (
+                                <Input placeholder="999-999-9999" invalid={errors.phone && true} {...field} />
+                            )}
+                        />
+                        {errors.phone ? <FormFeedback>{errors.phone.message}</FormFeedback> : null}
                     </Col>
                     <Col md="6" className="mb-1">
-                            <Label className="form-label" for="register-gender">
-                                    Gender
-                            </Label>
-                            <Controller
-                                    id="gender"
-                                    name="gender"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Gender"
-                                            invalid={errors.gender && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
+                        <Label className="form-label" for="register-gender">
+                            Gender
+                        </Label>
+                        <Controller
+                            id="gender"
+                            name="gender"
+                            control={control}
+                            render={({ field }) => (
+                                <Input autoFocus placeholder="Gender" invalid={errors.gender && true} {...field} />
+                            )}
+                        />
+                        {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
                     </Col>
                 </Row>
-                    <Col>
-                        <Label className="form-label" for="register-address1">
-                                    Address
-                                    </Label>
-                                    <Controller
-                                        id="address1"
-                                        name="address1"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Input
-                                                autoFocus
-                                                placeholder="Address"
-                                                invalid={errors.address1 && true}
-                                                {...field}
-                                            />
-                                        )}
-                                    />
-                                    {errors.address1 ? <FormFeedback>{errors.address1.message}</FormFeedback> : null}
-                    </Col>
-                    <Col>
-                        <Label className="form-label" for="register-address2">
-                                Address 2
-                                </Label>
-                                <Controller
-                                    id="address2"
-                                    name="address2"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Address 2"
-                                            invalid={errors.address2 && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.address2 ? <FormFeedback>{errors.address2.message}</FormFeedback> : null}
-                    </Col>
-                    <Col>
+                <Col>
+                    <Label className="form-label" for="register-address1">
+                        Address
+                    </Label>
+                    <Controller
+                        id="address1"
+                        name="address1"
+                        control={control}
+                        render={({ field }) => (
+                            <Input autoFocus placeholder="Address" invalid={errors.address1 && true} {...field} />
+                        )}
+                    />
+                    {errors.address1 ? <FormFeedback>{errors.address1.message}</FormFeedback> : null}
+                </Col>
+                <Col>
+                    <Label className="form-label" for="register-address2">
+                        Address 2
+                    </Label>
+                    <Controller
+                        id="address2"
+                        name="address2"
+                        control={control}
+                        render={({ field }) => (
+                            <Input autoFocus placeholder="Address 2" invalid={errors.address2 && true} {...field} />
+                        )}
+                    />
+                    {errors.address2 ? <FormFeedback>{errors.address2.message}</FormFeedback> : null}
+                </Col>
+                <Col>
                     <Label className="form-label" for="register-city">
-                                City
-                                </Label>
-                                <Controller
-                                    id="city"
-                                    name="city"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="City"
-                                            invalid={errors.city && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
-                    </Col>
-                    <Col>
+                        City
+                    </Label>
+                    <Controller
+                        id="city"
+                        name="city"
+                        control={control}
+                        render={({ field }) => (
+                            <Input autoFocus placeholder="City" invalid={errors.city && true} {...field} />
+                        )}
+                    />
+                    {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
+                </Col>
+                <Col>
                     <Label className="form-label" for="register-postalCode">
-                                Postal Code
-                                </Label>
-                                <Controller
-                                    id="postalCode"
-                                    name="postalCode"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Postal Code"
-                                            invalid={errors.postalCode && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.postalCode ? <FormFeedback>{errors.postalCode.message}</FormFeedback> : null}
-                    </Col>
-                    <Col>
+                        Postal Code
+                    </Label>
+                    <Controller
+                        id="postalCode"
+                        name="postalCode"
+                        control={control}
+                        render={({ field }) => (
+                            <Input autoFocus placeholder="Postal Code" invalid={errors.postalCode && true} {...field} />
+                        )}
+                    />
+                    {errors.postalCode ? <FormFeedback>{errors.postalCode.message}</FormFeedback> : null}
+                </Col>
+                <Col>
                     <Label className="form-label" for="register-province">
-                                Province
-                                </Label>
-                                <Controller
-                                    id="province"
-                                    name="province"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Input
-                                            autoFocus
-                                            placeholder="Province"
-                                            invalid={errors.province && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                {errors.province ? <FormFeedback>{errors.province.message}</FormFeedback> : null}
-                    </Col>
-                    
-                
+                        Province
+                    </Label>
+                    <Controller
+                        id="province"
+                        name="province"
+                        control={control}
+                        render={({ field }) => (
+                            <Input autoFocus placeholder="Province" invalid={errors.province && true} {...field} />
+                        )}
+                    />
+                    {errors.province ? <FormFeedback>{errors.province.message}</FormFeedback> : null}
+                </Col>
+
                 <div className="d-flex justify-content-between">
                     <Button type="button" color="primary" className="btn-prev" outline disabled>
                         <ArrowLeft size={14} className="align-middle me-sm-25 me-0"></ArrowLeft>

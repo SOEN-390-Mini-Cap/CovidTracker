@@ -1,20 +1,11 @@
-// ** React Imports
 import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-
-// ** Third Party Components
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import { ArrowRight } from "react-feather";
 import classnames from "classnames";
 import * as yup from "yup";
-// ** Utils
 import { selectThemeColors } from "@utils";
-
-// ** Reactstrap Imports
 import { Label, Row, Col, Button, Form, Input, FormFeedback } from "reactstrap";
-
-// ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { isObjEmpty } from "../../../../utility/Utils";
@@ -40,26 +31,26 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
         .shape({
             firstName: yup
                 .string()
-                .required('Enter a first name.')
+                .required("Enter a first name.")
                 .matches(/^[aA-zZ\s]+$/, "First name must only contain alphabetic characters.")
                 .max(32, "First name must be 32 characters or less."),
             lastName: yup
                 .string()
-                .required('Enter a last name.')
+                .required("Enter a last name.")
                 .matches(/^[aA-zZ\s]+$/, "Last name must only contain alphabetic characters.")
                 .max(32, "Last name must be 32 characters or less."),
             phone: yup
                 .string()
-                .required('Enter a valid phone number.')
+                .required("Enter a valid phone number.")
                 .matches(/^\d{3}-\d{3}-\d{4}$/, "Enter a valid phone number (###-###-####)."),
             dateOfBirth: yup
                 .string()
-                .required('Enter a date of birth.')
+                .required("Enter a date of birth.")
                 .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Enter a valid date of birth. (MM/DD/YYYY)."),
-            address1: yup.string().required('Enter an address.').max(100, "Address must be 100 characters or less."),
+            address1: yup.string().required("Enter an address.").max(100, "Address must be 100 characters or less."),
             address2: yup.string().max(100, "Address must be 100 characters or less."),
-            city: yup.string().required('Enter a city.'),
-            postalCode: yup.string().required('Enter a valid postal code.'),
+            city: yup.string().required("Enter a city.").max(100, "City must be 100 characters or less."),
+            postalCode: yup.string().required("Enter a valid postal code."),
             // province: yup.string().required('Select a province.'),
             // gender: yup.string().required('Select a gender.'),
         })

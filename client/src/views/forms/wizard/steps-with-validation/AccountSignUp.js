@@ -54,15 +54,15 @@ const defaultValues = {
 const AccountSignUp = ({ stepper, globalData }) => {
     const SignupSchema = yup.object().shape({
         email: yup
-                .string()
-                .email('Enter a valid email.')
-                .required('Enter a valid email.')
-                .max(32, "Email must be 50 characters or less."),
+            .string()
+            .email("Enter a valid email.")
+            .required("Enter a valid email.")
+            .max(32, "Email must be 50 characters or less."),
         password: yup
-                .string()
-                .required("Enter a password.")
-                .min(8, "Password must be betweeen 8 and 20 characters.")
-                .max(20, "Password must be betweeen 8 and 20 characters."),
+            .string()
+            .required("Enter a password.")
+            .min(8, "Password must be betweeen 8 and 20 characters.")
+            .max(20, "Password must be betweeen 8 and 20 characters."),
         confirmPassword: yup
             .string()
             .required("Confirm your password.")
