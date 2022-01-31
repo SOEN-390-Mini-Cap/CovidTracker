@@ -5,7 +5,6 @@ const PagesRoutes = [
     {
         path: "/home",
         component: lazy(() => import("../../views/pages/Home")),
-        layout: "BlankLayout",
     },
     {
         path: "/login",
