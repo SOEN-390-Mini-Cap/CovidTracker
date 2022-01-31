@@ -21,7 +21,7 @@ async function signIn(data) {
 
 const formatErrorMessage = (err) => err.charAt(0).toUpperCase() + err.slice(1);
 
-const Login = () => {
+const SignIn = () => {
     const defaultValues = {
         password: "",
         email: "",
@@ -156,7 +156,7 @@ const Login = () => {
 
                         <p className="text-center mt-2 mb-0">
                             <span className="me-25">Don't have an account?</span>
-                            <Link to="/register">
+                            <Link to="/sign_up">
                                 <span>Sign Up</span>
                             </Link>
                         </p>
@@ -167,4 +167,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignIn;
