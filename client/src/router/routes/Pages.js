@@ -1,5 +1,4 @@
 import { lazy } from "react";
-import { Redirect } from "react-router-dom";
 
 const PagesRoutes = [
     {
@@ -21,16 +20,6 @@ const PagesRoutes = [
         meta: {
             authRoute: true,
         },
-    },
-    {
-        path: "/pages/register-basic",
-        component: lazy(() => import("../../views/pages/authentication/RegisterBasic")),
-        layout: "BlankLayout",
-    },
-    {
-        path: "/pages/register-cover",
-        component: lazy(() => import("../../views/pages/authentication/RegisterCover")),
-        layout: "BlankLayout",
     },
     {
         path: "/forgot-password",

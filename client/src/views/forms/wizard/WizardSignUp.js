@@ -1,10 +1,5 @@
-// ** React Imports
 import { useRef, useState } from "react";
-
-// ** Custom Components
 import Wizard from "@components/wizard";
-
-// ** Steps
 import PersonalSignUp from "./steps-with-validation/PersonalSignUp";
 import AccountSignUp from "./steps-with-validation/AccountSignUp";
 
@@ -20,7 +15,6 @@ const WizardSignUp = () => {
     const [globalData, setGlobalData] = useState(null);
 
     const steps = [
-
         {
             id: "personal",
             title: "Personal ",
@@ -40,7 +34,6 @@ const WizardSignUp = () => {
         <div className="horizontal-wizard">
             <Wizard instance={(el) => setStepper(el)} ref={ref} steps={steps} />
         </div>
-
     );
 };
 
