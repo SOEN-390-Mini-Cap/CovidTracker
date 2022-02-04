@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import Wizard from "@components/wizard";
 import PersonalSignUp from "./steps-with-validation/PersonalSignUp";
 import AccountSignUp from "./steps-with-validation/AccountSignUp";
-
 import { User, Home } from "react-feather";
 
 const WizardSignUp = () => {

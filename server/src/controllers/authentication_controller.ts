@@ -69,12 +69,12 @@ export class AuthenticationController implements interfaces.Controller {
 // Password requires at least 1 upper case, 1 lower case letter, 1 number, 1 special character, and
 // has a minimum length of 8 characters
 const passwordSchema = Joi.string()
-    .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()?+=_]).{8,30}$"))
+    .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()?+=_]).{8,20}$"))
     .required();
 
 const signUpSchema = Joi.object({
-    firstName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
-    lastName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(25).required(),
+    firstName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(32).required(),
+    lastName: Joi.string().pattern(new RegExp("^[A-Za-z]+")).min(1).max(32).required(),
     phoneNumber: Joi.string().length(10).regex(/^\d+$/).required(),
     gender: Joi.string()
         .valid(...GENDERS)

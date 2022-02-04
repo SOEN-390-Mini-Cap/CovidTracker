@@ -22,11 +22,13 @@ import axios from "axios";
 import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
 
 async function signUp(data) {
+    console.log(data);
+
     const res = await axios.post("http://localhost:8080/sign_up", {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phone.replaceAll("-", ""),
-        gender: data.gender.value.toUpperCase(),
+        gender: data.gender.value,
         dateOfBirth: new Date(data.dateOfBirth).toISOString(),
         email: data.email,
         password: data.password,
@@ -57,7 +59,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
             .string()
             .email("Enter a valid email.")
             .required("Enter a valid email.")
-            .max(32, "Email must be 50 characters or less."),
+            .max(50, "Email must be 50 characters or less."),
         password: yup
             .string()
             .required("Enter a password.")
@@ -114,7 +116,6 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         render={({ field }) => (
                             <Input
                                 type="email"
-                                placeholder="john.doe@email.com"
                                 invalid={errors.email && true}
                                 {...field}
                             />
@@ -134,6 +135,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.password && true}
+                                placeholder=""
                                 {...field}
                             />
                         )}
@@ -152,6 +154,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.confirmPassword && true}
+                                placeholder=""
                                 {...field}
                             />
                         )}
