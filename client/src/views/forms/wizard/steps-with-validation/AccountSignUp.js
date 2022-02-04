@@ -22,8 +22,6 @@ import axios from "axios";
 import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
 
 async function signUp(data) {
-    console.log(data);
-
     const res = await axios.post("http://localhost:8080/sign_up", {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -38,10 +36,6 @@ async function signUp(data) {
         postalCode: data.postalCode,
         province: data.province.value,
     });
-
-    if (res.status !== 201) {
-        throw new Error("error message");
-    }
 
     return res.data;
 }
