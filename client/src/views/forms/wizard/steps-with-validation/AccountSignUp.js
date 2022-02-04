@@ -165,13 +165,13 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         Remember Me
                     </Label>
                 </div>
-                <Button type="submit" color="primary" className="btn-submit col-md-12 mb-0">
+                <Button type="submit" color="primary" className="btn-submit d-block w-100">
                     Sign Up
                 </Button>
                 <p className="text-center mt-1">
                     <Link className="text-center mt-2" onClick={() => stepper.previous()} to="#">
                         <ChevronLeft size={14} className="align-middle me-sm-25 me-0" />
-                        <span className="align-middle d-sm-inline-block d-none">Back</span>
+                        <span className="align-middle">Back</span>
                     </Link>
                 </p>
                 <p className="text-center mt-2">

@@ -267,8 +267,8 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                 </Col>
 
                 <div className="text-center">
-                    <Button type="submit" color="primary" className="btn-next col-md-12">
-                        <span className="align-middle d-sm-inline-block d-none">Next</span>
+                    <Button type="submit" color="primary" className="btn-next d-block w-100">
+                        Next
                     </Button>
                 </div>
                 <p className="text-center mt-2">
