@@ -26,7 +26,7 @@ async function signUp(data) {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phone.replaceAll("-", ""),
-        gender: data.gender.value.toUpperCase(),
+        gender: data.gender.value,
         dateOfBirth: new Date(data.dateOfBirth).toISOString(),
         email: data.email,
         password: data.password,
@@ -36,10 +36,6 @@ async function signUp(data) {
         postalCode: data.postalCode,
         province: data.province.value,
     });
-
-    if (res.status !== 201) {
-        throw new Error("error message");
-    }
 
     return res.data;
 }
@@ -57,7 +53,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
             .string()
             .email("Enter a valid email.")
             .required("Enter a valid email.")
-            .max(32, "Email must be 50 characters or less."),
+            .max(50, "Email must be 50 characters or less."),
         password: yup
             .string()
             .required("Enter a password.")
@@ -114,7 +110,6 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         render={({ field }) => (
                             <Input
                                 type="email"
-                                placeholder="john.doe@email.com"
                                 invalid={errors.email && true}
                                 {...field}
                             />
@@ -134,6 +129,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.password && true}
+                                placeholder=""
                                 {...field}
                             />
                         )}
@@ -152,6 +148,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                             <InputPasswordToggle
                                 className="input-group-merge"
                                 invalid={errors.confirmPassword && true}
+                                placeholder=""
                                 {...field}
                             />
                         )}
@@ -165,13 +162,13 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         Remember Me
                     </Label>
                 </div>
-                <Button type="submit" color="primary" className="btn-submit col-md-12 mb-0">
+                <Button type="submit" color="primary" className="btn-submit d-block w-100">
                     Sign Up
                 </Button>
                 <p className="text-center mt-1">
                     <Link className="text-center mt-2" onClick={() => stepper.previous()} to="#">
                         <ChevronLeft size={14} className="align-middle me-sm-25 me-0" />
-                        <span className="align-middle d-sm-inline-block d-none">Back</span>
+                        <span className="align-middle">Back</span>
                     </Link>
                 </p>
                 <p className="text-center mt-2">

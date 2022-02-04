@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
@@ -14,18 +14,16 @@ const defaultValues = {
     lastName: "",
     firstName: "",
     phone: "",
-    gender: { value: "Male", label: "Male" },
+    gender: null,
     dateOfBirth: "",
     address1: "",
     address2: "",
     city: "",
     postalCode: "",
-    province: { value: "Quebec", label: "Quebec" },
+    province: null,
 };
 
 const PersonalSignUp = ({ stepper, setGlobalData }) => {
-    const [data, setData] = useState(null);
-
     const signUpSchema = yup
         .object()
         .shape({
@@ -43,6 +41,13 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                 .string()
                 .required("Enter a valid phone number.")
                 .matches(/^\d{3}-\d{3}-\d{4}$/, "Enter a valid phone number (###-###-####)."),
+            gender: yup
+                .object({
+                    label: yup.string().required("Select a gender."),
+                    value: yup.string().required("Select a gender."),
+                })
+                .nullable("Select a gender.")
+                .required("Select a gender."),
             dateOfBirth: yup
                 .string()
                 .required("Enter a date of birth.")
@@ -51,8 +56,13 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
             address2: yup.string().max(100, "Address must be 100 characters or less."),
             city: yup.string().required("Enter a city.").max(100, "City must be 100 characters or less."),
             postalCode: yup.string().required("Enter a valid postal code."),
-            // province: yup.string().required('Select a province.'),
-            // gender: yup.string().required('Select a gender.'),
+            province: yup
+                .object({
+                    label: yup.string().required("Select a province."),
+                    value: yup.string().required("Select a province."),
+                })
+                .nullable("Select a province.")
+                .required("Select a province."),
         })
         .required();
     // ** Hooks
@@ -66,16 +76,15 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
     });
 
     const onSubmit = (data) => {
-        setGlobalData(data);
-        setData(data);
         if (isObjEmpty(errors)) {
+            setGlobalData(data);
             stepper.next();
         }
     };
 
     const genderOptions = [
-        { value: "Male", label: "Male" },
-        { value: "Female", label: "Female" },
+        { value: "MALE", label: "Male" },
+        { value: "FEMALE", label: "Female" },
     ];
 
     const provinceOptions = [
@@ -97,8 +106,8 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
     return (
         <Fragment>
             <Form style={{ margin: "0px 10px" }} onSubmit={handleSubmit(onSubmit)}>
-                <Row className="">
-                    <Col md="6" className="mb-1">
+                <Row>
+                    <Col d="6" className="mb-1">
                         <Label className="form-label" for="firstName">
                             First Name
                         </Label>
@@ -110,7 +119,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         />
                         {errors.firstName && <FormFeedback>{errors.firstName.message}</FormFeedback>}
                     </Col>
-                    <Col md="6" className="mb-1">
+                    <Col d="6" className="mb-1">
                         <Label className="form-label" for="lastName">
                             Last Name
                         </Label>
@@ -123,8 +132,8 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         {errors.lastName && <FormFeedback>{errors.lastName.message}</FormFeedback>}
                     </Col>
                 </Row>
-                <Row className="mb-0">
-                    <Col md="7" className="mb-1">
+                <Row>
+                    <Col d="7" className="mb-1">
                         <Label className="form-label" for="phone">
                             Phone Number
                         </Label>
@@ -143,7 +152,7 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         />
                         {errors.phone && <FormFeedback>{errors.phone.message}</FormFeedback>}
                     </Col>
-                    <Col md="5" className="mb-1">
+                    <Col d="5" className="mb-1">
                         <Label className="form-label" for="gender">
                             Gender
                         </Label>
@@ -153,19 +162,18 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                             control={control}
                             render={({ field }) => (
                                 <Select
-                                    options={genderOptions}
-                                    className="react-select"
-                                    classNamePrefix="select"
-                                    placeholder=""
-                                    theme={selectThemeColors}
-                                    className={classnames("react-select", {
-                                        "is-invalid": data !== null && data.gender === null,
-                                    })}
                                     {...field}
+                                    placeholder=""
+                                    options={genderOptions}
+                                    classNamePrefix="select"
+                                    className={classnames("react-select", {
+                                        "is-invalid": errors.gender,
+                                    })}
+                                    theme={selectThemeColors}
                                 />
                             )}
                         />
-                        {errors.gender ? <FormFeedback>{errors.gender.message}</FormFeedback> : null}
+                        {errors.gender && <FormFeedback className="d-block">{errors.gender.message}</FormFeedback>}
                     </Col>
                 </Row>
                 <Col className="mb-2">
@@ -251,24 +259,23 @@ const PersonalSignUp = ({ stepper, setGlobalData }) => {
                         control={control}
                         render={({ field }) => (
                             <Select
-                                options={provinceOptions}
-                                className="react-select"
-                                classNamePrefix="select"
-                                placeholder=""
-                                theme={selectThemeColors}
-                                className={classnames("react-select", {
-                                    "is-invalid": data !== null && data.province === null,
-                                })}
                                 {...field}
+                                options={provinceOptions}
+                                placeholder=""
+                                classNamePrefix="select"
+                                className={classnames("react-select", {
+                                    "is-invalid": errors.province,
+                                })}
+                                theme={selectThemeColors}
                             />
                         )}
                     />
-                    {errors.province ? <FormFeedback>{errors.province.message}</FormFeedback> : null}
+                    {errors.province && <FormFeedback className="d-block">{errors.province.message}</FormFeedback>}
                 </Col>
 
                 <div className="text-center">
-                    <Button type="submit" color="primary" className="btn-next col-md-12">
-                        <span className="align-middle d-sm-inline-block d-none">Next</span>
+                    <Button type="submit" color="primary" className="btn-next d-block w-100">
+                        Next
                     </Button>
                 </div>
                 <p className="text-center mt-2">
