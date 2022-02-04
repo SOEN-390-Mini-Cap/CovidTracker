@@ -1,5 +1,18 @@
 version: "3.7"
 services:
+    client:
+        image: covid-tracker-client
+        build:
+            context: ./client
+            target: development
+        volumes:
+            - /code/node_modules
+            - ./client:/code
+        ports:
+            - "3000:3000"
+        depends_on:
+            - server
+        command: npm run start
     server:
         image: covid-tracker-server
         build:
@@ -9,7 +22,7 @@ services:
             - /code/node_modules
             - ./server:/code
         ports:
-            - "8080:80"
+            - "8080:81"
         depends_on:
             - db
         command: npm run dev

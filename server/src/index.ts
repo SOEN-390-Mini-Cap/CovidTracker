@@ -18,8 +18,6 @@ app.pre(cors.preflight);
 app.use(plugins.bodyParser());
 app.use(cors.actual);
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server has started on port ${process.env.PORT}`);
-});
+app.listen(process.env.SERVER_PORT);
 
 export { app };
