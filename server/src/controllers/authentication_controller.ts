@@ -8,7 +8,7 @@ import { GENDERS } from "../entities/gender";
 import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
 
-@Controller("/")
+@Controller("/auth")
 @injectable()
 export class AuthenticationController implements interfaces.Controller {
     constructor(

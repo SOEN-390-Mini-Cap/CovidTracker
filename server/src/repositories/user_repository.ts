@@ -77,6 +77,39 @@ export class UserRepository {
         return this.buildUser(res);
     }
 
+    async findUserByUserId(userId: number): Promise<User> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                users.user_id,
+                email,
+                password,
+                first_name,
+                last_name,
+                phone_number,
+                gender,
+                date_of_birth,
+                created_on,
+                role_name,
+                users.address_id,
+                street_address,
+                street_address_line_two,
+                city,
+                province,
+                postal_code,
+                country
+            FROM users, user_roles, roles, addresses
+            WHERE users.user_id = user_roles.user_id
+              AND user_roles.role_id = roles.role_id
+              AND users.address_id = addresses.address_id
+              AND users.user_id = $1;
+        `;
+        const res = await client.query(sql, [userId]).finally(async () => client.release());
+
+        return this.buildUser(res);
+    }
+
     async addAddress(addressData: RequestAddress): Promise<number> {
         const client = await this.pool.connect();
 

@@ -11,7 +11,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 async function signIn(data) {
-    const res = await axios.post("http://localhost:8080/sign_in", {
+    const res = await axios.post("http://localhost:8080/auth/sign_in", {
         password: data.password,
         email: data.email,
     });

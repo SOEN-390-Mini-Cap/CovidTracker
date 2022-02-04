@@ -22,7 +22,7 @@ import axios from "axios";
 import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
 
 async function signUp(data) {
-    const res = await axios.post("http://localhost:8080/sign_up", {
+    const res = await axios.post("http://localhost:8080/auth/sign_up", {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phone.replaceAll("-", ""),

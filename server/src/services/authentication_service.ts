@@ -21,7 +21,7 @@ export class AuthenticationService {
         userData.password = await bcrypt.hash(userData.password, 10);
         const userId = await this.userRepository.addUser(userData, addressId);
 
-        return this.generateToken(userId);
+        return this.signToken(userId);
     }
 
     async signIn(email: string, password: string): Promise<Token> {
@@ -35,10 +35,10 @@ export class AuthenticationService {
             throw new Error("Invalid email and / or password");
         }
 
-        return this.generateToken(user.userId);
+        return this.signToken(user.userId);
     }
 
-    private async generateToken(userId: number): Promise<Token> {
+    private async signToken(userId: number): Promise<Token> {
         return jwt.sign(
             {
                 userId,

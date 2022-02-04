@@ -5,6 +5,8 @@ import { AuthenticationController } from "./controllers/authentication_controlle
 import { AuthenticationService } from "./services/authentication_service";
 import { UserRepository } from "./repositories/user_repository";
 import { Pool } from "pg";
+import { UserController } from "./controllers/user_controller";
+import { UserService } from "./services/user_service";
 
 const container = new Container();
 
@@ -14,6 +16,7 @@ container
     .bind<interfaces.Controller>(TYPE.Controller)
     .to(AuthenticationController)
     .whenTargetNamed("AuthenticationController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTargetNamed("UserController");
 
 // Services
 container
@@ -21,6 +24,7 @@ container
     .to(AuthenticationService)
     .inSingletonScope()
     .whenTargetNamed("AuthenticationService");
+container.bind<UserService>("Service").to(UserService).inSingletonScope().whenTargetNamed("UserService");
 
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
