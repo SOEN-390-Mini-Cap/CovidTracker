@@ -9,7 +9,7 @@ services:
             - /code/node_modules
             - ./client:/code
         ports:
-            - "3000:3000"
+            - "3000:80"
         depends_on:
             - server
         command: npm run start
