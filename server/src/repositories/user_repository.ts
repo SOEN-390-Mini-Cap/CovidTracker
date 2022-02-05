@@ -29,19 +29,26 @@ export class UserRepository {
             RETURNING user_id
         `;
 
-        const res = await client
-            .query(sql, [
-                userData.email,
-                userData.password,
-                userData.firstName,
-                userData.lastName,
-                userData.phoneNumber,
-                userData.gender,
-                userData.dateOfBirth.toISOString(),
-                addressId,
-            ])
-            .finally(async () => client.release());
-        return res.rows[0].user_id;
+        const res = await client.query(sql, [
+            userData.email,
+            userData.password,
+            userData.firstName,
+            userData.lastName,
+            userData.phoneNumber,
+            userData.gender,
+            userData.dateOfBirth.toISOString(),
+            addressId,
+        ]);
+
+        const userId = res.rows[0].user_id;
+
+        const userRolesSql = `
+            INSERT INTO user_roles (user_id, role_id)
+            VALUES ($1, 1)
+        `;
+        await client.query(userRolesSql, [userId]).finally(async () => client.release());
+
+        return userId;
     }
 
     async findUserByEmail(email: string): Promise<User> {
