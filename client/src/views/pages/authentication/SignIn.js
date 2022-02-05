@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Logo from "../../components/Logo";
 
 async function signIn(data) {
-    const res = await axios.post("http://localhost:8080/sign_in", {
+    const res = await axios.post("http://localhost:8080/auth/sign_in", {
         password: data.password,
         email: data.email,
     });
