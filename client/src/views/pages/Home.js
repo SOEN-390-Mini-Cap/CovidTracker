@@ -1,7 +1,10 @@
-import { getUserData } from "../../utility/Utils";
+import { useSelector } from "react-redux";
+
+const selectToken = (state) => state.auth.userData.token;
 
 function Home() {
-    return <div>Token: {getUserData().accessToken.substring(0, 30)}...</div>;
+    const token = useSelector(selectToken);
+    return <div>Token: {token.substring(0, 30)}...</div>;
 }
 
 export default Home;

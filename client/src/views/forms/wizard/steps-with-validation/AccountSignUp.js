@@ -40,6 +40,16 @@ async function signUp(data) {
     return res.data;
 }
 
+async function getProfile(token) {
+    const res = await axios.get("http://localhost:8080/users/me", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}
+
 const defaultValues = {
     email: "",
     username: "",
@@ -57,12 +67,12 @@ const AccountSignUp = ({ stepper, globalData }) => {
         password: yup
             .string()
             .required("Enter a password.")
-            .min(8, "Password must be betweeen 8 and 20 characters.")
-            .max(20, "Password must be betweeen 8 and 20 characters."),
+            .min(8, "Password must be between 8 and 20 characters.")
+            .max(20, "Password must be between 8 and 20 characters."),
         confirmPassword: yup
             .string()
             .required("Confirm your password.")
-            .oneOf([yup.ref(`password`), null], "The passwords you entered do not match."),
+            .oneOf([yup.ref("password"), null], "The passwords you entered do not match."),
     });
 
     // ** Hooks
@@ -80,19 +90,23 @@ const AccountSignUp = ({ stepper, globalData }) => {
     const history = useHistory();
 
     const onSubmit = async (data) => {
-        globalData = Object.assign({}, globalData, data);
+        try {
+            globalData = Object.assign({}, globalData, data);
 
-        if (isObjEmpty(errors)) {
-            await signUp(globalData)
-                .then((globalData) => {
-                    dispatch(
-                        handleLogin({
-                            accessToken: globalData.token,
-                        }),
-                    );
-                    history.push(getHomeRouteForLoggedInUser("admin"));
-                })
-                .catch((error) => console.log(error));
+            if (isObjEmpty(errors)) {
+                const { token } = await signUp(globalData);
+                const user = await getProfile(token);
+                dispatch(
+                    handleLogin({
+                        user,
+                        token,
+                        rememberMe: true,
+                    }),
+                );
+                history.push(getHomeRouteForLoggedInUser("admin"));
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 

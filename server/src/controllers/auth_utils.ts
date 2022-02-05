@@ -16,7 +16,6 @@ function extractJWTAuthMiddleware(req: Request, res: Response, next: Next): void
             res.json(403);
             return;
         }
-
         req["token"] = {
             userId: payload["userId"],
         };

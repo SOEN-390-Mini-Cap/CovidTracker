@@ -9,8 +9,7 @@ const server = new InversifyRestifyServer(container);
 
 const cors = corsMiddleware({
     origins: ["http://localhost:3000"],
-    allowHeaders: ["API-Token"],
-    exposeHeaders: ["API-Token-Expiry"],
+    allowHeaders: ["Authorization"],
 });
 
 const app = server.build();
