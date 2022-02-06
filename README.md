@@ -41,8 +41,9 @@ You can now access the server at http://localhost:8080
 
 Ports: 
 
->    By default, the server and database will be exposed on `localhost:8080` and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:  
-> - Server from `8080:80` to `<new-port>:80`  
+>    By default, the client, server, database will be exposed on `localhost:3000`, `localhost:8080`, and `localhost:5432`, respectively. If you have a port conflict with either one, change their respective docker-compose entry ports as follows:  
+> - Client from `3000:80` to `<new-port>:80`
+> - Server from `8080:81` to `<new-port>:81`  
 > - Database from `5432:5432` to `<new-port>:5432`.
 
 #### Client
@@ -52,9 +53,13 @@ Ports:
     $ cd client
     $ npm install --force --legacy-peer-deps
     ```
-2. Start the client
+2. Start the client, this will also bring up the server and database
     ```sh
-    $ npm run start
+    $ docker-compose up -d client
+    ```
+3. (Optional) Log the output of the client
+    ```sh
+    $ docker-compose logs -f client
     ```
 
 You can now access the client at http://localhost:3000

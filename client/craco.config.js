@@ -14,7 +14,18 @@ module.exports = {
             plugins: [require("postcss-rtl")()],
         },
     },
+    babel: {
+        loaderOptions: {
+            cacheDirectory: true,
+            cacheCompression: false,
+        },
+    },
     webpack: {
+        configure: {
+            cache: {
+                type: "filesystem",
+            },
+        },
         alias: {
             "@src": path.resolve(__dirname, "src"),
             "@assets": path.resolve(__dirname, "src/@core/assets"),
@@ -26,6 +37,9 @@ module.exports = {
             "@utils": path.resolve(__dirname, "src/utility/Utils"),
             "@hooks": path.resolve(__dirname, "src/utility/hooks"),
         },
+    },
+    devServer: {
+        port: 80,
     },
     eslint: {
         enable: false,
