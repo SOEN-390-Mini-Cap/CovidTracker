@@ -20,6 +20,16 @@ async function signIn(data) {
     return res.data;
 }
 
+async function getProfile(token) {
+    const res = await axios.get("http://localhost:8080/users/me", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}
+
 const formatErrorMessage = (err) => err.charAt(0).toUpperCase() + err.slice(1);
 
 const SignIn = () => {
@@ -45,22 +55,23 @@ const SignIn = () => {
     } = useForm({ defaultValues, resolver: yupResolver(SignInSchema) });
 
     const onSubmit = async (data) => {
-        await signIn(data)
-            .then((res) => {
-                dispatch(
-                    handleLogin({
-                        accessToken: res.token,
-                        rememberMe: data.rememberMe,
-                    }),
-                );
-                history.push(getHomeRouteForLoggedInUser("admin"));
-            })
-            .catch((error) => {
-                setError("req", {
-                    type: "manual",
-                    message: error.toString(),
-                });
+        try {
+            const { token } = await signIn(data);
+            const user = await getProfile(token);
+            dispatch(
+                handleLogin({
+                    user,
+                    token,
+                    rememberMe: data.rememberMe,
+                }),
+            );
+            history.push(getHomeRouteForLoggedInUser("admin"));
+        } catch (error) {
+            setError("req", {
+                type: "manual",
+                message: error.toString(),
             });
+        }
     };
 
     return (

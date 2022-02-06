@@ -5,15 +5,13 @@ import { Fragment } from "react";
 import { NavItem, NavLink } from "reactstrap";
 import { handleLogout } from "@store/authentication";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
-import { useDispatch } from "react-redux";
-import { getUserData } from "../utility/Utils";
+import { useDispatch, useSelector } from "react-redux";
+
+const selectUser = (state) => state.auth.userData.user;
 
 const CustomNavbar = () => {
     const dispatch = useDispatch();
-
-    const signOut = () => {
-        dispatch(handleLogout());
-    };
+    const user = useSelector(selectUser);
 
     const logoIcon = (
         <svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,12 +47,12 @@ const CustomNavbar = () => {
                             onClick={(e) => e.preventDefault()}
                         >
                             <div className="user-nav ">
-                                <span className="user-name fw-bold">John Doe</span>
-                                <span className="user-status">User</span>
+                                <span className="user-name fw-bold mb-1">{`${user?.firstName} ${user?.lastName}`}</span>
+                                <span className="user-status">{user?.roles.join(", ")}</span>
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
-                            <DropdownItem tag={Link} onClick={signOut} to="/sign_in">
+                            <DropdownItem tag={Link} onClick={() => dispatch(handleLogout())} to="/sign_in">
                                 <span className="align-middle">Logout</span>
                             </DropdownItem>
                         </DropdownMenu>

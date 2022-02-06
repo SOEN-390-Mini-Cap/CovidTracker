@@ -25,6 +25,8 @@ import { UserRepository } from "../src/repositories/user_repository";
         }),
     );
 
+    await client.query("COMMIT");
+
     console.log("Finished seeding roles");
 
     // add addresses
@@ -56,8 +58,6 @@ import { UserRepository } from "../src/repositories/user_repository";
     );
 
     console.log("Finished seeding user roles");
-
-    await client.query("COMMIT");
 
     console.log("Finished seeding database...");
 
