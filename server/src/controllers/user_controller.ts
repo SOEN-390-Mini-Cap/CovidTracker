@@ -14,8 +14,8 @@ export class UserController implements interfaces.Controller {
         @named("UserService")
         private readonly userService: UserService,
     ) {}
-    //
-    @Get("/me", extractJWTAuthMiddleware, accessRightsMiddleware([Role.USER]))
+
+    @Get("/me", extractJWTAuthMiddleware, accessRightsMiddleware([Role.USER, Role.DOCTOR]))
     private async me(req: Request, res: Response): Promise<void> {
         try {
             const userId = req["token"].userId;

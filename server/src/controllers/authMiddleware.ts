@@ -2,7 +2,6 @@ import { Next, Request, Response } from "restify";
 import * as jwt from "jsonwebtoken";
 import { UserRepository } from "../repositories/user_repository";
 import { Role } from "../entities/role";
-import { inject, named } from "inversify";
 import { container } from "../registry";
 
 type CallbackMiddleware = (req: Request, res: Response, next: Next) => void;
@@ -32,8 +31,9 @@ function extractJWTAuthMiddleware(req: Request, res: Response, next: Next): void
 
 function accessRightsMiddleware(roles: Role[]): CallbackMiddleware {
     return async (req: Request, res: Response, next: Next) => {
-        const user = await container.get(UserRepository).findUserByUserId(req["token"].userId);
-        console.log("Checking access rights2");
+        const user = await container
+            .getNamed<UserRepository>("Repository", "UserRepository")
+            .findUserByUserId(req["token"].userId);
         if (!user.roles.some((r) => roles.includes(r))) {
             res.json(401);
             return;
