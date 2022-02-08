@@ -19,4 +19,6 @@ app.use(cors.actual);
 
 app.listen(process.env.SERVER_PORT);
 
+console.log(`listening on PORT`, process.env.SERVER_PORT);
+
 export { app };

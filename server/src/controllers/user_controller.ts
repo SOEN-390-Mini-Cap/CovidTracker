@@ -3,8 +3,8 @@ import { Request, Response } from "restify";
 import { Controller, Get, interfaces } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { UserService } from "../services/user_service";
-import { extractJWTAuthMiddleware, accessRightsMiddleware } from "./authMiddleware";
-import { Role } from "../entities/role";
+import { extractJWTAuthMiddleware } from "./auth_Middleware";
+import { AuthorizationError } from "../entities/Error/AuthorizationError";
 
 @Controller("/users")
 @injectable()
@@ -15,7 +15,7 @@ export class UserController implements interfaces.Controller {
         private readonly userService: UserService,
     ) {}
 
-    @Get("/me", extractJWTAuthMiddleware, accessRightsMiddleware([Role.USER, Role.DOCTOR]))
+    @Get("/me", extractJWTAuthMiddleware)
     private async me(req: Request, res: Response): Promise<void> {
         try {
             const userId = req["token"].userId;
@@ -26,7 +26,11 @@ export class UserController implements interfaces.Controller {
                 password: "",
             });
         } catch (error) {
-            res.json(500, { error: error.toString() });
+            if (error instanceof AuthorizationError) {
+                res.json(error.statusCode, { error: error.toString() });
+            } else {
+                res.json(500, { error: error.toString() });
+            }
         }
     }
 }
