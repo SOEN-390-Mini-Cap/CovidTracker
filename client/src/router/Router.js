@@ -1,41 +1,26 @@
-// ** React Imports
-import { Suspense, useContext, lazy, Fragment } from "react";
-
-// ** Utils
+import { Suspense, lazy, Fragment } from "react";
 import { isUserLoggedIn } from "@utils";
 import { useLayout } from "@hooks/useLayout";
-import { AbilityContext } from "@src/utility/context/Can";
 import { useRouterTransition } from "@hooks/useRouterTransition";
-
-// ** Custom Components
 import LayoutWrapper from "@layouts/components/layout-wrapper";
-
-// ** Router Components
 import { BrowserRouter as AppRouter, Route, Switch, Redirect } from "react-router-dom";
-
-// ** Routes & Default Routes
 import { DefaultRoute, Routes } from "./routes";
-
-// ** Layouts
 import BlankLayout from "@layouts/BlankLayout";
 import VerticalLayout from "@src/layouts/VerticalLayout";
 import HorizontalLayout from "@src/layouts/HorizontalLayout";
+import { useSelector } from "react-redux";
+
+const selectRole = (state) => state.auth.userData.user?.role;
 
 const Router = () => {
-    // ** Hooks
     const { layout, setLayout, setLastLayout } = useLayout();
     const { transition, setTransition } = useRouterTransition();
+    const role = useSelector(selectRole);
 
-    // ** ACL Ability Context
-    const ability = useContext(AbilityContext);
-
-    // ** Default Layout
     const DefaultLayout = layout === "horizontal" ? "HorizontalLayout" : "VerticalLayout";
 
-    // ** All of the available layouts
     const Layouts = { BlankLayout, VerticalLayout, HorizontalLayout };
 
-    // ** Current Active Item
     const currentActiveItem = null;
 
     // ** Return Filtered Array of Routes & Paths
@@ -58,34 +43,26 @@ const Router = () => {
 
     const NotAuthorized = lazy(() => import("@src/views/pages/misc/NotAuthorized"));
 
-    // ** Init Error Component
     const Error = lazy(() => import("@src/views/pages/misc/Error"));
 
-    /**
-     ** Final Route Component Checks for Login & User Role and then redirects to the route
-     */
     const FinalRoute = (props) => {
-        const route = props.route;
-
-        if (
-            (!isUserLoggedIn() && route.meta === undefined) ||
-            (!isUserLoggedIn() && route.meta && !route.meta.authRoute && !route.meta.publicRoute)
-        ) {
-            /**
-             ** If user is not Logged in & route meta is undefined
-             ** OR
-             ** If user is not Logged in & route.meta.authRoute, !route.meta.publicRoute are undefined
-             ** Then redirect user to login
-             */
-
+        // Logged out user trying to access a page that is not a sign in or sign out page
+        // and not a public page
+        if (!isUserLoggedIn() && !props.route.meta?.authRoute && !props.route.meta?.publicRoute) {
             return <Redirect to="/sign_in" />;
-        } else if (route.meta && route.meta.authRoute && isUserLoggedIn()) {
-            // ** If route has meta and authRole and user is Logged in then redirect user to home page (DefaultRoute)
-            return <Redirect to="/" />;
-        } else {
-            // ** If none of the above render component
-            return <route.component {...props} />;
         }
+
+        // Logged in user trying to go to sign up or sign in page
+        if (isUserLoggedIn() && props.route.meta?.authRoute) {
+            return <Redirect to="/" />;
+        }
+
+        // Logged in user trying to go to page they do not have the correct role for
+        if (isUserLoggedIn() && props.route.meta?.accessibleBy && !props.route.meta?.accessibleBy?.includes(role)) {
+            return <Redirect to="/misc/not-authorized" />;
+        }
+
+        return <props.route.component {...props} />;
     };
 
     // ** Return Route to Render

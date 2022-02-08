@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { handleLogin } from "@store/authentication";
 import InputPasswordToggle from "@components/input-password-toggle";
-import { getHomeRouteForLoggedInUser } from "@utils";
 import { Form, Input, Label, Button, Card, CardBody, FormFeedback } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
 import axios from "axios";
@@ -36,7 +35,6 @@ const SignIn = () => {
     const defaultValues = {
         password: "",
         email: "",
-        rememberMe: false,
     };
 
     const SignInSchema = yup.object().shape({
@@ -65,7 +63,7 @@ const SignIn = () => {
                     rememberMe: data.rememberMe,
                 }),
             );
-            history.push(getHomeRouteForLoggedInUser("admin"));
+            history.push("/");
         } catch (error) {
             setError("req", {
                 type: "manual",

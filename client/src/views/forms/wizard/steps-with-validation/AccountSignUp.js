@@ -9,7 +9,6 @@ import { isObjEmpty } from "@utils";
 // ** Custom Components
 import InputPasswordToggle from "@components/input-password-toggle";
 import { handleLogin } from "@store/authentication";
-import { getHomeRouteForLoggedInUser } from "@utils";
 
 // ** Third Party Components
 import * as yup from "yup";
@@ -103,7 +102,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         rememberMe: true,
                     }),
                 );
-                history.push(getHomeRouteForLoggedInUser("admin"));
+                history.push("/");
             }
         } catch (error) {
             console.log(error);
