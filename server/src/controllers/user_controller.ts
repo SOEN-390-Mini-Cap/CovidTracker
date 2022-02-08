@@ -21,10 +21,8 @@ export class UserController implements interfaces.Controller {
             const userId = req["token"].userId;
             const user = await this.userService.findUserByUserId(userId);
 
-            res.json(200, {
-                ...user,
-                password: "",
-            });
+            user.account.password = "";
+            res.json(200, user);
         } catch (error) {
             if (error instanceof AuthorizationError) {
                 res.json(error.statusCode, { error: error.toString() });
