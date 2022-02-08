@@ -4,6 +4,9 @@ const PagesRoutes = [
     {
         path: "/home",
         component: lazy(() => import("../../views/pages/Home")),
+        meta: {
+            accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
+        },
     },
     {
         path: "/sign_in",

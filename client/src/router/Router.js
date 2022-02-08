@@ -8,19 +8,19 @@ import { DefaultRoute, Routes } from "./routes";
 import BlankLayout from "@layouts/BlankLayout";
 import VerticalLayout from "@src/layouts/VerticalLayout";
 import HorizontalLayout from "@src/layouts/HorizontalLayout";
+import {useSelector} from "react-redux";
+
+const selectRole = (state) => state.auth.userData.user.role;
 
 const Router = () => {
-    // ** Hooks
     const { layout, setLayout, setLastLayout } = useLayout();
     const { transition, setTransition } = useRouterTransition();
+    const role = useSelector(selectRole);
 
-    // ** Default Layout
     const DefaultLayout = layout === "horizontal" ? "HorizontalLayout" : "VerticalLayout";
 
-    // ** All of the available layouts
     const Layouts = { BlankLayout, VerticalLayout, HorizontalLayout };
 
-    // ** Current Active Item
     const currentActiveItem = null;
 
     // ** Return Filtered Array of Routes & Paths
@@ -43,7 +43,6 @@ const Router = () => {
 
     const NotAuthorized = lazy(() => import("@src/views/pages/misc/NotAuthorized"));
 
-    // ** Init Error Component
     const Error = lazy(() => import("@src/views/pages/misc/Error"));
 
     const FinalRoute = (props) => {
@@ -56,6 +55,21 @@ const Router = () => {
         // Logged in user trying to go to sign up or sign in page
         if (isUserLoggedIn() && props.route?.meta.authRoute) {
             return <Redirect to="/" />;
+        }
+
+        // Logged in user trying to go to page they do not have the correct role for
+        if (isUserLoggedIn() && !props.route?.meta?.accessibleBy.includes(role)) {
+            return (
+                <Route
+                    exact
+                    path="/misc/not-authorized"
+                    render={() => (
+                        <Layouts.BlankLayout>
+                            <NotAuthorized />
+                        </Layouts.BlankLayout>
+                    )}
+                />
+            );
         }
 
         return <props.route.component {...props} />;
