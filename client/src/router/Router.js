@@ -8,9 +8,9 @@ import { DefaultRoute, Routes } from "./routes";
 import BlankLayout from "@layouts/BlankLayout";
 import VerticalLayout from "@src/layouts/VerticalLayout";
 import HorizontalLayout from "@src/layouts/HorizontalLayout";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
-const selectRole = (state) => state.auth.userData.user.role;
+const selectRole = (state) => state.auth.userData.user?.role;
 
 const Router = () => {
     const { layout, setLayout, setLastLayout } = useLayout();
@@ -48,28 +48,18 @@ const Router = () => {
     const FinalRoute = (props) => {
         // Logged out user trying to access a page that is not a sign in or sign out page
         // and not a public page
-        if (!isUserLoggedIn() && !props.route?.meta.authRoute && !props.route?.meta.publicRoute) {
+        if (!isUserLoggedIn() && !props.route.meta?.authRoute && !props.route.meta?.publicRoute) {
             return <Redirect to="/sign_in" />;
         }
 
         // Logged in user trying to go to sign up or sign in page
-        if (isUserLoggedIn() && props.route?.meta.authRoute) {
+        if (isUserLoggedIn() && props.route.meta?.authRoute) {
             return <Redirect to="/" />;
         }
 
         // Logged in user trying to go to page they do not have the correct role for
-        if (isUserLoggedIn() && !props.route?.meta?.accessibleBy.includes(role)) {
-            return (
-                <Route
-                    exact
-                    path="/misc/not-authorized"
-                    render={() => (
-                        <Layouts.BlankLayout>
-                            <NotAuthorized />
-                        </Layouts.BlankLayout>
-                    )}
-                />
-            );
+        if (isUserLoggedIn() && props.route.meta?.accessibleBy && !props.route.meta?.accessibleBy?.includes(role)) {
+            return <Redirect to="/misc/not-authorized" />;
         }
 
         return <props.route.component {...props} />;

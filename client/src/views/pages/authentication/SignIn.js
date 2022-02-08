@@ -35,7 +35,6 @@ const SignIn = () => {
     const defaultValues = {
         password: "",
         email: "",
-        rememberMe: false,
     };
 
     const SignInSchema = yup.object().shape({
