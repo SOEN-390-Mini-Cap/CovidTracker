@@ -171,7 +171,6 @@ export class UserRepository {
             role: Role[row.role_name],
             address: {
                 addressId: row.address_id,
-                userId: row.user_id,
                 streetAddress: row.street_address,
                 streetAddressLineTwo: row.street_address_line_two,
                 city: row.city,

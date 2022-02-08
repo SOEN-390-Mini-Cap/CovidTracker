@@ -48,7 +48,7 @@ const CustomNavbar = () => {
                         >
                             <div className="user-nav ">
                                 <span className="user-name fw-bold mb-1">{`${user?.firstName} ${user?.lastName}`}</span>
-                                <span className="user-status">{user?.roles.join(", ")}</span>
+                                <span className="user-status">{user?.role}</span>
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
