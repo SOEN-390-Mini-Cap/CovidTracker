@@ -6,7 +6,16 @@ import { readFileSync } from "fs";
     const pool = new Pool();
 
     const baseDir = `${__dirname}/schemas`;
-    const schemas = ["roles.sql", "addresses.sql", "users.sql", "user_roles.sql"];
+    const schemas = [
+        "roles.sql",
+        "addresses.sql",
+        "users.sql",
+        "patients.sql",
+        "doctors.sql",
+        "admins.sql",
+        "health_officials.sql",
+        "immigration_officers.sql",
+    ];
     const files = schemas.map((schema) => `${baseDir}/${schema}`);
 
     const client = await pool.connect();

@@ -9,6 +9,8 @@ CREATE TABLE users (
     date_of_birth TIMESTAMP WITH TIME ZONE NOT NULL,
     created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
     address_id INT NOT NULL,
+    role_id INT NOT NULL,
     PRIMARY KEY (user_id),
-    FOREIGN KEY (address_id) REFERENCES addresses (address_id)
+    FOREIGN KEY (address_id) REFERENCES addresses (address_id),
+    FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
