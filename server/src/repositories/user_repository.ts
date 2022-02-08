@@ -9,6 +9,8 @@ import { RequestAddress } from "../entities/request/RequestAddress";
 
 @injectable()
 export class UserRepository {
+    private static readonly defaultRoleId = 1;
+
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
     async addUser(userData: RequestUser, addressId: number): Promise<number> {
@@ -23,9 +25,10 @@ export class UserRepository {
                 phone_number,
                 gender,
                 date_of_birth,
-                address_id
+                address_id,
+                role_id
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING user_id
         `;
 
@@ -38,17 +41,10 @@ export class UserRepository {
             userData.gender,
             userData.dateOfBirth.toISOString(),
             addressId,
+            UserRepository.defaultRoleId,
         ]);
 
-        const userId = res.rows[0].user_id;
-
-        const userRolesSql = `
-            INSERT INTO user_roles (user_id, role_id)
-            VALUES ($1, 1)
-        `;
-        await client.query(userRolesSql, [userId]).finally(async () => client.release());
-
-        return userId;
+        return res.rows[0].user_id;
     }
 
     async findUserByEmail(email: string): Promise<User> {
@@ -73,9 +69,8 @@ export class UserRepository {
                 province,
                 postal_code,
                 country
-            FROM users, user_roles, roles, addresses
-            WHERE users.user_id = user_roles.user_id
-              AND user_roles.role_id = roles.role_id
+            FROM users, roles, addresses
+            WHERE users.role_id = roles.role_id
               AND users.address_id = addresses.address_id
               AND users.email = $1;
         `;
@@ -106,9 +101,8 @@ export class UserRepository {
                 province,
                 postal_code,
                 country
-            FROM users, user_roles, roles, addresses
-            WHERE users.user_id = user_roles.user_id
-              AND user_roles.role_id = roles.role_id
+            FROM users, roles, addresses
+            WHERE users.role_id = roles.role_id
               AND users.address_id = addresses.address_id
               AND users.user_id = $1;
         `;
@@ -167,29 +161,28 @@ export class UserRepository {
             return null;
         }
 
-        const firstRow = rows[0];
-        const roles: Role[] = firstRow.role_name ? rows.map((row) => Role[row.role_name]) : [];
-
+        const row = rows[0];
         return {
-            userId: firstRow.user_id,
-            email: firstRow.email,
-            password: firstRow.password,
-            firstName: firstRow.first_name,
-            lastName: firstRow.last_name,
-            phoneNumber: firstRow.phone_number,
-            gender: Gender[firstRow.gender],
-            dateOfBirth: new Date(firstRow.date_of_birth),
-            createdOn: new Date(firstRow.created_on),
-            roles,
+            firstName: row.first_name,
+            lastName: row.last_name,
+            phoneNumber: row.phone_number,
+            gender: Gender[row.gender],
+            dateOfBirth: new Date(row.date_of_birth),
+            role: Role[row.role_name],
             address: {
-                addressId: firstRow.address_id,
-                userId: firstRow.user_id,
-                streetAddress: firstRow.street_address,
-                streetAddressLineTwo: firstRow.street_address_line_two,
-                city: firstRow.city,
-                province: firstRow.province,
-                postalCode: firstRow.postal_code,
-                country: firstRow.country,
+                addressId: row.address_id,
+                streetAddress: row.street_address,
+                streetAddressLineTwo: row.street_address_line_two,
+                city: row.city,
+                province: row.province,
+                postalCode: row.postal_code,
+                country: row.country,
+            },
+            account: {
+                userId: row.user_id,
+                email: row.email,
+                password: row.password,
+                createdOn: new Date(row.created_on),
             },
         };
     }

@@ -30,12 +30,12 @@ export class AuthenticationService {
             throw new Error("Invalid email and / or password");
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.account.password);
         if (!isMatch) {
             throw new Error("Invalid email and / or password");
         }
 
-        return this.signToken(user.userId);
+        return this.signToken(user.account.userId);
     }
 
     private async signToken(userId: number): Promise<Token> {
