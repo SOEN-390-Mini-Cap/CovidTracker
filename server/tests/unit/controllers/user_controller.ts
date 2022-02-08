@@ -67,7 +67,6 @@ const mockUser: User = {
     role: Role.USER,
     address: {
         addressId: 2,
-        userId: 1,
         streetAddress: "1001th street",
         streetAddressLineTwo: "",
         city: "Montreal",
@@ -92,7 +91,6 @@ const mockExpectedUser: User = {
     role: Role.USER,
     address: {
         addressId: 2,
-        userId: 1,
         streetAddress: "1001th street",
         streetAddressLineTwo: "",
         city: "Montreal",
