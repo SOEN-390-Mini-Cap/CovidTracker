@@ -1,4 +1,4 @@
-import { Request, Response, Next } from "restify";
+import { Next, Request, Response } from "restify";
 import * as jwt from "jsonwebtoken";
 
 function extractJWTAuthMiddleware(req: Request, res: Response, next: Next): void {

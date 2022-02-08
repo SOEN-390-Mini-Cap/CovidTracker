@@ -2,8 +2,9 @@ import "reflect-metadata";
 import { Request, Response } from "restify";
 import { Controller, Get, interfaces } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
-import { extractJWTAuthMiddleware } from "./auth_utils";
 import { UserService } from "../services/user_service";
+import { extractJWTAuthMiddleware } from "./auth_Middleware";
+import { AuthorizationError } from "../entities/Error/AuthorizationError";
 
 @Controller("/users")
 @injectable()
@@ -23,7 +24,11 @@ export class UserController implements interfaces.Controller {
             user.account.password = "";
             res.json(200, user);
         } catch (error) {
-            res.json(500, { error: error.toString() });
+            if (error instanceof AuthorizationError) {
+                res.json(error.statusCode, { error: error.toString() });
+            } else {
+                res.json(500, { error: error.toString() });
+            }
         }
     }
 }
