@@ -1,8 +1,6 @@
 export class AuthorizationError extends Error {
-    public statusCode: number;
-    public message: string;
-    constructor(statusCode: number, message: string) {
-        super(message);
-        this.statusCode = statusCode;
+    public readonly statusCode = 401;
+    constructor() {
+        super("User not authorized");
     }
 }
