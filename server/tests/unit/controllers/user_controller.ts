@@ -1,6 +1,9 @@
 import { expect } from "chai";
 import { createSandbox, SinonStub } from "sinon";
 import { UserController } from "../../../src/controllers/user_controller";
+import { User } from "../../../src/entities/user";
+import { Gender } from "../../../src/entities/gender";
+import { Role } from "../../../src/entities/role";
 
 describe("user_controller.ts", () => {
     const userService: any = {
@@ -55,17 +58,13 @@ describe("user_controller.ts", () => {
     });
 });
 
-const mockUser = {
-    userId: 1,
-    email: "test3@test.com",
-    password: "password",
+const mockUser: User = {
     firstName: "john",
     lastName: "smith",
     phoneNumber: "514-245-6532",
-    gender: "MALE",
-    dateOfBirth: "2000-01-19T02:26:39.131Z",
-    createdOn: "2022-01-28T01:48:02.322Z",
-    roles: ["USER", "PATIENT"],
+    gender: Gender.MALE,
+    dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+    role: Role.USER,
     address: {
         addressId: 2,
         userId: 1,
@@ -76,19 +75,21 @@ const mockUser = {
         postalCode: "A1B 2C3",
         country: "Canada",
     },
+    account: {
+        userId: 1,
+        email: "test3@test.com",
+        password: "password",
+        createdOn: new Date("2022-01-28T01:48:02.322Z"),
+    },
 };
 
-const mockExpectedUser = {
-    userId: 1,
-    email: "test3@test.com",
-    password: "",
+const mockExpectedUser: User = {
     firstName: "john",
     lastName: "smith",
     phoneNumber: "514-245-6532",
-    gender: "MALE",
-    dateOfBirth: "2000-01-19T02:26:39.131Z",
-    createdOn: "2022-01-28T01:48:02.322Z",
-    roles: ["USER", "PATIENT"],
+    gender: Gender.MALE,
+    dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+    role: Role.USER,
     address: {
         addressId: 2,
         userId: 1,
@@ -98,5 +99,11 @@ const mockExpectedUser = {
         province: "Quebec",
         postalCode: "A1B 2C3",
         country: "Canada",
+    },
+    account: {
+        userId: 1,
+        email: "test3@test.com",
+        password: "",
+        createdOn: new Date("2022-01-28T01:48:02.322Z"),
     },
 };
