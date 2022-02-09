@@ -3,7 +3,7 @@ import { inject, injectable, named } from "inversify";
 import { UserRepository } from "../repositories/user_repository";
 import { User } from "../entities/user";
 import { roleValidator } from "./role_validator";
-import { ROLES } from "../entities/role";
+import { Role, ROLES, roleToIdMap } from "../entities/role";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 
 @injectable()
@@ -25,5 +25,14 @@ export class UserService {
         }
 
         return user;
+    }
+
+    async assignRole(userId: number, role: Role): Promise<void> {
+        const roleId = roleToIdMap.get(role);
+        const isUpdated = !!(await this.userRepository.updateUserRole(userId, roleId));
+
+        if (!isUpdated) {
+            throw new Error("User role is already assigned");
+        }
     }
 }

@@ -29,20 +29,22 @@ export class UserRepository {
                 role_id
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            RETURNING user_id
+            RETURNING user_id;
         `;
 
-        const res = await client.query(sql, [
-            userData.email,
-            userData.password,
-            userData.firstName,
-            userData.lastName,
-            userData.phoneNumber,
-            userData.gender,
-            userData.dateOfBirth.toISOString(),
-            addressId,
-            UserRepository.defaultRoleId,
-        ]);
+        const res = await client
+            .query(sql, [
+                userData.email,
+                userData.password,
+                userData.firstName,
+                userData.lastName,
+                userData.phoneNumber,
+                userData.gender,
+                userData.dateOfBirth.toISOString(),
+                addressId,
+                UserRepository.defaultRoleId,
+            ])
+            .finally(async () => client.release());
 
         return res.rows[0].user_id;
     }
@@ -154,6 +156,21 @@ export class UserRepository {
             ])
             .finally(async () => client.release());
         return res.rows[0].address_id;
+    }
+
+    async updateUserRole(userId: number, roleId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            UPDATE users
+            SET role_id = $1
+            WHERE users.user_id = $2
+            AND users.role_id = $3
+            RETURNING users.user_id;
+        `;
+
+        const res = await client.query(sql, [roleId, userId, UserRepository.defaultRoleId]).finally(async () => client.release());
+        return res.rows[0]?.user_id;
     }
 
     private buildUser({ rows }: QueryResult): User {

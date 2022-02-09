@@ -36,16 +36,21 @@ export class UserController implements interfaces.Controller {
 
     @Put("/:userId/roles")
     private async assignRole(req: Request, res: Response): Promise<void> {
-        const userId = req.params.userId;
-        const { value, error } = roleSchema.validate(req.body);
+        try {
+            const userId = req.params.userId;
+            const { value, error } = roleSchema.validate(req.body);
 
-        if (error || !userId) {
-            res.json(400, error);
-            return;
+            if (error || !userId) {
+                res.json(400, error);
+                return;
+            }
+
+            await this.userService.assignRole(userId, value.role);
+
+            res.json(204);
+        } catch (error) {
+            res.json(500, { error: error.message });
         }
-
-        console.log(userId, value.role);
-        res.json(204);
     }
 }
 
