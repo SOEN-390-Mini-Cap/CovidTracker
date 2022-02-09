@@ -1,5 +1,5 @@
 {
-    "name": "covid-tracker-serverf",
+    "name": "covid-tracker-server",
     "version": "1.0.0",
     "description": "The server for CovidTracker",
     "main": "index.js",

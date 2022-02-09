@@ -3,8 +3,8 @@ import { Request, Response } from "restify";
 import { Controller, Get, interfaces } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { UserService } from "../services/user_service";
-import { extractJWTAuthMiddleware } from "./auth_Middleware";
-import { AuthorizationError } from "../entities/Error/AuthorizationError";
+import { extractJWTAuthMiddleware } from "./auth_middleware";
+import { AuthorizationError } from "../entities/errors/authorization_error";
 
 @Controller("/users")
 @injectable()
