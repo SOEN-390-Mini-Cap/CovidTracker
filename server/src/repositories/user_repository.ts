@@ -173,6 +173,20 @@ export class UserRepository {
         return res.rows[0]?.user_id;
     }
 
+    async findUserRoleByUserId(userId: number): Promise<Role> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT roles.role_name
+            FROM users, roles
+            WHERE users.role_id = roles.role_id
+            AND users.user_id = $1;
+        `;
+
+        const res = await client.query(sql, [userId]).finally(async () => client.release());
+        return res.rows[0]?.role_name;
+    }
+
     private buildUser({ rows }: QueryResult): User {
         if (rows.length == 0) {
             return null;

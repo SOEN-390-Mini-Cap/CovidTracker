@@ -1,7 +1,11 @@
-import { Next, Request, Response } from "restify";
+import {Next, Request, RequestHandler, Response} from "restify";
 import * as jwt from "jsonwebtoken";
+import {Role} from "../entities/role";
+import {container} from "../registry";
+import {UserRepository} from "../repositories/user_repository";
+import {UserService} from "../services/user_service";
 
-function extractJWTAuthMiddleware(req: Request, res: Response, next: Next): void {
+function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -18,10 +22,36 @@ function extractJWTAuthMiddleware(req: Request, res: Response, next: Next): void
         }
 
         req["token"] = {
+            ...req["token"],
             userId: payload["userId"],
         };
         next();
     });
 }
 
-export { extractJWTAuthMiddleware };
+function isValidRoleMiddleware(roles: Role[]): RequestHandler {
+    const userService = container.getNamed<UserService>("Service", "UserService");
+
+    return async function (req: Request, res: Response, next: Next): Promise<void> {
+        try {
+            const userId = req["token"].userId;
+            const role = await userService.findUserRoleById(userId);
+
+            const isRoleValid = roles.includes(role);
+            if (!isRoleValid) {
+                res.json(403, `Role ${role} is not valid for this operation`);
+                return;
+            }
+
+            req["token"] = {
+                ...req["token"],
+                role,
+            };
+            next();
+        } catch (error) {
+            res.json(500, { error: error.message });
+        }
+    };
+}
+
+export { extractJwtMiddleware, isValidRoleMiddleware };

@@ -7,6 +7,9 @@ import { UserRepository } from "./repositories/user_repository";
 import { Pool } from "pg";
 import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
+import { RequestHandler } from "restify";
+import {extractJwtMiddleware, isValidRoleMiddleware} from "./controllers/auth_middleware";
+import {Role} from "./entities/role";
 
 const container = new Container();
 
@@ -31,5 +34,9 @@ container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
+
+// Middleware
+container.bind<RequestHandler>("extractJwtMiddleware").toConstantValue(extractJwtMiddleware);
+container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidRoleMiddleware([Role.ADMIN]));
 
 export { container };

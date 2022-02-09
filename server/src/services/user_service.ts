@@ -35,4 +35,14 @@ export class UserService {
             throw new Error("User role is already assigned");
         }
     }
+
+    async findUserRoleById(userId: number): Promise<Role> {
+        const role = await this.userRepository.findUserRoleByUserId(userId);
+
+        if (!role) {
+            throw new Error("No role found");
+        }
+
+        return role;
+    }
 }

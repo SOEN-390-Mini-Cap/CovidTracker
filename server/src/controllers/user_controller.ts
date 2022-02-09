@@ -3,10 +3,9 @@ import { Request, Response } from "restify";
 import { Controller, Get, interfaces, Put } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { UserService } from "../services/user_service";
-import { extractJWTAuthMiddleware } from "./auth_middleware";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import * as Joi from "joi";
-import {ROLES} from "../entities/role";
+import { ROLES } from "../entities/role";
 
 @Controller("/users")
 @injectable()
@@ -17,7 +16,7 @@ export class UserController implements interfaces.Controller {
         private readonly userService: UserService,
     ) {}
 
-    @Get("/me", extractJWTAuthMiddleware)
+    @Get("/me", "extractJwtMiddleware")
     private async me(req: Request, res: Response): Promise<void> {
         try {
             const userId = req["token"].userId;
@@ -34,7 +33,7 @@ export class UserController implements interfaces.Controller {
         }
     }
 
-    @Put("/:userId/roles")
+    @Put("/:userId/roles", "extractJwtMiddleware", "isValidAdminMiddleware")
     private async assignRole(req: Request, res: Response): Promise<void> {
         try {
             const userId = req.params.userId;
