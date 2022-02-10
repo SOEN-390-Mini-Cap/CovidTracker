@@ -36,15 +36,17 @@ export class UserController implements interfaces.Controller {
     @Put("/:userId/roles", "extractJwtMiddleware", "isValidAdminMiddleware")
     private async assignRole(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.params.userId;
-            const { value, error } = roleSchema.validate(req.body);
+            const { value, error } = roleSchema.validate({
+                ...req.params,
+                ...req.body,
+            });
 
-            if (error || !userId) {
+            if (error) {
                 res.json(400, error);
                 return;
             }
 
-            await this.userService.assignRole(userId, value.role);
+            await this.userService.assignRole(value.userId, value.role);
 
             res.json(204);
         } catch (error) {
@@ -54,6 +56,7 @@ export class UserController implements interfaces.Controller {
 }
 
 const roleSchema = Joi.object({
+    userId: Joi.number().required(),
     role: Joi.string()
         .valid(...ROLES)
         .required(),

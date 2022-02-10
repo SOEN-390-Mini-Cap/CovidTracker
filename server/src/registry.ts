@@ -8,8 +8,8 @@ import { Pool } from "pg";
 import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
-import {extractJwtMiddleware, isValidRoleMiddleware} from "./controllers/auth_middleware";
-import {Role} from "./entities/role";
+import { extractJwtMiddleware, isValidRoleMiddleware } from "./controllers/auth_middleware";
+import { Role } from "./entities/role";
 
 const container = new Container();
 

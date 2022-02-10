@@ -1,9 +1,8 @@
-import {Next, Request, RequestHandler, Response} from "restify";
+import { Next, Request, RequestHandler, Response } from "restify";
 import * as jwt from "jsonwebtoken";
-import {Role} from "../entities/role";
-import {container} from "../registry";
-import {UserRepository} from "../repositories/user_repository";
-import {UserService} from "../services/user_service";
+import { Role } from "../entities/role";
+import { container } from "../registry";
+import { UserService } from "../services/user_service";
 
 function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
     const authHeader = req.headers.authorization;

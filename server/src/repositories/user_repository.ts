@@ -169,7 +169,9 @@ export class UserRepository {
             RETURNING users.user_id;
         `;
 
-        const res = await client.query(sql, [roleId, userId, UserRepository.defaultRoleId]).finally(async () => client.release());
+        const res = await client
+            .query(sql, [roleId, userId, UserRepository.defaultRoleId])
+            .finally(async () => client.release());
         return res.rows[0]?.user_id;
     }
 
