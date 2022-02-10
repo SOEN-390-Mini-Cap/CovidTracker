@@ -41,7 +41,7 @@ export class UserController implements interfaces.Controller {
                 return;
             }
 
-            await this.userService.assignRole(value.userId, value.role);
+            await this.userService.assignRoleStrategy(value.userId, value.role);
 
             res.json(204);
         } catch (error) {

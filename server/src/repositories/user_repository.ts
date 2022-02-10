@@ -158,23 +158,6 @@ export class UserRepository {
         return res.rows[0].address_id;
     }
 
-    async updateUserRole(userId: number, roleId: number): Promise<number> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            UPDATE users
-            SET role_id = $1
-            WHERE users.user_id = $2
-            AND users.role_id = $3
-            RETURNING users.user_id;
-        `;
-
-        const res = await client
-            .query(sql, [roleId, userId, UserRepository.defaultRoleId])
-            .finally(async () => client.release());
-        return res.rows[0]?.user_id;
-    }
-
     async findRoleByUserId(userId: number): Promise<Role> {
         const client = await this.pool.connect();
 
@@ -187,6 +170,76 @@ export class UserRepository {
 
         const res = await client.query(sql, [userId]).finally(async () => client.release());
         return res.rows[0]?.role_name;
+    }
+
+    async updateUserRole(userId: number, role: Role): Promise<number> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            UPDATE users
+            SET role_id = roles.role_id
+            FROM roles
+            WHERE roles.role_name = $1
+            AND users.user_id = $2
+            AND users.role_id = $3
+            RETURNING users.user_id;
+        `;
+
+        const res = await client
+            .query(sql, [role, userId, UserRepository.defaultRoleId])
+            .finally(async () => client.release());
+        return res.rows[0]?.user_id;
+    }
+
+    async addPatient(userId: number): Promise<void> {
+        console.log(this);
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO patients (patient_id) VALUES ($1)
+        `;
+
+        await client.query(sql, [userId]).finally(async () => client.release());
+    }
+
+    async addDoctor(userId: number): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO doctors (doctor_id) VALUES ($1)
+        `;
+
+        await client.query(sql, [userId]).finally(async () => client.release());
+    }
+
+    async addAdmin(userId: number): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO admins (admin_id) VALUES ($1)
+        `;
+
+        await client.query(sql, [userId]).finally(async () => client.release());
+    }
+
+    async addHealthOfficial(userId: number): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO health_officials (health_official_id) VALUES ($1)
+        `;
+
+        await client.query(sql, [userId]).finally(async () => client.release());
+    }
+
+    async addImmigrationOfficer(userId: number): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            INSERT INTO immigration_officers (immigration_officer_id) VALUES ($1)
+        `;
+
+        await client.query(sql, [userId]).finally(async () => client.release());
     }
 
     private buildUser({ rows }: QueryResult): User {

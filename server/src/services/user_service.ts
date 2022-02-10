@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
 import { UserRepository } from "../repositories/user_repository";
 import { User } from "../entities/user";
-import { Role, roleToIdMap } from "../entities/role";
+import { Role } from "../entities/role";
 
 @injectable()
 export class UserService {
@@ -22,15 +22,6 @@ export class UserService {
         return user;
     }
 
-    async assignRole(userId: number, role: Role): Promise<void> {
-        const roleId = roleToIdMap.get(role);
-        const isUpdated = !!(await this.userRepository.updateUserRole(userId, roleId));
-
-        if (!isUpdated) {
-            throw new Error("User role is already assigned");
-        }
-    }
-
     async findRoleByUserId(userId: number): Promise<Role> {
         const role = await this.userRepository.findRoleByUserId(userId);
 
@@ -39,5 +30,31 @@ export class UserService {
         }
 
         return role;
+    }
+
+    async assignRoleStrategy(userId: number, role: Role): Promise<void> {
+        const isUpdated = !!(await this.userRepository.updateUserRole(userId, role));
+
+        if (!isUpdated) {
+            throw new Error("User role is already assigned");
+        }
+
+        switch (role) {
+            case Role.PATIENT:
+                await this.userRepository.addPatient(userId);
+                return;
+            case Role.DOCTOR:
+                await this.userRepository.addDoctor(userId);
+                return;
+            case Role.ADMIN:
+                await this.userRepository.addAdmin(userId);
+                return;
+            case Role.HEALTH_OFFICIAL:
+                await this.userRepository.addHealthOfficial(userId);
+                return;
+            case Role.IMMIGRATION_OFFICER:
+                await this.userRepository.addImmigrationOfficer(userId);
+                return;
+        }
     }
 }
