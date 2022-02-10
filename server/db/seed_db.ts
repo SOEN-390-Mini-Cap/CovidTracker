@@ -4,6 +4,8 @@ import { users } from "./seed_data/user_data";
 import * as bcrypt from "bcrypt";
 import { addresses } from "./seed_data/address_data";
 import { UserRepository } from "../src/repositories/user_repository";
+import { DoctorRepository } from "../src/repositories/doctor_repository";
+import { PatientRepository } from "../src/repositories/patient_repository";
 
 (async () => {
     const pool = new Pool();
@@ -26,6 +28,14 @@ import { UserRepository } from "../src/repositories/user_repository";
         }),
     );
 
+    const doctorRepository = new DoctorRepository(pool, userRepository);
+    const patientRepository = new PatientRepository(pool, userRepository);
+    // Make user doctor
+    await doctorRepository.addDoctor(1);
+    // Make user patient
+    await patientRepository.addPatient(2);
+    // assign patient to doctor
+    await patientRepository.assignDoctor(1, 2);
     console.log("Finished seeding users");
 
     await pool.end();
