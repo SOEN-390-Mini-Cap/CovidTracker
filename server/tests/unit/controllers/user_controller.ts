@@ -85,6 +85,30 @@ describe("user_controller.ts", () => {
             expect(resJsonStub.calledWithExactly(204)).to.equal(true);
         });
 
+        it("should return status 400 if userId is not a number", async () => {
+            req.params.userId = "userId";
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 400 if role is not valid", async () => {
+            req.body.role = "role";
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 400 if role is not passed", async () => {
+            delete req.body.role;
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
         it("should return status 500 if service throws an error", async () => {
             assignRoleStub.rejects(new Error("error message"));
 
