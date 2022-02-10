@@ -29,16 +29,13 @@ export class PatientRepository {
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
         const client = await this.pool.connect();
 
-        await client.query("BEGIN;");
-
         await client.query(
             `UPDATE patients
-                            SET doctor_id = ($1) 
+                            SET assigned_doctor_id = ($1) 
                             WHERE patient_id = ($2);`,
             [doctorId, patientId],
         );
 
-        await client.query("COMMIT;");
         client.release();
     }
 }
