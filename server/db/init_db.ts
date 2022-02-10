@@ -18,14 +18,14 @@ import { readFileSync } from "fs";
     ];
     const files = schemas.map((schema) => `${baseDir}/${schema}`);
 
-    await pool.query("BEGIN");
+    await pool.query("BEGIN;");
 
     for (const file of files) {
         const sql = readFileSync(file).toString();
         await pool.query(sql);
     }
 
-    await pool.query("COMMIT");
+    await pool.query("COMMIT;");
 
     await pool.end();
 

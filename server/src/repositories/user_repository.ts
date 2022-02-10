@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { Pool, QueryResult } from "pg";
+import { Pool, PoolClient, QueryResult } from "pg";
 import { User } from "../entities/user";
 import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
@@ -172,9 +172,7 @@ export class UserRepository {
         return res.rows[0]?.role_name;
     }
 
-    async updateUserRole(userId: number, role: Role): Promise<number> {
-        const client = await this.pool.connect();
-
+    async updateUserRoleHelper(client: PoolClient, userId: number, role: Role): Promise<void> {
         const sql = `
             UPDATE users
             SET role_id = roles.role_id
@@ -185,60 +183,15 @@ export class UserRepository {
             RETURNING users.user_id;
         `;
 
-        const res = await client
-            .query(sql, [role, userId, UserRepository.defaultRoleId])
-            .finally(async () => client.release());
-        return res.rows[0]?.user_id;
-    }
+        const res = await client.query(sql, [role, userId, UserRepository.defaultRoleId]);
 
-    async addPatient(userId: number): Promise<void> {
-        const client = await this.pool.connect();
+        const isUpdated = !!res.rows[0]?.user_id;
+        if (!isUpdated) {
+            await client.query("ROLLBACK;");
+            client.release();
 
-        const sql = `
-            INSERT INTO patients (patient_id) VALUES ($1)
-        `;
-
-        await client.query(sql, [userId]).finally(async () => client.release());
-    }
-
-    async addDoctor(userId: number): Promise<void> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            INSERT INTO doctors (doctor_id) VALUES ($1)
-        `;
-
-        await client.query(sql, [userId]).finally(async () => client.release());
-    }
-
-    async addAdmin(userId: number): Promise<void> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            INSERT INTO admins (admin_id) VALUES ($1)
-        `;
-
-        await client.query(sql, [userId]).finally(async () => client.release());
-    }
-
-    async addHealthOfficial(userId: number): Promise<void> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            INSERT INTO health_officials (health_official_id) VALUES ($1)
-        `;
-
-        await client.query(sql, [userId]).finally(async () => client.release());
-    }
-
-    async addImmigrationOfficer(userId: number): Promise<void> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            INSERT INTO immigration_officers (immigration_officer_id) VALUES ($1)
-        `;
-
-        await client.query(sql, [userId]).finally(async () => client.release());
+            throw new Error("User role is already assigned");
+        }
     }
 
     private buildUser({ rows }: QueryResult): User {

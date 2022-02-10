@@ -8,7 +8,7 @@ import { Role } from "../../../src/entities/role";
 describe("user_controller.ts", () => {
     const userService: any = {
         findUserByUserId: Function,
-        assignRoleStrategy: Function,
+        assignRole: Function,
     };
     const controller = new UserController(userService);
 
@@ -59,7 +59,7 @@ describe("user_controller.ts", () => {
     });
 
     describe("UserController::assignRole", () => {
-        let assignRoleStrategyStub: SinonStub;
+        let assignRoleStub: SinonStub;
 
         beforeEach(() => {
             req = {
@@ -75,18 +75,18 @@ describe("user_controller.ts", () => {
                 },
             };
 
-            assignRoleStrategyStub = sandbox.stub(userService, "assignRoleStrategy");
+            assignRoleStub = sandbox.stub(userService, "assignRole");
         });
 
         it("should return status 204 if no errors", async () => {
             await (controller as any).assignRole(req, res);
 
-            expect(assignRoleStrategyStub.calledWithExactly(1, Role.PATIENT)).to.equal(true);
+            expect(assignRoleStub.calledWithExactly(1, Role.PATIENT)).to.equal(true);
             expect(resJsonStub.calledWithExactly(204)).to.equal(true);
         });
 
         it("should return status 500 if service throws an error", async () => {
-            assignRoleStrategyStub.rejects(new Error("error message"));
+            assignRoleStub.rejects(new Error("error message"));
 
             await (controller as any).assignRole(req, res);
 

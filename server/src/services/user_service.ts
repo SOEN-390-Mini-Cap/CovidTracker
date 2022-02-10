@@ -3,6 +3,11 @@ import { inject, injectable, named } from "inversify";
 import { UserRepository } from "../repositories/user_repository";
 import { User } from "../entities/user";
 import { Role } from "../entities/role";
+import { PatientRepository } from "../repositories/patient_repository";
+import { DoctorRepository } from "../repositories/doctor_repository";
+import { AdminRepository } from "../repositories/admin_repository";
+import { HealthOfficialRepository } from "../repositories/health_official_repository";
+import { ImmigrationOfficerRepository } from "../repositories/immigration_officer_repository";
 
 @injectable()
 export class UserService {
@@ -10,6 +15,21 @@ export class UserService {
         @inject("Repository")
         @named("UserRepository")
         private readonly userRepository: UserRepository,
+        @inject("Repository")
+        @named("PatientRepository")
+        private readonly patientRepository: PatientRepository,
+        @inject("Repository")
+        @named("DoctorRepository")
+        private readonly doctorRepository: DoctorRepository,
+        @inject("Repository")
+        @named("AdminRepository")
+        private readonly adminRepository: AdminRepository,
+        @inject("Repository")
+        @named("HealthOfficialRepository")
+        private readonly healthOfficialRepository: HealthOfficialRepository,
+        @inject("Repository")
+        @named("ImmigrationOfficerRepository")
+        private readonly immigrationOfficerRepository: ImmigrationOfficerRepository,
     ) {}
 
     async findUserByUserId(userId: number): Promise<User> {
@@ -32,29 +52,23 @@ export class UserService {
         return role;
     }
 
-    async assignRoleStrategy(userId: number, role: Role): Promise<void> {
-        const isUpdated = !!(await this.userRepository.updateUserRole(userId, role));
-
-        if (!isUpdated) {
-            throw new Error("User role is already assigned");
-        }
-
+    async assignRole(userId: number, role: Role): Promise<void> {
         switch (role) {
             case Role.PATIENT:
-                await this.userRepository.addPatient(userId);
-                return;
+                await this.patientRepository.addPatient(userId);
+                break;
             case Role.DOCTOR:
-                await this.userRepository.addDoctor(userId);
-                return;
+                await this.doctorRepository.addDoctor(userId);
+                break;
             case Role.ADMIN:
-                await this.userRepository.addAdmin(userId);
-                return;
+                await this.adminRepository.addAdmin(userId);
+                break;
             case Role.HEALTH_OFFICIAL:
-                await this.userRepository.addHealthOfficial(userId);
-                return;
+                await this.healthOfficialRepository.addHealthOfficial(userId);
+                break;
             case Role.IMMIGRATION_OFFICER:
-                await this.userRepository.addImmigrationOfficer(userId);
-                return;
+                await this.immigrationOfficerRepository.addImmigrationOfficer(userId);
+                break;
         }
     }
 }
