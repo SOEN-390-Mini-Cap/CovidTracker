@@ -192,7 +192,6 @@ export class UserRepository {
     }
 
     async addPatient(userId: number): Promise<void> {
-        console.log(this);
         const client = await this.pool.connect();
 
         const sql = `

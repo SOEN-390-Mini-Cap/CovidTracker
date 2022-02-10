@@ -3,16 +3,11 @@ import { Pool } from "pg";
 import { users } from "./seed_data/user_data";
 import * as bcrypt from "bcrypt";
 import { addresses } from "./seed_data/address_data";
-import { container } from "../src/registry";
 import { UserRepository } from "../src/repositories/user_repository";
 
 (async () => {
-    const userRepository = container.getNamed<UserRepository>("Repository", "UserRepository");
-
     const pool = new Pool();
-    const client = await pool.connect();
-
-    await client.query("BEGIN");
+    const userRepository = new UserRepository(pool);
 
     // add addresses
     await Promise.all(
@@ -33,9 +28,7 @@ import { UserRepository } from "../src/repositories/user_repository";
 
     console.log("Finished seeding users");
 
-    await client.query("COMMIT");
+    await pool.end();
 
     console.log("Finished seeding database...");
-
-    client.release();
-})().catch((e) => console.log(e));
+})();
