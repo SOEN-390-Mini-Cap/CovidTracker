@@ -28,11 +28,13 @@ function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
     });
 }
 
-function isValidRoleMiddleware(roles: Role[]): RequestHandler {
-    const userService = container.getNamed<UserService>("Service", "UserService");
+const isValidAdminMiddleware = isValidRoleMiddleware([Role.ADMIN]);
 
+function isValidRoleMiddleware(roles: Role[]): RequestHandler {
     return async function (req: Request, res: Response, next: Next): Promise<void> {
         try {
+            const userService = container.getNamed<UserService>("Service", "UserService");
+
             const userId = req["token"].userId;
             const role = await userService.findRoleByUserId(userId);
 
@@ -53,4 +55,4 @@ function isValidRoleMiddleware(roles: Role[]): RequestHandler {
     };
 }
 
-export { extractJwtMiddleware, isValidRoleMiddleware };
+export { extractJwtMiddleware, isValidAdminMiddleware };
