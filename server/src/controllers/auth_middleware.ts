@@ -8,7 +8,7 @@ function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        res.json(401);
+        res.json(401, "No authorization header found");
         return;
     }
 
@@ -16,7 +16,7 @@ function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
         if (err) {
-            res.json(403);
+            res.json(403, "Invalid token provided");
             return;
         }
 
@@ -34,7 +34,7 @@ function isValidRoleMiddleware(roles: Role[]): RequestHandler {
     return async function (req: Request, res: Response, next: Next): Promise<void> {
         try {
             const userId = req["token"].userId;
-            const role = await userService.findUserRoleById(userId);
+            const role = await userService.findRoleByUserId(userId);
 
             const isRoleValid = roles.includes(role);
             if (!isRoleValid) {

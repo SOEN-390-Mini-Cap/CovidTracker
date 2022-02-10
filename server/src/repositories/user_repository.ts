@@ -175,7 +175,7 @@ export class UserRepository {
         return res.rows[0]?.user_id;
     }
 
-    async findUserRoleByUserId(userId: number): Promise<Role> {
+    async findRoleByUserId(userId: number): Promise<Role> {
         const client = await this.pool.connect();
 
         const sql = `

@@ -6,6 +6,7 @@ import * as jwt from "jsonwebtoken";
 import { Token } from "../entities/token";
 import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
+import { AuthenticationError } from "../entities/errors/authentication_error";
 
 @injectable()
 export class AuthenticationService {
@@ -27,12 +28,12 @@ export class AuthenticationService {
     async signIn(email: string, password: string): Promise<Token> {
         const user = await this.userRepository.findUserByEmail(email);
         if (!user) {
-            throw new Error("Invalid email and / or password");
+            throw new AuthenticationError();
         }
 
         const isMatch = await bcrypt.compare(password, user.account.password);
         if (!isMatch) {
-            throw new Error("Invalid email and / or password");
+            throw new AuthenticationError();
         }
 
         return this.signToken(user.account.userId);

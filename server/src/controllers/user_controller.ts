@@ -3,7 +3,6 @@ import { Request, Response } from "restify";
 import { Controller, Get, interfaces, Put } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { UserService } from "../services/user_service";
-import { AuthorizationError } from "../entities/errors/authorization_error";
 import * as Joi from "joi";
 import { ROLES } from "../entities/role";
 
@@ -25,11 +24,7 @@ export class UserController implements interfaces.Controller {
             user.account.password = "";
             res.json(200, user);
         } catch (error) {
-            if (error instanceof AuthorizationError) {
-                res.json(error.statusCode, { error: error.toString() });
-            } else {
-                res.json(500, { error: error.toString() });
-            }
+            res.json(error.statusCode || 500, { error: error.message });
         }
     }
 
@@ -50,7 +45,7 @@ export class UserController implements interfaces.Controller {
 
             res.json(204);
         } catch (error) {
-            res.json(500, { error: error.message });
+            res.json(error.statusCode || 500, { error: error.message });
         }
     }
 }
