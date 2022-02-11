@@ -18,7 +18,7 @@ export class StatusRepository {
         await client.query(sql, [JSON.stringify(fields), patientId]).finally(() => client.release());
     }
 
-    async findStatusFieldsByPatientId(patientId: number): Promise<StatusFields> {
+    async findStatusFields(patientId: number): Promise<StatusFields> {
         const client = await this.pool.connect();
 
         const sql = `

@@ -28,7 +28,7 @@ export class PatientService {
             throw new AuthorizationError();
         }
 
-        const userStatusFields = await this.statusRepository.findStatusFieldsByPatientId(patientId);
+        const userStatusFields = await this.statusRepository.findStatusFields(patientId);
         if (userStatusFields) {
             throw new Error("The status fields have already been set for this patient");
         }
