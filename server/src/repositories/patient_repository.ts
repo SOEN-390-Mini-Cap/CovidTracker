@@ -26,7 +26,7 @@ export class PatientRepository {
         client.release();
     }
 
-    async assignDoctor(patientId: number, doctorId: number): Promise<void> {
+    async updateAssignedDoctor(patientId: number, doctorId: number): Promise<void> {
         const client = await this.pool.connect();
 
         await client.query(
@@ -37,5 +37,18 @@ export class PatientRepository {
         );
 
         client.release();
+    }
+
+    async findAssignedDoctorId(patientId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT assigned_doctor_id
+            FROM patients
+            WHERE patient_id = $1
+        `;
+
+        const res = await client.query(sql, [patientId]).finally(() => client.release());
+        return res.rows[0]?.assigned_doctor_id;
     }
 }
