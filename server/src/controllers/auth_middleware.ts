@@ -29,6 +29,7 @@ function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
 }
 
 const isValidAdminMiddleware = isValidRoleMiddleware([Role.ADMIN]);
+const isValidDoctorMiddleware = isValidRoleMiddleware([Role.DOCTOR]);
 
 function isValidRoleMiddleware(roles: Role[]): RequestHandler {
     return async function (req: Request, res: Response, next: Next): Promise<void> {
@@ -55,4 +56,4 @@ function isValidRoleMiddleware(roles: Role[]): RequestHandler {
     };
 }
 
-export { extractJwtMiddleware, isValidAdminMiddleware };
+export { extractJwtMiddleware, isValidAdminMiddleware, isValidDoctorMiddleware };

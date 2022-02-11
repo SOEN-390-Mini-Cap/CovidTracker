@@ -8,7 +8,7 @@ import { Pool } from "pg";
 import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
-import { extractJwtMiddleware, isValidAdminMiddleware } from "./controllers/auth_middleware";
+import { extractJwtMiddleware, isValidAdminMiddleware, isValidDoctorMiddleware } from "./controllers/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
 import { DoctorRepository } from "./repositories/doctor_repository";
 import { AdminRepository } from "./repositories/admin_repository";
@@ -73,5 +73,6 @@ container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
 // Middleware
 container.bind<RequestHandler>("extractJwtMiddleware").toConstantValue(extractJwtMiddleware);
 container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidAdminMiddleware);
+container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidDoctorMiddleware);
 
 export { container };

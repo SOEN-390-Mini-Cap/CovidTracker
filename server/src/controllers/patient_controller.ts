@@ -14,9 +14,10 @@ export class PatientController implements interfaces.Controller {
         private readonly patientService: PatientService,
     ) {}
 
-    @Post("/:patientId/statuses/fields", "extractJwtMiddleware")
+    @Post("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidDoctorMiddleware")
     private async setStatusFields(req: Request, res: Response): Promise<void> {
         try {
+            const doctorId = req["token"].userId;
             const { value, error } = statusFieldsSchema.validate({
                 patientId: req.params.patientId,
                 fields: req.body,
@@ -27,7 +28,7 @@ export class PatientController implements interfaces.Controller {
                 return;
             }
 
-            await this.patientService.setStatusFields(value.patientId, value.fields);
+            await this.patientService.setStatusFields(doctorId, value.patientId, value.fields);
 
             res.json(201);
         } catch (error) {
