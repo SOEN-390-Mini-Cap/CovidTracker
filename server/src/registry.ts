@@ -14,6 +14,8 @@ import { DoctorRepository } from "./repositories/doctor_repository";
 import { AdminRepository } from "./repositories/admin_repository";
 import { HealthOfficialRepository } from "./repositories/health_official_repository";
 import { ImmigrationOfficerRepository } from "./repositories/immigration_officer_repository";
+import { PatientController } from "./controllers/patient_controller";
+import { PatientService } from "./services/patient_service";
 
 const container = new Container();
 
@@ -24,6 +26,7 @@ container
     .to(AuthenticationController)
     .whenTargetNamed("AuthenticationController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTargetNamed("UserController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(PatientController).whenTargetNamed("PatientController");
 
 // Services
 container
@@ -32,6 +35,7 @@ container
     .inSingletonScope()
     .whenTargetNamed("AuthenticationService");
 container.bind<UserService>("Service").to(UserService).inSingletonScope().whenTargetNamed("UserService");
+container.bind<PatientService>("Service").to(PatientService).inSingletonScope().whenTargetNamed("PatientService");
 
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");

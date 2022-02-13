@@ -35,7 +35,7 @@ import { PatientRepository } from "../src/repositories/patient_repository";
     // Make user patient
     await patientRepository.addPatient(2);
     // assign patient to doctor
-    await patientRepository.assignDoctor(2, 1);
+    //await patientRepository.assignDoctor(2, 1);
     console.log("Finished seeding users");
 
     await pool.end();
