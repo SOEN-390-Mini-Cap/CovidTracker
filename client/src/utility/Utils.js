@@ -1,5 +1,5 @@
 // ** Checks if an object is empty (returns boolean)
-import {store} from "../redux/store";
+import { store } from "../redux/store";
 
 export const isObjEmpty = (obj) => Object.keys(obj).length === 0;
 

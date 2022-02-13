@@ -10,7 +10,7 @@ const PagesRoutes = [
     },
     {
         path: "/patients_assigned",
-        component: lazy(() => import("../../views/pages/PatientAssigned")),
+        component: lazy(() => import("../../views/pages/PatientsAssigned")),
         meta: {
             accessibleBy: ["ADMIN"],
         },

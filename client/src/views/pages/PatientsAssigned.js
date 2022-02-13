@@ -1,12 +1,10 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
-import {useSelector} from "react-redux";
-import { Fragment, useState, useEffect } from 'react';
-import {Card, CardBody, CardText, Col, Row} from "reactstrap";
+import { useSelector } from "react-redux";
+import { Fragment, useState, useEffect } from "react";
+import { Card, CardBody, CardText, Col, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {Activity, Box, ChevronDown, DollarSign, TrendingUp, User, Heart} from "react-feather";
-import Chart from "react-apexcharts";
-import classnames from "classnames";
+import { Activity, ChevronDown, Heart } from "react-feather";
 import Avatar from "@components/avatar";
 
 const columns = [
@@ -23,7 +21,8 @@ const columns = [
         minWidth: "200px",
         selector: (row) => (
             <Fragment>
-                <span className="fw-bold">{row.doctorName}</span><br/> {row.doctorEmail}
+                <span className="fw-bold">{row.doctorName}</span>
+                <br /> {row.doctorEmail}
             </Fragment>
         ),
     },
@@ -101,19 +100,21 @@ function PatientsAssigned() {
                     {PatientsPerDoctorCard}
                 </Col>
             </Row>
-            {patientCounts && <Card className="overflow-hidden">
-                <div className="react-dataTable">
-                    <DataTable
-                        noHeader
-                        pagination
-                        data={patientCounts.counts}
-                        columns={columns}
-                        className="react-dataTable"
-                        sortIcon={<ChevronDown size={10} />}
-                        paginationRowsPerPageOptions={[10, 25, 50, 100]}
-                    />
-                </div>
-            </Card>}
+            {patientCounts && (
+                <Card className="overflow-hidden">
+                    <div className="react-dataTable">
+                        <DataTable
+                            noHeader
+                            pagination
+                            data={patientCounts.counts}
+                            columns={columns}
+                            className="react-dataTable"
+                            sortIcon={<ChevronDown size={10} />}
+                            paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                        />
+                    </div>
+                </Card>
+            )}
         </div>
     );
 }
