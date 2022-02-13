@@ -3,7 +3,7 @@ import { inject, injectable, named } from "inversify";
 import { Pool, QueryResult } from "pg";
 import { Role } from "../entities/role";
 import { UserRepository } from "./user_repository";
-import { PatientCounts } from "../entities/patient_counts";
+import { PatientCount } from "../entities/patient_counts";
 
 @injectable()
 export class PatientRepository {
@@ -53,7 +53,7 @@ export class PatientRepository {
         return res.rows[0]?.assigned_doctor_id;
     }
 
-    async findPatientCounts(): Promise<PatientCounts> {
+    async findPatientCounts(): Promise<PatientCount[]> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -67,7 +67,7 @@ export class PatientRepository {
         return this.buildPatientCounts(res);
     }
 
-    private buildPatientCounts({ rows }: QueryResult): PatientCounts {
+    private buildPatientCounts({ rows }: QueryResult): PatientCount[] {
         return rows.map((row) => ({
             doctorId: row.user_id,
             doctorName: `${row.first_name} ${row.last_name}`,

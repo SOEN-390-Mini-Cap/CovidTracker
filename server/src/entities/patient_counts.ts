@@ -5,4 +5,8 @@ export interface PatientCount {
     numberOfPatients: number;
 }
 
-export type PatientCounts = PatientCount[];
+export interface PatientCounts {
+    total: number;
+    average: number;
+    counts: PatientCount[];
+}

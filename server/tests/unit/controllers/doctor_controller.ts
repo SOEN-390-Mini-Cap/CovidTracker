@@ -55,17 +55,21 @@ describe("doctor_controller.ts", () => {
     });
 });
 
-const mockPatientCounts: PatientCounts = [
-    {
-        doctorId: 1,
-        doctorName: "doctor2 smith",
-        doctorEmail: "test6@test.com",
-        numberOfPatients: 2,
-    },
-    {
-        doctorId: 2,
-        doctorName: "doctor1 smith",
-        doctorEmail: "test3@test.com",
-        numberOfPatients: 1,
-    },
-];
+const mockPatientCounts: PatientCounts = {
+    total: 3,
+    average: 1.5,
+    counts: [
+        {
+            doctorId: 1,
+            doctorName: "doctor2 smith",
+            doctorEmail: "test6@test.com",
+            numberOfPatients: 2,
+        },
+        {
+            doctorId: 2,
+            doctorName: "doctor1 smith",
+            doctorEmail: "test3@test.com",
+            numberOfPatients: 1,
+        },
+    ],
+};
