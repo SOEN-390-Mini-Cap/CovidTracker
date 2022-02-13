@@ -9,6 +9,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/patients_assigned",
+        component: lazy(() => import("../../views/pages/PatientAssigned")),
+        meta: {
+            accessibleBy: ["ADMIN"],
+        },
+    },
+    {
         path: "/sign_in",
         component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",
