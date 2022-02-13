@@ -1,6 +1,12 @@
-import { Activity, Circle } from "react-feather";
+import { Activity, Circle, Home } from "react-feather";
 
 export default [
+    {
+        id: "dashboard",
+        title: "Dashboard",
+        icon: <Home />,
+        navLink: "/home",
+    },
     {
         id: "doctor",
         title: "Doctor",
