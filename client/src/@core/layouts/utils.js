@@ -83,9 +83,9 @@ export const removeChildren = (children, openGroup, currentActiveGroup) => {
 }
 
 export const canViewMenuGroup = item => {
-  return item.accessibleBy.includes(store.getState().auth.userData.user.role);
+  return item.accessibleBy.includes(store.getState()?.auth?.userData?.user?.role);
 }
 
 export const canViewMenuItem = item => {
-  return item.accessibleBy.includes(store.getState().auth.userData.user.role);
+  return item.accessibleBy.includes(store.getState()?.auth?.userData?.user?.role);
 }
