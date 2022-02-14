@@ -4,7 +4,6 @@ import { Controller, Post, interfaces } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
-import { ROLES } from "../entities/role";
 
 @Controller("/patients")
 @injectable()
@@ -34,9 +33,9 @@ export class PatientController implements interfaces.Controller {
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
-  }
+    }
 
-  @Post("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidDoctorMiddleware")
+    @Post("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidDoctorMiddleware")
     private async setStatusFields(req: Request, res: Response): Promise<void> {
         try {
             const doctorId = req["token"].userId;

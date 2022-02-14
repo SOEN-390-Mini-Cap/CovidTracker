@@ -5,6 +5,7 @@ import { PatientController } from "../../../src/controllers/patient_controller";
 describe("patient_controller.ts", () => {
     const patientService: any = {
         setStatusFields: Function,
+        assignDoctor: Function,
     };
     const controller = new PatientController(patientService);
 
@@ -57,8 +58,8 @@ describe("patient_controller.ts", () => {
             delete req.params.patientId;
             await (controller as any).assignDoctor(req, res);
             expect(resJsonStub.calledWith(400)).to.equal(true);
-        }
-           
+        });
+
         it("should return status 500 if service throws an error", async () => {
             assignDoctor.rejects(new Error("error message"));
 

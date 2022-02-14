@@ -17,7 +17,7 @@ export class PatientService {
     ) {}
 
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
-        await this.patientRepository.assignDoctor(patientId, doctorId);
+        await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
     }
 
     async setStatusFields(doctorId: number, patientId: number, fields: StatusFields): Promise<void> {
