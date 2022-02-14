@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { Pool, QueryResult } from "pg";
+import { Pool, PoolClient, QueryResult } from "pg";
 import { User } from "../entities/user";
 import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
@@ -29,20 +29,22 @@ export class UserRepository {
                 role_id
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            RETURNING user_id
+            RETURNING user_id;
         `;
 
-        const res = await client.query(sql, [
-            userData.email,
-            userData.password,
-            userData.firstName,
-            userData.lastName,
-            userData.phoneNumber,
-            userData.gender,
-            userData.dateOfBirth.toISOString(),
-            addressId,
-            UserRepository.defaultRoleId,
-        ]);
+        const res = await client
+            .query(sql, [
+                userData.email,
+                userData.password,
+                userData.firstName,
+                userData.lastName,
+                userData.phoneNumber,
+                userData.gender,
+                userData.dateOfBirth.toISOString(),
+                addressId,
+                UserRepository.defaultRoleId,
+            ])
+            .finally(async () => client.release());
 
         return res.rows[0].user_id;
     }
@@ -154,6 +156,42 @@ export class UserRepository {
             ])
             .finally(async () => client.release());
         return res.rows[0].address_id;
+    }
+
+    async findRoleByUserId(userId: number): Promise<Role> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT roles.role_name
+            FROM users, roles
+            WHERE users.role_id = roles.role_id
+            AND users.user_id = $1;
+        `;
+
+        const res = await client.query(sql, [userId]).finally(async () => client.release());
+        return res.rows[0]?.role_name;
+    }
+
+    async updateUserRoleHelper(client: PoolClient, userId: number, role: Role): Promise<void> {
+        const sql = `
+            UPDATE users
+            SET role_id = roles.role_id
+            FROM roles
+            WHERE roles.role_name = $1
+            AND users.user_id = $2
+            AND users.role_id = $3
+            RETURNING users.user_id;
+        `;
+
+        const res = await client.query(sql, [role, userId, UserRepository.defaultRoleId]);
+
+        const isUpdated = !!res.rows[0]?.user_id;
+        if (!isUpdated) {
+            await client.query("ROLLBACK;");
+            client.release();
+
+            throw new Error("User role is already assigned");
+        }
     }
 
     private buildUser({ rows }: QueryResult): User {

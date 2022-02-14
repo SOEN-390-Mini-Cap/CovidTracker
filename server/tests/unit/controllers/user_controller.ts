@@ -8,6 +8,7 @@ import { Role } from "../../../src/entities/role";
 describe("user_controller.ts", () => {
     const userService: any = {
         findUserByUserId: Function,
+        assignRole: Function,
     };
     const controller = new UserController(userService);
 
@@ -52,6 +53,66 @@ describe("user_controller.ts", () => {
             findUserByUserIdStub.rejects(new Error("error message"));
 
             await (controller as any).me(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("UserController::assignRole", () => {
+        let assignRoleStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: Role.ADMIN,
+                },
+                body: {
+                    role: Role.PATIENT,
+                },
+                params: {
+                    userId: 1,
+                },
+            };
+
+            assignRoleStub = sandbox.stub(userService, "assignRole");
+        });
+
+        it("should return status 204 if no errors", async () => {
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.calledWithExactly(1, Role.PATIENT)).to.equal(true);
+            expect(resJsonStub.calledWithExactly(204)).to.equal(true);
+        });
+
+        it("should return status 400 if userId is not a number", async () => {
+            req.params.userId = "userId";
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 400 if role is not valid", async () => {
+            req.body.role = "role";
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 400 if role is not passed", async () => {
+            delete req.body.role;
+            await (controller as any).assignRole(req, res);
+
+            expect(assignRoleStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            assignRoleStub.rejects(new Error("error message"));
+
+            await (controller as any).assignRole(req, res);
 
             expect(resJsonStub.calledWith(500)).to.equal(true);
         });

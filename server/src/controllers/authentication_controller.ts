@@ -19,50 +19,54 @@ export class AuthenticationController implements interfaces.Controller {
 
     @Post("/sign_up")
     private async signUp(req: Request, res: Response): Promise<void> {
-        const { value, error } = signUpSchema.validate(req.body);
+        try {
+            const { value, error } = signUpSchema.validate(req.body);
 
-        if (error) {
-            res.json(400, error);
-            return;
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const userData: RequestUser = {
+                firstName: value.firstName,
+                lastName: value.lastName,
+                phoneNumber: value.phoneNumber,
+                gender: value.gender,
+                dateOfBirth: value.dateOfBirth,
+                email: value.email,
+                password: value.password,
+            };
+            const addressData: RequestAddress = {
+                streetAddress: value.streetAddress,
+                streetAddressLineTwo: value.streetAddressLineTwo || "",
+                city: value.city,
+                postalCode: value.postalCode,
+                province: value.province,
+                country: "canada",
+            };
+
+            const token = await this.authenticationService.signUp(userData, addressData);
+            res.json(201, { token });
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
         }
-
-        const userData: RequestUser = {
-            firstName: value.firstName,
-            lastName: value.lastName,
-            phoneNumber: value.phoneNumber,
-            gender: value.gender,
-            dateOfBirth: value.dateOfBirth,
-            email: value.email,
-            password: value.password,
-        };
-        const addressData: RequestAddress = {
-            streetAddress: value.streetAddress,
-            streetAddressLineTwo: value.streetAddressLineTwo || "",
-            city: value.city,
-            postalCode: value.postalCode,
-            province: value.province,
-            country: "canada",
-        };
-
-        await this.authenticationService
-            .signUp(userData, addressData)
-            .then((token) => res.json(201, { token }))
-            .catch((error) => res.json(500, { error: error.toString() }));
     }
 
     @Post("/sign_in")
     private async signIn(req: Request, res: Response): Promise<void> {
-        const { value, error } = signInSchema.validate(req.body);
+        try {
+            const { value, error } = signInSchema.validate(req.body);
 
-        if (error) {
-            res.json(400, error);
-            return;
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const token = await this.authenticationService.signIn(value.email, value.password);
+            res.json(200, { token });
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
         }
-
-        await this.authenticationService
-            .signIn(value.email, value.password)
-            .then((token) => res.json(200, { token }))
-            .catch((error) => res.json(500, { error: error.toString() }));
     }
 }
 

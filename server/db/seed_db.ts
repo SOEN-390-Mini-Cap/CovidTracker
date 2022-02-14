@@ -3,16 +3,14 @@ import { Pool } from "pg";
 import { users } from "./seed_data/user_data";
 import * as bcrypt from "bcrypt";
 import { addresses } from "./seed_data/address_data";
-import { container } from "../src/registry";
 import { UserRepository } from "../src/repositories/user_repository";
+import { DoctorRepository } from "../src/repositories/doctor_repository";
+import { PatientRepository } from "../src/repositories/patient_repository";
+import { AdminRepository } from "../src/repositories/admin_repository";
 
 (async () => {
-    const userRepository = container.getNamed<UserRepository>("Repository", "UserRepository");
-
     const pool = new Pool();
-    const client = await pool.connect();
-
-    await client.query("BEGIN");
+    const userRepository = new UserRepository(pool);
 
     // add addresses
     await Promise.all(
@@ -31,11 +29,29 @@ import { UserRepository } from "../src/repositories/user_repository";
         }),
     );
 
+    const doctorRepository = new DoctorRepository(pool, userRepository);
+    const patientRepository = new PatientRepository(pool, userRepository);
+    const adminRepository = new AdminRepository(pool, userRepository);
+
+    // Make user doctor
+    await doctorRepository.addDoctor(1);
+    await doctorRepository.addDoctor(2);
+
+    // Make user patient
+    await patientRepository.addPatient(3);
+    await patientRepository.addPatient(4);
+    await patientRepository.addPatient(5);
+
+    // assign patient to doctor
+    await patientRepository.updateAssignedDoctor(3, 1);
+    await patientRepository.updateAssignedDoctor(4, 1);
+    await patientRepository.updateAssignedDoctor(5, 2);
+
+    await adminRepository.addAdmin(6);
+
     console.log("Finished seeding users");
 
-    await client.query("COMMIT");
+    await pool.end();
 
     console.log("Finished seeding database...");
-
-    client.release();
-})().catch((e) => console.log(e));
+})();

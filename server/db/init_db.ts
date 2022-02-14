@@ -10,25 +10,24 @@ import { readFileSync } from "fs";
         "roles.sql",
         "addresses.sql",
         "users.sql",
-        "patients.sql",
         "doctors.sql",
+        "patients.sql",
         "admins.sql",
         "health_officials.sql",
         "immigration_officers.sql",
     ];
     const files = schemas.map((schema) => `${baseDir}/${schema}`);
 
-    const client = await pool.connect();
-
-    await client.query("BEGIN");
+    await pool.query("BEGIN;");
 
     for (const file of files) {
         const sql = readFileSync(file).toString();
-        const res = await client.query(sql);
-        console.log(res);
+        await pool.query(sql);
     }
 
-    await client.query("COMMIT");
+    await pool.query("COMMIT;");
 
-    client.release();
+    await pool.end();
+
+    console.log("Finished initializing database...");
 })();
