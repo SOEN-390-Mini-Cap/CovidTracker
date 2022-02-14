@@ -1,6 +1,7 @@
 // ** React Imports
 import { useContext } from 'react'
 import { AbilityContext } from '@src/utility/context/Can'
+import {store} from "../../redux/store";
 
 /**
  * Return which component to render based on it's data/context
@@ -82,19 +83,9 @@ export const removeChildren = (children, openGroup, currentActiveGroup) => {
 }
 
 export const canViewMenuGroup = item => {
-  const ability = useContext(AbilityContext)
-  // ! This same logic is used in canViewHorizontalNavMenuGroup and canViewHorizontalNavMenuHeaderGroup. So make sure to update logic in them as well
-  const hasAnyVisibleChild = item.children && item.children.some(i => ability.can(i.action, i.resource))
-
-  // ** If resource and action is defined in item => Return based on children visibility (Hide group if no child is visible)
-  // ** Else check for ability using provided resource and action along with checking if has any visible child
-  if (!(item.action && item.resource)) {
-    return hasAnyVisibleChild
-  }
-  return ability.can(item.action, item.resource) && hasAnyVisibleChild
+  return item.accessibleBy.includes(store.getState()?.auth?.userData?.user?.role);
 }
 
 export const canViewMenuItem = item => {
-  const ability = useContext(AbilityContext)
-  return ability.can(item.action, item.resource)
+  return item.accessibleBy.includes(store.getState()?.auth?.userData?.user?.role);
 }

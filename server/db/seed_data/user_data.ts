@@ -37,4 +37,40 @@ export const users = [
         },
         addressId: 2,
     },
+    {
+        userData: {
+            email: "test4@test.com",
+            password: "Test123!",
+            firstName: "john",
+            lastName: "smith",
+            phoneNumber: "514-245-6532",
+            gender: Gender.MALE,
+            dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+        },
+        addressId: 2,
+    },
+    {
+        userData: {
+            email: "test5@test.com",
+            password: "Test123!",
+            firstName: "john",
+            lastName: "smith",
+            phoneNumber: "514-245-6532",
+            gender: Gender.MALE,
+            dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+        },
+        addressId: 2,
+    },
+    {
+        userData: {
+            email: "test6@test.com",
+            password: "Test123!",
+            firstName: "john",
+            lastName: "smith",
+            phoneNumber: "514-245-6532",
+            gender: Gender.MALE,
+            dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+        },
+        addressId: 2,
+    },
 ];

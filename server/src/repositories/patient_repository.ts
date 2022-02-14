@@ -1,8 +1,9 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 import { Role } from "../entities/role";
 import { UserRepository } from "./user_repository";
+import { PatientCount } from "../entities/patient_counts";
 
 @injectable()
 export class PatientRepository {
@@ -26,7 +27,7 @@ export class PatientRepository {
         client.release();
     }
 
-    async assignDoctor(patientId: number, doctorId: number): Promise<void> {
+    async updateAssignedDoctor(patientId: number, doctorId: number): Promise<void> {
         const client = await this.pool.connect();
 
         await client.query(
@@ -37,5 +38,41 @@ export class PatientRepository {
         );
 
         client.release();
+    }
+
+    async findAssignedDoctorId(patientId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT assigned_doctor_id
+            FROM patients
+            WHERE patient_id = $1
+        `;
+
+        const res = await client.query(sql, [patientId]).finally(() => client.release());
+        return res.rows[0]?.assigned_doctor_id;
+    }
+
+    async findPatientCounts(): Promise<PatientCount[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT user_id, first_name, last_name, email, count(*)
+            FROM patients
+            JOIN users on assigned_doctor_id = user_id
+            GROUP BY user_id;
+        `;
+
+        const res = await client.query(sql).finally(() => client.release());
+        return this.buildPatientCounts(res);
+    }
+
+    private buildPatientCounts({ rows }: QueryResult): PatientCount[] {
+        return rows.map((row) => ({
+            doctorId: row.user_id,
+            doctorName: `${row.first_name} ${row.last_name}`,
+            doctorEmail: row.email,
+            numberOfPatients: +row.count,
+        }));
     }
 }
