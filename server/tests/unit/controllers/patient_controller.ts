@@ -25,7 +25,7 @@ describe("patient_controller.ts", () => {
     });
 
     describe("PatientController::assignDoctor", () => {
-        let assignDoctor: SinonStub;
+        let assignDoctorStub: SinonStub;
 
         beforeEach(() => {
             req = {
@@ -37,13 +37,13 @@ describe("patient_controller.ts", () => {
                 },
             };
 
-            assignDoctor = sandbox.stub(patientService, "assignDoctor");
+            assignDoctorStub = sandbox.stub(patientService, "assignDoctor");
         });
 
         it("should assign doctorId to the given patient", async () => {
             await (controller as any).assignDoctor(req, res);
 
-            expect(assignDoctor.calledWithExactly(1, 5)).to.equal(true);
+            expect(assignDoctorStub.calledWithExactly(1, 5)).to.equal(true);
             expect(resJsonStub.calledWith(201)).to.equal(true);
         });
 
@@ -61,7 +61,7 @@ describe("patient_controller.ts", () => {
         });
 
         it("should return status 500 if service throws an error", async () => {
-            assignDoctor.rejects(new Error("error message"));
+            assignDoctorStub.rejects(new Error("error message"));
 
             await (controller as any).assignDoctor(req, res);
 
