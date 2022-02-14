@@ -120,13 +120,7 @@ const AccountSignUp = ({ stepper, globalData }) => {
                         control={control}
                         id="email"
                         name="email"
-                        render={({ field }) => (
-                            <Input
-                                type="email"
-                                invalid={errors.email && true}
-                                {...field}
-                            />
-                        )}
+                        render={({ field }) => <Input type="email" invalid={errors.email && true} {...field} />}
                     />
                     {errors.email && <FormFeedback>{errors.email.message}</FormFeedback>}
                 </Col>

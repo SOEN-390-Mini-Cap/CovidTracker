@@ -9,5 +9,5 @@ module.exports = {
         sourceType: "module",
     },
     extends: ["react-app", "eslint:recommended", "plugin:prettier/recommended"],
-    ignorePatterns: ["libs/", "src/@core"],
+    ignorePatterns: ["libs/", "src/@core", "build/", "node_modules/"],
 };

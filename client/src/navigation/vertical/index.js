@@ -1,14 +1,26 @@
-// ** Navigation imports
-import apps from "./apps";
-import pages from "./pages";
-import forms from "./forms";
-import tables from "./tables";
-import others from "./others";
-import charts from "./charts";
-import dashboards from "./dashboards";
-import uiElements from "./ui-elements";
+import { Activity, Circle, Home } from "react-feather";
 
-// ** Merge & Export
-// export default [...dashboards, ...apps, ...pages, ...uiElements, ...forms, ...tables, ...charts, ...others];
-
-export default [];
+export default [
+    {
+        id: "dashboard",
+        title: "Dashboard",
+        icon: <Home />,
+        navLink: "/home",
+        accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
+    },
+    {
+        id: "doctor",
+        title: "Doctor",
+        icon: <Activity />,
+        accessibleBy: ["ADMIN"],
+        children: [
+            {
+                id: "patientsAssigned",
+                title: "Patients Assigned",
+                icon: <Circle />,
+                navLink: "/patients_assigned",
+                accessibleBy: ["ADMIN"],
+            },
+        ],
+    },
+];
