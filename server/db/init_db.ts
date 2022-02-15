@@ -15,6 +15,7 @@ import { readFileSync } from "fs";
         "admins.sql",
         "health_officials.sql",
         "immigration_officers.sql",
+        "statuses.sql",
     ];
     const files = schemas.map((schema) => `${baseDir}/${schema}`);
 
