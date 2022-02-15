@@ -14,7 +14,7 @@ export class PatientController implements interfaces.Controller {
         private readonly patientService: PatientService,
     ) {}
 
-    @Post(":patientId/doctors", "extractJwtMiddleware", "isValidAdminMiddleware")
+    @Post("/:patientId/doctors", "extractJwtMiddleware", "isValidAdminMiddleware")
     async assignDoctor(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = doctorSchema.validate({
@@ -29,7 +29,7 @@ export class PatientController implements interfaces.Controller {
 
             await this.patientService.assignDoctor(value.patientId, value.doctorId);
 
-            res.json(201, { doctorId: value.doctorId });
+            res.json(201);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
