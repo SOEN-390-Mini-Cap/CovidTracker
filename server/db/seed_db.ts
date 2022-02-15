@@ -43,7 +43,8 @@ import { AdminRepository } from "../src/repositories/admin_repository";
     await patientRepository.addPatient(5);
 
     // assign patient to doctor
-    await patientRepository.updateAssignedDoctor(3, 1);
+    //await patientRepository.assignDoctor(2, 1);
+    //await patientRepository.updateAssignedDoctor(3, 1);
     await patientRepository.updateAssignedDoctor(4, 1);
     await patientRepository.updateAssignedDoctor(5, 2);
 
