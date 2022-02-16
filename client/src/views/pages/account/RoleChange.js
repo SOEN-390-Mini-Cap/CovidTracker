@@ -1,13 +1,13 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import Select from "react-select";
-import { Button, Card, CardBody, Form, FormFeedback, Input, Label } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Input, Label } from "reactstrap";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Check, XCircle } from "react-feather";
+import classnames from "classnames";
 
 async function assignRole(data, token) {
     await axios.put(
@@ -24,16 +24,15 @@ async function assignRole(data, token) {
 }
 
 const selectToken = (state) => state.auth.userData.token;
-const formatErrorMessage = (err) => err.charAt(0).toUpperCase() + err.slice(1);
 
 function RoleChange() {
     const defaultValues = {
-        userId: 1,
+        userId: "",
         role: null,
     };
 
     const AssignRoleSchema = yup.object().shape({
-        userId: yup.number().required("Enter a valid userId."),
+        userId: yup.number("Enter a user ID.").typeError("Enter a user ID.").required("Enter a user ID."),
         role: yup
             .object({
                 label: yup.string().required("Select a role."),
@@ -53,109 +52,78 @@ function RoleChange() {
 
     const {
         control,
-        setError,
         handleSubmit,
         formState: { errors },
     } = useForm({ defaultValues, resolver: yupResolver(AssignRoleSchema) });
 
     const token = useSelector(selectToken);
 
-    const successToaster = () =>
-        toast.success("Role Added to User", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-    const errorToaster = () =>
-        toast.error("Could not Assign Role to User", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-
     const onSubmit = async (data) => {
         try {
-            await assignRole(data, token).then(successToaster);
+            await assignRole(data, token);
+            toast.success("Role Added to User", {
+                position: "top-right",
+                autoClose: 5000,
+            });
         } catch (error) {
-            errorToaster();
-            setError("req", {
-                type: "manual",
-                message: error.toString(),
+            toast.error("Could not Assign Role to User", {
+                position: "top-right",
+                autoClose: 5000,
             });
         }
     };
 
     return (
         <div>
-            <BreadCrumbsPage breadCrumbTitle="Roles" breadCrumbParent="Users" breadCrumbActive="Roles" />
-            <div className="auth-wrapper auth-basic px-2">
-                <div className="auth-inner my-2">
-                    <Card className="mb-0">
-                        <CardBody className="sign-in-card-body">
-                            <h2>Add a Role</h2>
-                            <Form className="auth-login-form sign-in-form">
-                                <div className="mb-1">
-                                    <Label className="form-label" for="userId">
-                                        User Id
-                                    </Label>
-                                    <Controller
-                                        id="userId"
-                                        name="userId"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Input autoFocus type="number" invalid={errors.number && true} {...field} />
-                                        )}
+            <BreadCrumbsPage breadCrumbTitle="Roles" breadCrumbParent="User" breadCrumbActive="Roles" />
+            <Card className="assign-role-card mx-auto">
+                <CardBody>
+                    <CardTitle className="mb-0">Add a Role</CardTitle>
+                </CardBody>
+                <CardFooter>
+                    <Form>
+                        <div className="mb-1">
+                            <Label className="form-label" for="userId">
+                                User ID
+                            </Label>
+                            <Controller
+                                id="userId"
+                                name="userId"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input autoFocus type="number" invalid={!!errors.userId} {...field} />
+                                )}
+                            />
+                            {errors.userId && <FormFeedback className="d-block">{errors.userId.message}</FormFeedback>}
+                        </div>
+                        <div className="mb-1">
+                            <Label className="form-label" for="d-role">
+                                Role
+                            </Label>
+                            <Controller
+                                id="role"
+                                name="role"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        options={options}
+                                        classNamePrefix="select"
+                                        className={classnames("react-select", {
+                                            "is-invalid": !!errors.role,
+                                        })}
+                                        placeholder=""
                                     />
-                                    {errors.number && (
-                                        <FormFeedback className="d-block">
-                                            {formatErrorMessage(errors.number.message)}
-                                        </FormFeedback>
-                                    )}
-                                </div>
-                                <div className="mb-1">
-                                    <Label className="form-label" for="d-role">
-                                        Role
-                                    </Label>
-                                    <Controller
-                                        id="role"
-                                        name="role"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Select
-                                                {...field}
-                                                options={options}
-                                                className="react-select"
-                                                classNamePrefix="select"
-                                            />
-                                        )}
-                                    />
-                                    {errors.role && (
-                                        <FormFeedback className="d-block">
-                                            {formatErrorMessage(errors.role.message)}
-                                        </FormFeedback>
-                                    )}
-                                </div>
-                                <Button
-                                    onClick={handleSubmit(onSubmit)}
-                                    color="primary"
-                                    block
-                                    className="mt-1 btn-sign-in"
-                                >
-                                    Add a Role
-                                </Button>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                </div>
-            </div>
+                                )}
+                            />
+                            {errors.role && <FormFeedback className="d-block">{errors.role.message}</FormFeedback>}
+                        </div>
+                        <Button onClick={handleSubmit(onSubmit)} color="primary" block className="mt-2 mb-1">
+                            Add a Role
+                        </Button>
+                    </Form>
+                </CardFooter>
+            </Card>
         </div>
     );
 }

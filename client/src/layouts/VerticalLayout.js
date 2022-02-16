@@ -72,7 +72,7 @@ const VerticalLayout = (props) => {
     //   axios.get(URL).then(response => setMenuData(response.data))
     // }, [])
     return (
-        <Layout menuData={navigation} navbar={<CustomNavbar />} {...props}>
+        <Layout menuData={navigation} navbar={<CustomNavbar />} footer={<div />} {...props}>
             {props.children}
         </Layout>
     );

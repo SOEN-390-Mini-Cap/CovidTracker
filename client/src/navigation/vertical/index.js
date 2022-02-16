@@ -9,8 +9,8 @@ export default [
         accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
     },
     {
-        id: "users",
-        title: "Users",
+        id: "user",
+        title: "User",
         icon: <User />,
         accessibleBy: ["ADMIN"],
         children: [
