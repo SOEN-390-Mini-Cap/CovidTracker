@@ -52,9 +52,6 @@ const CustomNavbar = () => {
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>
-                            <DropdownItem tag={Link} onClick={() => {}} to="/assign_role">
-                                <span className="align-middle">Assign Role</span>
-                            </DropdownItem>
                             <DropdownItem tag={Link} onClick={() => dispatch(handleLogout())} to="/sign_in">
                                 <span className="align-middle">Logout</span>
                             </DropdownItem>

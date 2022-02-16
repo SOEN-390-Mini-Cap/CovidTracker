@@ -1,4 +1,4 @@
-import { Activity, Circle, Home } from "react-feather";
+import { Activity, Circle, Home, User } from "react-feather";
 
 export default [
     {
@@ -7,6 +7,21 @@ export default [
         icon: <Home />,
         navLink: "/home",
         accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
+    },
+    {
+        id: "users",
+        title: "Users",
+        icon: <User />,
+        accessibleBy: ["ADMIN"],
+        children: [
+            {
+                id: "roles",
+                title: "Roles",
+                icon: <Circle />,
+                navLink: "/assign_role",
+                accessibleBy: ["ADMIN"],
+            },
+        ],
     },
     {
         id: "doctor",
