@@ -76,6 +76,27 @@ export class PatientController implements interfaces.Controller {
             res.json(error.statusCode || 500, { error: error.message });
         }
     }
+
+    @Post("/:patientId/statuses", "extractJwtMiddleware", "isValidPatientMiddleware")
+    private async submitStatus(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = statusSchema.validate({
+                patientId: req["token"].userId,
+                status: req.body,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            await this.patientService.submitStatus(value.patientId, value.status);
+
+            res.json(201);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
 }
 
 const doctorSchema = Joi.object({
@@ -89,3 +110,8 @@ const statusFieldsSchema = Joi.object({
 }).required();
 
 const patientSchema = Joi.object({ patientId: Joi.number().required() }).required();
+
+const statusSchema = Joi.object({
+    patientId: Joi.number().required(),
+    status: Joi.object().required(),
+}).required();

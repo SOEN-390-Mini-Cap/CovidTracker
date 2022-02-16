@@ -4,6 +4,7 @@ import { StatusRepository } from "../repositories/status_repository";
 import { StatusFields } from "../entities/status_fields";
 import { PatientRepository } from "../repositories/patient_repository";
 import { AuthorizationError } from "../entities/errors/authorization_error";
+import { Status } from "../entities/status";
 
 @injectable()
 export class PatientService {
@@ -42,5 +43,9 @@ export class PatientService {
 
     async getPatientStatusFields(patientId: number): Promise<StatusFields> {
         return await this.statusRepository.findStatusFields(patientId);
+    }
+
+    async submitStatus(patientId: number, status: Status): Promise<void> {
+        return;
     }
 }
