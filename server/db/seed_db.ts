@@ -11,45 +11,36 @@ import { AdminRepository } from "../src/repositories/admin_repository";
 (async () => {
     const pool = new Pool();
     const userRepository = new UserRepository(pool);
-
-    // add addresses
-    await Promise.all(
-        addresses.map(async (address) => {
-            await userRepository.addAddress(address);
-        }),
-    );
-
-    console.log("Finished seeding addresses");
-
-    // add users
-    await Promise.all(
-        users.map(async ({ userData, addressId }) => {
-            userData.password = await bcrypt.hash(userData.password, 10);
-            await userRepository.addUser(userData, addressId);
-        }),
-    );
-
     const doctorRepository = new DoctorRepository(pool, userRepository);
     const patientRepository = new PatientRepository(pool, userRepository);
     const adminRepository = new AdminRepository(pool, userRepository);
 
-    // Make user doctor
+    // add addresses
+    for (const address of addresses) {
+        await userRepository.addAddress(address);
+    }
+
+    // add users
+    for (const { userData, addressId } of users) {
+        userData.password = await bcrypt.hash(userData.password, 10);
+        await userRepository.addUser(userData, addressId);
+    }
+
+    // add doctors
     await doctorRepository.addDoctor(1);
     await doctorRepository.addDoctor(2);
 
-    // Make user patient
+    // add patients
     await patientRepository.addPatient(3);
     await patientRepository.addPatient(4);
     await patientRepository.addPatient(5);
 
-    // assign patient to doctor
-    await patientRepository.updateAssignedDoctor(3, 1);
-    await patientRepository.updateAssignedDoctor(4, 1);
-    await patientRepository.updateAssignedDoctor(5, 2);
-
+    // add admin
     await adminRepository.addAdmin(6);
 
-    console.log("Finished seeding users");
+    // assign patient to doctor
+    await patientRepository.updateAssignedDoctor(4, 1);
+    await patientRepository.updateAssignedDoctor(5, 2);
 
     await pool.end();
 

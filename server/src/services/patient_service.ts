@@ -16,6 +16,10 @@ export class PatientService {
         private readonly statusRepository: StatusRepository,
     ) {}
 
+    async assignDoctor(patientId: number, doctorId: number): Promise<void> {
+        await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
+    }
+
     async setStatusFields(doctorId: number, patientId: number, fields: StatusFields): Promise<void> {
         // verify 3 required fields are present and true
         const includesRequiredFields = !!(fields.temperature && fields.weight && fields.otherSymptoms);
