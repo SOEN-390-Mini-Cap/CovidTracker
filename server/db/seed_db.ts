@@ -9,7 +9,7 @@ import { PatientRepository } from "../src/repositories/patient_repository";
 import { AdminRepository } from "../src/repositories/admin_repository";
 import { StatusRepository } from "../src/repositories/status_repository";
 
-(async () => {
+export async function seedDb(): Promise<void> {
     const pool = new Pool();
     const userRepository = new UserRepository(pool);
     const doctorRepository = new DoctorRepository(pool, userRepository);
@@ -47,6 +47,9 @@ import { StatusRepository } from "../src/repositories/status_repository";
     await patientRepository.updateAssignedDoctor(5, 2);
 
     await pool.end();
+}
 
+(async () => {
+    await seedDb();
     console.log("Finished seeding database...");
 })();

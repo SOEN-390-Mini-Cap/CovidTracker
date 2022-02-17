@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { Pool } from "pg";
 
-(async () => {
+export async function restoreDb(): Promise<void> {
     const tables = ["addresses", "users", "patients", "doctors", "admins", "health_officials", "immigration_officers"];
 
     const pool = new Pool();
@@ -14,6 +14,9 @@ import { Pool } from "pg";
     }
 
     await pool.end();
+}
 
+(async () => {
+    await restoreDb();
     console.log("Finished restoring database...");
 })();
