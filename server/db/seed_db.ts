@@ -8,7 +8,6 @@ import { DoctorRepository } from "../src/repositories/doctor_repository";
 import { PatientRepository } from "../src/repositories/patient_repository";
 import { AdminRepository } from "../src/repositories/admin_repository";
 import { StatusRepository } from "../src/repositories/status_repository";
-import { StatusFields } from "../src/entities/status_fields";
 
 (async () => {
     const pool = new Pool();

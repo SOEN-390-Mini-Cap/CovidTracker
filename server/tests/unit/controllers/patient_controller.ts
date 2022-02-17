@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { createSandbox, SinonStub } from "sinon";
 import { PatientController } from "../../../src/controllers/patient_controller";
-import { any } from "joi";
 
 describe("patient_controller.ts", () => {
     const patientService: any = {
