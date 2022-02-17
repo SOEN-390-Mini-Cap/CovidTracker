@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import {Pool, QueryResult} from "pg";
+import { Pool, QueryResult } from "pg";
 import { StatusFields } from "../entities/status_fields";
-import {Status} from "../entities/status";
-import {PatientStatus} from "../entities/patient_status";
+import { Status } from "../entities/status";
+import { PatientStatus } from "../entities/patient_status";
 
 @injectable()
 export class StatusRepository {

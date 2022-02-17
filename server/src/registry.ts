@@ -9,7 +9,8 @@ import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
 import {
-    extractJwtMiddleware, isSamePatientMiddleware,
+    extractJwtMiddleware,
+    isSamePatientMiddleware,
     isValidAdminMiddleware,
     isValidDoctorMiddleware,
     isValidPatientMiddleware,
