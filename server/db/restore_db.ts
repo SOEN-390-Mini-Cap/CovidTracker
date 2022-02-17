@@ -15,8 +15,3 @@ export async function restoreDb(): Promise<void> {
 
     await pool.end();
 }
-
-(async () => {
-    await restoreDb();
-    console.log("Finished restoring database...");
-})();

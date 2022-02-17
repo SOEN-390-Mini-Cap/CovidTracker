@@ -24,8 +24,13 @@ export async function seedDb(): Promise<void> {
 
     // add users
     for (const { userData, addressId } of users) {
-        userData.password = await bcrypt.hash(userData.password, 10);
-        await userRepository.addUser(userData, addressId);
+        await userRepository.addUser(
+            {
+                ...userData,
+                password: await bcrypt.hash(userData.password, 10)
+            },
+            addressId,
+        );
     }
 
     // add doctors
@@ -48,8 +53,3 @@ export async function seedDb(): Promise<void> {
 
     await pool.end();
 }
-
-(async () => {
-    await seedDb();
-    console.log("Finished seeding database...");
-})();
