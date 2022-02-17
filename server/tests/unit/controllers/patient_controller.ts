@@ -156,7 +156,7 @@ describe("patient_controller.ts", () => {
         });
 
         it("return status 400 when patientId is not passed", async () => {
-            delete req.token.userId;
+            delete req.params.patientId;
             await (controller as any).getPatientStatusFields(req, res);
             expect(getStatusFieldsStub.notCalled).to.equal(true);
             expect(resJsonStub.calledWith(400)).to.equal(true);
