@@ -4,6 +4,8 @@ import { StatusRepository } from "../repositories/status_repository";
 import { StatusFields } from "../entities/status_fields";
 import { PatientRepository } from "../repositories/patient_repository";
 import { AuthorizationError } from "../entities/errors/authorization_error";
+import { Status } from "../entities/status";
+import { datesAreOnSameDay } from "../helpers/date_helper";
 
 @injectable()
 export class PatientService {
@@ -42,5 +44,25 @@ export class PatientService {
 
     async getPatientStatusFields(patientId: number): Promise<StatusFields> {
         return await this.statusRepository.findStatusFields(patientId);
+    }
+
+    async submitStatus(patientId: number, status: Status): Promise<void> {
+        // limit the patient to a single status report per calendar day
+        const patientStatus = await this.statusRepository.findLatestStatus(patientId);
+        if (patientStatus && datesAreOnSameDay(patientStatus.createdOn, new Date())) {
+            throw new Error("A patient can only submit one status report per calendar day");
+        }
+
+        // verify that status fields sent are the same status fields that were defined
+        // by the patients doctor
+        const userStatusFields = await this.statusRepository.findStatusFields(patientId);
+        const isFormattedStatus =
+            Object.keys(status).length === Object.keys(userStatusFields).length &&
+            Object.keys(status).every((field) => status[field] !== null && field in userStatusFields);
+        if (!isFormattedStatus) {
+            throw new Error("Status is malformed");
+        }
+
+        await this.statusRepository.addStatus(patientId, status);
     }
 }

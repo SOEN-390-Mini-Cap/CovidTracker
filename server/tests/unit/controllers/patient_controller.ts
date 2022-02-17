@@ -7,6 +7,7 @@ describe("patient_controller.ts", () => {
         setStatusFields: Function,
         assignDoctor: Function,
         getPatientStatusFields: Function,
+        submitStatus: Function,
     };
     const controller = new PatientController(patientService);
 
@@ -140,9 +141,6 @@ describe("patient_controller.ts", () => {
 
         beforeEach(() => {
             req = {
-                token: {
-                    userId: 4,
-                },
                 params: {
                     patientId: 4,
                 },
@@ -157,14 +155,14 @@ describe("patient_controller.ts", () => {
             expect(resJsonStub.calledWith(201)).to.equal(true);
         });
 
-        it("return status 400 when token is not equal to param id", async () => {
-            req.token.userId = 3;
+        it("return status 400 when patientId is not passed", async () => {
+            delete req.params.patientId;
             await (controller as any).getPatientStatusFields(req, res);
             expect(getStatusFieldsStub.notCalled).to.equal(true);
             expect(resJsonStub.calledWith(400)).to.equal(true);
         });
 
-        it("return status 400 when invalid param is passed", async () => {
+        it("return status 400 when invalid patientId is passed", async () => {
             req.params.patientId = "x";
             await (controller as any).getPatientStatusFields(req, res);
             expect(getStatusFieldsStub.notCalled).to.equal(true);
@@ -175,6 +173,64 @@ describe("patient_controller.ts", () => {
             getStatusFieldsStub.rejects(new Error("error message"));
 
             await (controller as any).getPatientStatusFields(req, res);
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("PatientController::submitStatus", () => {
+        let submitStatusStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                params: {
+                    patientId: 1,
+                },
+                body: {
+                    field1: "val1",
+                    field2: "val2",
+                    field3: true,
+                    field4: 10,
+                },
+            };
+
+            submitStatusStub = sandbox.stub(patientService, "submitStatus");
+        });
+
+        it("should return status 201 when no errors", async () => {
+            await (controller as any).submitStatus(req, res);
+
+            expect(
+                submitStatusStub.calledWithExactly(1, {
+                    field1: "val1",
+                    field2: "val2",
+                    field3: true,
+                    field4: 10,
+                }),
+            ).to.equal(true);
+            expect(resJsonStub.calledWithExactly(201)).to.equal(true);
+        });
+
+        it("should return status 400 when no patient id", async () => {
+            delete req.params.patientId;
+            await (controller as any).submitStatus(req, res);
+
+            expect(submitStatusStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 400 when no status", async () => {
+            delete req.body;
+            await (controller as any).submitStatus(req, res);
+
+            expect(submitStatusStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            submitStatusStub.rejects(new Error("error message"));
+
+            await (controller as any).submitStatus(req, res);
+
             expect(resJsonStub.calledWith(500)).to.equal(true);
         });
     });

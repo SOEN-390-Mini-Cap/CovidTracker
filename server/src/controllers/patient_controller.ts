@@ -38,8 +38,8 @@ export class PatientController implements interfaces.Controller {
     @Post("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidDoctorMiddleware")
     private async setStatusFields(req: Request, res: Response): Promise<void> {
         try {
-            const doctorId = req["token"].userId;
             const { value, error } = statusFieldsSchema.validate({
+                doctorId: req["token"].userId,
                 patientId: req.params.patientId,
                 fields: req.body,
             });
@@ -49,7 +49,7 @@ export class PatientController implements interfaces.Controller {
                 return;
             }
 
-            await this.patientService.setStatusFields(doctorId, value.patientId, value.fields);
+            await this.patientService.setStatusFields(value.doctorId, value.patientId, value.fields);
 
             res.json(201);
         } catch (error) {
@@ -57,14 +57,12 @@ export class PatientController implements interfaces.Controller {
         }
     }
 
-    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware")
+    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware", "isSamePatientMiddleware")
     private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = patientSchema.validate({ patientId: req.params.patientId });
 
-            const isSamePatient = req["token"].userId === value.patientId;
-
-            if (!isSamePatient || error) {
+            if (error) {
                 res.json(400, error);
                 return;
             }
@@ -72,6 +70,27 @@ export class PatientController implements interfaces.Controller {
             const statusFields = await this.patientService.getPatientStatusFields(value.patientId);
 
             res.json(201, statusFields);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
+    @Post("/:patientId/statuses", "extractJwtMiddleware", "isValidPatientMiddleware", "isSamePatientMiddleware")
+    private async submitStatus(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = statusSchema.validate({
+                patientId: req.params.patientId,
+                status: req.body,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            await this.patientService.submitStatus(value.patientId, value.status);
+
+            res.json(201);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
@@ -84,8 +103,14 @@ const doctorSchema = Joi.object({
 }).required();
 
 const statusFieldsSchema = Joi.object({
+    doctorId: Joi.number().required(),
     patientId: Joi.number().required(),
     fields: Joi.object().pattern(/^/, Joi.bool()).required(),
 }).required();
 
 const patientSchema = Joi.object({ patientId: Joi.number().required() }).required();
+
+const statusSchema = Joi.object({
+    patientId: Joi.number().required(),
+    status: Joi.object().required(),
+}).required();
