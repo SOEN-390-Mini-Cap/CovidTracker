@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Request, Response } from "restify";
-import { Controller, Post, interfaces } from "inversify-restify-utils";
+import { Controller, Post, interfaces, Get } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
@@ -56,6 +56,26 @@ export class PatientController implements interfaces.Controller {
             res.json(error.statusCode || 500, { error: error.message });
         }
     }
+
+    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware")
+    private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = patientSchema.validate({ patientId: req.params.patientId });
+
+            const isSamePatient = req["token"].userId === value.patientId;
+
+            if (!isSamePatient || error) {
+                res.json(400, error);
+                return;
+            }
+
+            const statusFields = await this.patientService.getPatientStatusFields(value.patientId);
+
+            res.json(201, statusFields);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
 }
 
 const doctorSchema = Joi.object({
@@ -67,3 +87,5 @@ const statusFieldsSchema = Joi.object({
     patientId: Joi.number().required(),
     fields: Joi.object().pattern(/^/, Joi.bool()).required(),
 }).required();
+
+const patientSchema = Joi.object({ patientId: Joi.number().required() }).required();

@@ -32,11 +32,15 @@ export class PatientService {
             throw new AuthorizationError();
         }
 
-        const userStatusFields = await this.statusRepository.findStatusFields(patientId);
+        const userStatusFields = await this.getPatientStatusFields(patientId);
         if (userStatusFields) {
             throw new Error("The status fields have already been set for this patient");
         }
 
         await this.statusRepository.updatePatientStatusFields(patientId, fields);
+    }
+
+    async getPatientStatusFields(patientId: number): Promise<StatusFields> {
+        return await this.statusRepository.findStatusFields(patientId);
     }
 }

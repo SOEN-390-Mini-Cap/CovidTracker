@@ -7,6 +7,7 @@ import { UserRepository } from "../src/repositories/user_repository";
 import { DoctorRepository } from "../src/repositories/doctor_repository";
 import { PatientRepository } from "../src/repositories/patient_repository";
 import { AdminRepository } from "../src/repositories/admin_repository";
+import { StatusRepository } from "../src/repositories/status_repository";
 
 (async () => {
     const pool = new Pool();
@@ -14,6 +15,7 @@ import { AdminRepository } from "../src/repositories/admin_repository";
     const doctorRepository = new DoctorRepository(pool, userRepository);
     const patientRepository = new PatientRepository(pool, userRepository);
     const adminRepository = new AdminRepository(pool, userRepository);
+    const statusRepository = new StatusRepository(pool);
 
     // add addresses
     for (const address of addresses) {
@@ -34,6 +36,8 @@ import { AdminRepository } from "../src/repositories/admin_repository";
     await patientRepository.addPatient(3);
     await patientRepository.addPatient(4);
     await patientRepository.addPatient(5);
+
+    await statusRepository.updatePatientStatusFields(5, { weight: true, temperature: true, otherSymptoms: true });
 
     // add admin
     await adminRepository.addAdmin(6);
