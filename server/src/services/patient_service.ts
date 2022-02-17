@@ -39,4 +39,8 @@ export class PatientService {
 
         await this.statusRepository.updatePatientStatusFields(patientId, fields);
     }
+
+    async getPatientStatusFields(patientId: number): Promise<StatusFields> {
+        return await this.statusRepository.findStatusFields(patientId);
+    }
 }

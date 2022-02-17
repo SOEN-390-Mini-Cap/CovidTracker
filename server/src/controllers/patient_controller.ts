@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Request, Response } from "restify";
-import { Controller, Post, interfaces } from "inversify-restify-utils";
+import { Controller, Post, interfaces, Get } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
@@ -52,6 +52,28 @@ export class PatientController implements interfaces.Controller {
             await this.patientService.setStatusFields(doctorId, value.patientId, value.fields);
 
             res.json(201);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
+    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware")
+    private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = Joi.object({ patientId: Joi.number().required() })
+                .required()
+                .validate({ patientId: req.params.patientId });
+
+            const isSamePatient = req["token"].userId === value.patientId;
+
+            if (!isSamePatient || error) {
+                res.json(400, error);
+                return;
+            }
+
+            const StatusFields = await this.patientService.getPatientStatusFields(value.patientId);
+
+            res.json(201, StatusFields);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
