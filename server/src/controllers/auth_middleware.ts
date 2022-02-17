@@ -61,7 +61,6 @@ function isSamePatientMiddleware(req: Request, res: Response, next: Next): void 
     const userId = req["token"].userId;
     const requestPatientId = +req.params.patientId;
 
-    console.log(userId, requestPatientId);
     if (userId !== requestPatientId) {
         res.json(403, `Patient ${userId} is different than patientId in request`);
     }
