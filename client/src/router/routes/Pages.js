@@ -32,6 +32,10 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/assign_role",
+        component: lazy(() => import("../../views/pages/account/RoleChange")),
+    },
+    {
         path: "/misc/not-authorized",
         component: lazy(() => import("../../views/pages/misc/NotAuthorized")),
         layout: "BlankLayout",

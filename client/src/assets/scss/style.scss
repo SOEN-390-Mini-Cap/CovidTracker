@@ -78,3 +78,14 @@ input[type="checkbox"] {
 .nav-item.nav-toggle {
 	display: none !important;
 }
+
+.assign-role-card {
+  width: 340px;
+  margin-top: 200px;
+}
+
+@media only screen and (max-width: 768px) {
+  .assign-role-card {
+    margin-top: 20px;
+  }
+}
