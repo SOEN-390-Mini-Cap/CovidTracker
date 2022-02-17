@@ -11,9 +11,7 @@ import { RequestHandler } from "restify";
 import {
     extractJwtMiddleware,
     isSamePatientMiddleware,
-    isValidAdminMiddleware,
-    isValidDoctorMiddleware,
-    isValidPatientMiddleware,
+    isValidRoleMiddleware
 } from "./controllers/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
 import { DoctorRepository } from "./repositories/doctor_repository";
@@ -25,6 +23,7 @@ import { PatientService } from "./services/patient_service";
 import { StatusRepository } from "./repositories/status_repository";
 import { DoctorController } from "./controllers/doctor_controller";
 import { DoctorService } from "./services/doctor_service";
+import {Role} from "./entities/role";
 
 const container = new Container();
 
@@ -82,9 +81,9 @@ container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
 
 // Middleware
 container.bind<RequestHandler>("extractJwtMiddleware").toConstantValue(extractJwtMiddleware);
-container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidAdminMiddleware);
-container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidDoctorMiddleware);
-container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidPatientMiddleware);
+container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidRoleMiddleware([Role.ADMIN])(container));
+container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidRoleMiddleware([Role.DOCTOR])(container));
+container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidRoleMiddleware([Role.PATIENT])(container));
 container.bind<RequestHandler>("isSamePatientMiddleware").toConstantValue(isSamePatientMiddleware);
 
 export { container };
