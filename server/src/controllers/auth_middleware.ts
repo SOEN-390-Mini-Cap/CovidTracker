@@ -2,14 +2,7 @@ import { Next, Request, RequestHandler, Response } from "restify";
 import * as jwt from "jsonwebtoken";
 import { Role } from "../entities/role";
 import { UserService } from "../services/user_service";
-import {Container} from "inversify";
-import {UserRepository} from "../repositories/user_repository";
-import {PatientRepository} from "../repositories/patient_repository";
-import {DoctorRepository} from "../repositories/doctor_repository";
-import {AdminRepository} from "../repositories/admin_repository";
-import {HealthOfficialRepository} from "../repositories/health_official_repository";
-import {ImmigrationOfficerRepository} from "../repositories/immigration_officer_repository";
-import {User} from "../entities/user";
+import { Container } from "inversify";
 
 function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
     const authHeader = req.headers.authorization;
