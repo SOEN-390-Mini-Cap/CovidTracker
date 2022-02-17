@@ -5,6 +5,7 @@ import { StatusFields } from "../entities/status_fields";
 import { PatientRepository } from "../repositories/patient_repository";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { Status } from "../entities/status";
+import { datesAreOnSameDay } from "../helpers/date_helper";
 
 @injectable()
 export class PatientService {
@@ -46,6 +47,12 @@ export class PatientService {
     }
 
     async submitStatus(patientId: number, status: Status): Promise<void> {
-        return;
+        // Limit the patient to a single status report per calendar day
+        const patientStatus = await this.statusRepository.findLatestStatus(patientId);
+        if (datesAreOnSameDay(patientStatus.createdOn, new Date())) {
+            throw new Error("A patient can only submit one status report per calendar day");
+        }
+
+        await this.statusRepository.addStatus(patientId, status);
     }
 }
