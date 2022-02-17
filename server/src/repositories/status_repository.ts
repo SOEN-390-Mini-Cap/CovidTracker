@@ -51,7 +51,7 @@ export class StatusRepository {
         const sql = `
             SELECT
                 s.status_id,
-                s.patient_id
+                s.patient_id,
                 s.status,
                 s.created_on
             FROM statuses AS s

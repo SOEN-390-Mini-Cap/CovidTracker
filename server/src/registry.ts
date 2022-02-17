@@ -9,7 +9,7 @@ import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
 import {
-    extractJwtMiddleware,
+    extractJwtMiddleware, isSamePatientMiddleware,
     isValidAdminMiddleware,
     isValidDoctorMiddleware,
     isValidPatientMiddleware,
@@ -84,5 +84,6 @@ container.bind<RequestHandler>("extractJwtMiddleware").toConstantValue(extractJw
 container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidAdminMiddleware);
 container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidDoctorMiddleware);
 container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidPatientMiddleware);
+container.bind<RequestHandler>("isSamePatientMiddleware").toConstantValue(isSamePatientMiddleware);
 
 export { container };

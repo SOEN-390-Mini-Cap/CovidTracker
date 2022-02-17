@@ -38,8 +38,8 @@ export class PatientController implements interfaces.Controller {
     @Post("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidDoctorMiddleware")
     private async setStatusFields(req: Request, res: Response): Promise<void> {
         try {
-            const doctorId = req["token"].userId;
             const { value, error } = statusFieldsSchema.validate({
+                doctorId: req["token"].userId,
                 patientId: req.params.patientId,
                 fields: req.body,
             });
@@ -49,7 +49,7 @@ export class PatientController implements interfaces.Controller {
                 return;
             }
 
-            await this.patientService.setStatusFields(doctorId, value.patientId, value.fields);
+            await this.patientService.setStatusFields(value.doctorId, value.patientId, value.fields);
 
             res.json(201);
         } catch (error) {
@@ -77,11 +77,11 @@ export class PatientController implements interfaces.Controller {
         }
     }
 
-    @Post("/:patientId/statuses", "extractJwtMiddleware", "isValidPatientMiddleware")
+    @Post("/:patientId/statuses", "extractJwtMiddleware", "isValidPatientMiddleware", "isSamePatientMiddleware")
     private async submitStatus(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = statusSchema.validate({
-                patientId: req["token"].userId,
+                patientId: req.params.patientId,
                 status: req.body,
             });
 
@@ -105,6 +105,7 @@ const doctorSchema = Joi.object({
 }).required();
 
 const statusFieldsSchema = Joi.object({
+    doctorId: Joi.number().required(),
     patientId: Joi.number().required(),
     fields: Joi.object().pattern(/^/, Joi.bool()).required(),
 }).required();
