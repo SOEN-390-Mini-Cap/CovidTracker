@@ -37,7 +37,7 @@ import { StatusRepository } from "../src/repositories/status_repository";
     await patientRepository.addPatient(4);
     await patientRepository.addPatient(5);
 
-    await statusRepository.updatePatientStatusFields(5, { weight: true, temperature: false, otherSymptoms: false });
+    await statusRepository.updatePatientStatusFields(5, { weight: true, temperature: true, otherSymptoms: true });
 
     // add admin
     await adminRepository.addAdmin(6);

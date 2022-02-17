@@ -60,9 +60,7 @@ export class PatientController implements interfaces.Controller {
     @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware")
     private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
         try {
-            const { value, error } = Joi.object({ patientId: Joi.number().required() })
-                .required()
-                .validate({ patientId: req.params.patientId });
+            const { value, error } = patientSchema.validate({ patientId: req.params.patientId });
 
             const isSamePatient = req["token"].userId === value.patientId;
 
@@ -71,9 +69,9 @@ export class PatientController implements interfaces.Controller {
                 return;
             }
 
-            const StatusFields = await this.patientService.getPatientStatusFields(value.patientId);
+            const statusFields = await this.patientService.getPatientStatusFields(value.patientId);
 
-            res.json(201, StatusFields);
+            res.json(201, statusFields);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
@@ -89,3 +87,5 @@ const statusFieldsSchema = Joi.object({
     patientId: Joi.number().required(),
     fields: Joi.object().pattern(/^/, Joi.bool()).required(),
 }).required();
+
+const patientSchema = Joi.object({ patientId: Joi.number().required() }).required();
