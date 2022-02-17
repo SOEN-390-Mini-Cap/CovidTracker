@@ -57,14 +57,12 @@ export class PatientController implements interfaces.Controller {
         }
     }
 
-    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware")
+    @Get("/:patientId/statuses/fields", "extractJwtMiddleware", "isValidPatientMiddleware", "isSamePatientMiddleware")
     private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = patientSchema.validate({ patientId: req.params.patientId });
 
-            const isSamePatient = req["token"].userId === value.patientId;
-
-            if (!isSamePatient || error) {
+            if (error) {
                 res.json(400, error);
                 return;
             }

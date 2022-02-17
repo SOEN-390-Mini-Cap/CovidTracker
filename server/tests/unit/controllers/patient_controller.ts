@@ -141,9 +141,6 @@ describe("patient_controller.ts", () => {
 
         beforeEach(() => {
             req = {
-                token: {
-                    userId: 4,
-                },
                 params: {
                     patientId: 4,
                 },
@@ -158,14 +155,14 @@ describe("patient_controller.ts", () => {
             expect(resJsonStub.calledWith(201)).to.equal(true);
         });
 
-        it("return status 400 when token is not equal to param id", async () => {
-            req.token.userId = 3;
+        it("return status 400 when patientId is not passed", async () => {
+            delete req.token.userId;
             await (controller as any).getPatientStatusFields(req, res);
             expect(getStatusFieldsStub.notCalled).to.equal(true);
             expect(resJsonStub.calledWith(400)).to.equal(true);
         });
 
-        it("return status 400 when invalid param is passed", async () => {
+        it("return status 400 when invalid patientId is passed", async () => {
             req.params.patientId = "x";
             await (controller as any).getPatientStatusFields(req, res);
             expect(getStatusFieldsStub.notCalled).to.equal(true);
