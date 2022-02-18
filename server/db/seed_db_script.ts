@@ -1,4 +1,4 @@
-import {seedDb} from "./seed_db";
+import { seedDb } from "./seed_db";
 
 (async () => {
     await seedDb();

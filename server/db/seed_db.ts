@@ -27,7 +27,7 @@ export async function seedDb(): Promise<void> {
         await userRepository.addUser(
             {
                 ...userData,
-                password: await bcrypt.hash(userData.password, 10)
+                password: await bcrypt.hash(userData.password, 10),
             },
             addressId,
         );

@@ -1,4 +1,4 @@
-import {restoreDb} from "./restore_db";
+import { restoreDb } from "./restore_db";
 
 (async () => {
     await restoreDb();
