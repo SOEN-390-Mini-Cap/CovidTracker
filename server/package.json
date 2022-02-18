@@ -8,14 +8,15 @@
         "start": "node ./build/src/index.js",
         "dev": "DOTENV_CONFIG_PATH=.env.dev nodemon --exec ts-node ./src/index.ts -r dotenv/config",
         "test": "npm run test:unit && npm run test:integration",
-        "test:unit": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/unit -r dotenv/config",
+        "test:coverage": "nyc npm run test",
+        "test:unit": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/unit -r dotenv/config --reporter mochawesome",
         "test:integration": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/integration -r dotenv/config",
-        "coverage": "nyc npm run test:unit",
+        "test:db:init": "DOTENV_CONFIG_PATH=.env.test ts-node db/init_db.ts -r dotenv/config",
         "lint": "eslint '*/**/*.{js,ts}' --max-warnings=0",
         "lint:fix": "eslint '*/**/*.{js,ts}' --fix",
         "db:init": "DOTENV_CONFIG_PATH=.env.dev ts-node db/init_db.ts -r dotenv/config",
-        "db:seed": "DOTENV_CONFIG_PATH=.env.dev ts-node db/seed_db.ts -r dotenv/config",
-        "db:restore": "DOTENV_CONFIG_PATH=.env.dev ts-node db/restore_db.ts -r dotenv/config"
+        "db:seed": "DOTENV_CONFIG_PATH=.env.dev ts-node db/seed_db_script.ts -r dotenv/config",
+        "db:restore": "DOTENV_CONFIG_PATH=.env.dev ts-node db/restore_db_script.ts -r dotenv/config"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",
@@ -48,6 +49,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
         "mocha": "^9.1.4",
+        "mochawesome": "^7.0.1",
         "nodemon": "^2.0.15",
         "nyc": "^15.1.0",
         "prettier": "^2.5.1",

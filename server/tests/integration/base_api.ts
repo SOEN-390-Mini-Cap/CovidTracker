@@ -3,7 +3,7 @@ import { app } from "../../src";
 import { expect } from "chai";
 
 describe("base_controller.ts API", () => {
-    describe("index endpoint", () => {
+    describe("GET / endpoint", () => {
         it("should return 200 status ok", async () => {
             const res = await agent(app).get("/");
 

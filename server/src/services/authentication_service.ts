@@ -45,7 +45,6 @@ export class AuthenticationService {
                 userId,
             },
             process.env.JWT_SECRET,
-            { expiresIn: "1h" },
         );
     }
 }

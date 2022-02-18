@@ -19,6 +19,11 @@ export class PatientService {
     ) {}
 
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
+        const assignedDoctorId = await this.patientRepository.findAssignedDoctorId(patientId);
+        if (assignedDoctorId !== null) {
+            throw new Error("Patient can not be assigned a new doctor");
+        }
+
         await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
     }
 
