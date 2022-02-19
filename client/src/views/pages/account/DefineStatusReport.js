@@ -46,20 +46,60 @@ function DefineStatusReport() {
         {
             name: "Fever",
             value: false,
+            disabled: false,
         },
         {
             name: "Cough",
             value: false,
+            disabled: false,
+        },
+        {
+            name: "Shortness of Breath",
+            value: false,
+            disabled: false,
+        },
+        {
+            name: "Loss of Taste and Smell",
+            value: false,
+            disabled: false,
         },
     ];
     const secondarySymptpoms = [
         {
             name: "Nausea",
             value: false,
+            disabled: false,
         },
         {
             name: "Stomach Aches",
             value: false,
+            disabled: false,
+        },
+        {
+            name: "Vomiting",
+            value: false,
+            disabled: false,
+        },
+        {
+            name: "Headache",
+            value: false,
+            disabled: false,
+        },
+        {
+            name: "Muscle Pain",
+            value: false,
+            disabled: false,
+        },
+        {
+            name: "Sore Throat",
+            value: false,
+            disabled: false,
+        },
+        {
+            name: "Other Symptoms",
+            value: true,
+            disabled: true,
+
         },
     ];
 
@@ -74,12 +114,12 @@ function DefineStatusReport() {
     const onSubmit = async (data) => {
         try {
             await defineStatusReport(data, token);
-            toast.success("Role Added to User", {
+            toast.success("Status Report Defined for a Patient", {
                 position: "top-right",
                 autoClose: 5000,
             });
         } catch (error) {
-            toast.error("Could not Assign Role to User", {
+            toast.error("Could not Assign Status Report for a Patient", {
                 position: "top-right",
                 autoClose: 5000,
             });
@@ -115,6 +155,35 @@ function DefineStatusReport() {
                         </div>
                         <div className="mb-1">
                             <Label className="form-label">General</Label>
+                            <div className="form-check form-check-info">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="temperature"
+                                    disabled="true"
+                                    checked="true"
+                                />
+                                <label htmlFor="checkbox">Temperature</label>
+                            </div>
+                            <div className="form-check form-check-info">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="weight"
+                                    disabled="true"
+                                    checked="true"
+                                />
+                                <label htmlFor="checkbox">Weight</label>
+                            </div>
+
+
+                            <Label className="form-label" for="patientId" position="left">
+                                Primary Symptoms
+                            </Label>
+                            <Label className="form-label" for="patientId" position="right">
+                                Secondary Symptoms
+                            </Label>
+
                         </div>
 
                         <div classname="mb-1">
@@ -126,7 +195,9 @@ function DefineStatusReport() {
                                                 className="form-check-input"
                                                 type="checkbox"
                                                 id={object.name}
-                                                v-model={object.value}
+                                                checked={object.checked} disabled={object.disabled}
+                                                checked={object.value}
+                                                onChange={() => (object.value = !object.value)}
                                             />
                                             <label htmlFor="checkbox">{object.name}</label>
                                         </div>
@@ -139,7 +210,9 @@ function DefineStatusReport() {
                                                 className="form-check-input"
                                                 type="checkbox"
                                                 id={object.name}
-                                                v-model={object.value}
+                                                checked={object.checked} disabled={object.disabled}
+                                                checked={object.value}
+                                                onChange={() => (object.value = !object.value)}
                                             />
                                             <label htmlFor="checkbox">{object.name}</label>
                                         </div>
