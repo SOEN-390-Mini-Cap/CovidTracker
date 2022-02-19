@@ -162,6 +162,27 @@ function RoleChange() {
 
                         </div>
 
+                        <div className="input-group">
+                            <div className="form-check form-check-info">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="checkbox"
+                                    v-model="checked"
+                                />
+                                <label htmlFor="checkbox">checked</label>
+                            </div>
+                            <div className="form-check form-check-info">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="checkbox"
+                                    v-model="checked"
+                                />
+                                <label htmlFor="checkbox">checked</label>
+                            </div>
+                        </div>
+
                        /*maybe script needed*/
 
                         <div className="mb-1">
