@@ -103,84 +103,191 @@ function RoleChange() {
                         </div>
 
                         <div classname="mb-1">
-                            <ul class="general">
-                                <li>
-                                    <vs-checkbox v-model="temperature">Temperature</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="weight">Weight</vs-checkbox>
-                                </li>
-                            </ul>
-                            <div className="mb-1">
-                                <Label className="form-label">
-                                    Primary Symptoms
-                                </Label>
-                            </div>
-                            <ul class="primary_symptoms">
-                                <li>
-                                    <vs-checkbox v-model="fever">Fever</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="cough">Cough</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="shortnessOfBreath">Shortness of Breath</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="LossOfTaste">Loss of Taste and Smell</vs-checkbox>
-                                </li>
-                            </ul>
+                            <table className="table table-borderless">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="temperature"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Temperature</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="weight"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Weight</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                            <div className="mb-1">
-                                <Label className="form-label">
-                                    Secondary Symptoms
-                                </Label>
-                            </div>
-                            <ul class="secondary_symptoms">
-                                <li>
-                                    <vs-checkbox v-model="nausea">Nausea</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="stomach_aches">Stomach Aches</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="vomiting">Vomiting</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="headache">Headache</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="muscle_pain">Muscle Pain</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="sore_throat">Sore Throat</vs-checkbox>
-                                </li>
-                                <li>
-                                    <vs-checkbox v-model="other_symptoms">Other Symptoms</vs-checkbox>
-                                </li>
-                            </ul>
+                            <table className="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Primary Symptoms</th>
+                                        <th>Secondary Symptoms</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="fever"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Fever</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="nausea"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Nausea</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="cough"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Cough</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="stomachAches"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Stomach Aches</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="shortnessOfBreath"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Shortness of Breath</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="votiming"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Vomiting</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="lossOfTasteAndSmell"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Loss of Taste and Smell</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="form-check form-check-info">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="headache"
+                                                    v-model="checked"
+                                                />
+                                                <label htmlFor="checkbox">Headache</label>
+                                            </div>
+                                        </td>
+                                        <tr>
+                                            <td>
 
-                        </div>
+                                            </td>
+                                            <td>
+                                                <div className="form-check form-check-info">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        id="muscle_pain"
+                                                        v-model="checked"
+                                                    />
+                                                    <label htmlFor="checkbox">Muscle Pain</label>
+                                                </div>
+                                            </td>
+                                            <tr>
+                                                <td>
 
-                        <div className="input-group">
-                            <div className="form-check form-check-info">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkbox"
-                                    v-model="checked"
-                                />
-                                <label htmlFor="checkbox">checked</label>
-                            </div>
-                            <div className="form-check form-check-info">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkbox"
-                                    v-model="checked"
-                                />
-                                <label htmlFor="checkbox">checked</label>
-                            </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-check form-check-info">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id="sore_throat"
+                                                            v-model="checked"
+                                                        />
+                                                        <label htmlFor="checkbox">Sore Throat</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+
+                                                </td>
+                                                <td>
+                                                    <div className="form-check form-check-info">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id="other_symptoms"
+                                                            v-model="checked"
+                                                        />
+                                                        <label htmlFor="checkbox">Other Symptoms</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                         </div>
 
 
