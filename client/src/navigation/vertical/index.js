@@ -42,7 +42,7 @@ export default [
         id: "patient",
         title: "Patient",
         icon: <Heart />,
-        accessibleBy: ["ADMIN"],
+        accessibleBy: ["ADMIN", "Doctor"],
         children: [
             {
                 id: "assignDoctor",
@@ -50,6 +50,13 @@ export default [
                 icon: <Circle />,
                 navLink: "/assign_doctor",
                 accessibleBy: ["ADMIN"],
+            },
+            {
+                id: "defineStatusReport",
+                title: "Define Status Report",
+                icon: <Circle />,
+                navLink: "/define_status_report",
+                accessibleBy: ["DOCTOR"],
             },
         ],
     },
