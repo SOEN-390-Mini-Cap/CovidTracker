@@ -170,12 +170,7 @@ function DefineStatusReport() {
                                         name="temperature"
                                         control={control}
                                         render={({ field }) => (
-                                            <Input
-                                                type="checkbox"
-                                                defaultChecked={field.value}
-                                                disabled={true}
-                                                {...field}
-                                            />
+                                            <Input type="checkbox" checked={field.value} disabled={true} {...field} />
                                         )}
                                     />
                                     <Label className="form-check-label">Temperature</Label>
@@ -186,12 +181,7 @@ function DefineStatusReport() {
                                         name="weight"
                                         control={control}
                                         render={({ field }) => (
-                                            <Input
-                                                type="checkbox"
-                                                defaultChecked={field.value}
-                                                disabled={true}
-                                                {...field}
-                                            />
+                                            <Input type="checkbox" checked={field.value} disabled={true} {...field} />
                                         )}
                                     />
                                     <Label className="form-check-label">Weight</Label>
@@ -212,7 +202,7 @@ function DefineStatusReport() {
                                                     type="checkbox"
                                                     className="form-check-input"
                                                     disabled={fieldData.disabled}
-                                                    defaultChecked={field.value}
+                                                    checked={field.value}
                                                     {...field}
                                                 />
                                             )}
@@ -234,7 +224,7 @@ function DefineStatusReport() {
                                                     type="checkbox"
                                                     className="form-check-input"
                                                     disabled={fieldData.disabled}
-                                                    defaultChecked={field.value}
+                                                    checked={field.value}
                                                     {...field}
                                                 />
                                             )}

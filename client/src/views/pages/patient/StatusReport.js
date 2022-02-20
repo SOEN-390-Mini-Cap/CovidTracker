@@ -39,54 +39,44 @@ const primarySymptoms = [
     {
         name: "Fever",
         id: "fever",
-        disabled: false,
     },
     {
         name: "Cough",
         id: "cough",
-        disabled: false,
     },
     {
         name: "Shortness of Breath",
         id: "shortnessOfBreath",
-        disabled: false,
     },
     {
         name: "Loss of Taste and Smell",
         id: "lossOfTasteAndSmell",
-        disabled: false,
     },
 ];
 const secondarySymptoms = [
     {
         name: "Nausea",
         id: "nausea",
-        disabled: false,
     },
     {
         name: "Stomach Aches",
         id: "stomachAches",
-        disabled: false,
     },
     {
         name: "Vomiting",
         id: "vomiting",
-        disabled: false,
     },
     {
         name: "Headache",
         id: "headache",
-        disabled: false,
     },
     {
         name: "Muscle Pain",
         id: "musclePain",
-        disabled: false,
     },
     {
         name: "Sore Throat",
         id: "soreThroat",
-        disabled: false,
     },
 ];
 
@@ -175,11 +165,18 @@ function StatusReport() {
                                             name="temperature"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input type="number" placeholder="&deg;C" invalid={!!errors.temperature} {...field} />
+                                                <Input
+                                                    type="number"
+                                                    placeholder="&deg;C"
+                                                    invalid={!!errors.temperature}
+                                                    {...field}
+                                                />
                                             )}
                                         />
                                         {errors.temperature && (
-                                            <FormFeedback className="d-block">{errors.temperature.message}</FormFeedback>
+                                            <FormFeedback className="d-block">
+                                                {errors.temperature.message}
+                                            </FormFeedback>
                                         )}
                                     </div>
                                 )}
@@ -193,7 +190,12 @@ function StatusReport() {
                                             name="weight"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input type="number" placeholder="lbs" invalid={!!errors.weight} {...field} />
+                                                <Input
+                                                    type="number"
+                                                    placeholder="lbs"
+                                                    invalid={!!errors.weight}
+                                                    {...field}
+                                                />
                                             )}
                                         />
                                         {errors.weight && (
@@ -205,45 +207,51 @@ function StatusReport() {
                             <div className="d-flex mb-1">
                                 <div className="w-50 me-1">
                                     <Label className="form-label">Primary Symptoms</Label>
-                                    {primarySymptoms.map((fieldData, key) => fields[fieldData.id] && (
-                                        <div className="form-check" key={key}>
-                                            <Controller
-                                                id={fieldData.id}
-                                                name={fieldData.id}
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <Input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        checked={field.value}
-                                                        {...field}
+                                    {primarySymptoms.map(
+                                        (fieldData, key) =>
+                                            fields[fieldData.id] && (
+                                                <div className="form-check" key={key}>
+                                                    <Controller
+                                                        id={fieldData.id}
+                                                        name={fieldData.id}
+                                                        control={control}
+                                                        render={({ field }) => (
+                                                            <Input
+                                                                type="checkbox"
+                                                                className="form-check-input"
+                                                                checked={field.value}
+                                                                {...field}
+                                                            />
+                                                        )}
                                                     />
-                                                )}
-                                            />
-                                            <Label className="form-check-label">{fieldData.name}</Label>
-                                        </div>
-                                    ))}
+                                                    <Label className="form-check-label">{fieldData.name}</Label>
+                                                </div>
+                                            ),
+                                    )}
                                 </div>
                                 <div>
                                     <Label className="form-label">Secondary Symptoms</Label>
-                                    {secondarySymptoms.map((fieldData, key) => fields[fieldData.id] && (
-                                        <div className="form-check" key={key}>
-                                            <Controller
-                                                id={fieldData.id}
-                                                name={fieldData.id}
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <Input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        checked={field.value}
-                                                        {...field}
+                                    {secondarySymptoms.map(
+                                        (fieldData, key) =>
+                                            fields[fieldData.id] && (
+                                                <div className="form-check" key={key}>
+                                                    <Controller
+                                                        id={fieldData.id}
+                                                        name={fieldData.id}
+                                                        control={control}
+                                                        render={({ field }) => (
+                                                            <Input
+                                                                type="checkbox"
+                                                                className="form-check-input"
+                                                                checked={field.value}
+                                                                {...field}
+                                                            />
+                                                        )}
                                                     />
-                                                )}
-                                            />
-                                            <Label className="form-check-label">{fieldData.name}</Label>
-                                        </div>
-                                    ))}
+                                                    <Label className="form-check-label">{fieldData.name}</Label>
+                                                </div>
+                                            ),
+                                    )}
                                 </div>
                             </div>
                             {fields.otherSymptoms && (
@@ -255,9 +263,7 @@ function StatusReport() {
                                         id="otherSymptoms"
                                         name="otherSymptoms"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Input type="textarea" {...field} />
-                                        )}
+                                        render={({ field }) => <Input type="textarea" {...field} />}
                                     />
                                 </div>
                             )}
