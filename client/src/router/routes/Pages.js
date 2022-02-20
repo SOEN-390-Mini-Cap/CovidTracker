@@ -41,10 +41,16 @@ const PagesRoutes = [
     {
         path: "/assign_role",
         component: lazy(() => import("../../views/pages/user/RoleChange")),
+        meta: {
+            accessibleBy: ["ADMIN"],
+        },
     },
     {
         path: "/define_status_report",
         component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
+        meta: {
+            accessibleBy: ["DOCTOR"],
+        },
     },
     {
         path: "/misc/not-authorized",

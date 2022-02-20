@@ -109,6 +109,7 @@ function DefineStatusReport() {
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({ defaultValues, resolver: yupResolver(defineStatusReportSchema) });
 
@@ -127,6 +128,8 @@ function DefineStatusReport() {
                 autoClose: 5000,
             });
         }
+
+        reset();
     };
 
     return (
