@@ -175,7 +175,7 @@ function StatusReport() {
                                             name="temperature"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input type="number" invalid={!!errors.temperature} {...field} />
+                                                <Input type="number" placeholder="&deg;C" invalid={!!errors.temperature} {...field} />
                                             )}
                                         />
                                         {errors.temperature && (
@@ -193,7 +193,7 @@ function StatusReport() {
                                             name="weight"
                                             control={control}
                                             render={({ field }) => (
-                                                <Input type="number" invalid={!!errors.weight} {...field} />
+                                                <Input type="number" placeholder="lbs" invalid={!!errors.weight} {...field} />
                                             )}
                                         />
                                         {errors.weight && (
@@ -215,6 +215,7 @@ function StatusReport() {
                                                     <Input
                                                         type="checkbox"
                                                         className="form-check-input"
+                                                        checked={field.value}
                                                         {...field}
                                                     />
                                                 )}
@@ -235,6 +236,7 @@ function StatusReport() {
                                                     <Input
                                                         type="checkbox"
                                                         className="form-check-input"
+                                                        checked={field.value}
                                                         {...field}
                                                     />
                                                 )}
