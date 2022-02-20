@@ -44,7 +44,7 @@ const PagesRoutes = [
     },
     {
         path: "/define_status_report",
-        component: lazy(() => import("../../views/pages/account/DefineStatusReport")),
+        component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
     },
     {
         path: "/misc/not-authorized",

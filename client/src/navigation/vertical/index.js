@@ -42,7 +42,7 @@ export default [
         id: "patient",
         title: "Patient",
         icon: <Heart />,
-        accessibleBy: ["ADMIN", "Doctor"],
+        accessibleBy: ["ADMIN", "DOCTOR"],
         children: [
             {
                 id: "assignDoctor",
