@@ -43,6 +43,10 @@ const PagesRoutes = [
         component: lazy(() => import("../../views/pages/user/RoleChange")),
     },
     {
+        path: "/define_status_report",
+        component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
+    },
+    {
         path: "/misc/not-authorized",
         component: lazy(() => import("../../views/pages/misc/NotAuthorized")),
         layout: "BlankLayout",

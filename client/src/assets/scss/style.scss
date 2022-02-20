@@ -82,6 +82,22 @@ input[type="checkbox"] {
 .basic-card {
   width: 340px;
   margin-top: 200px;
+
+  .card-title {
+    font-size: 15px;
+  }
+}
+
+.status-report-fields-card {
+  margin-top: 100px;
+
+  .form-check-label {
+    font-size: 12px;
+  }
+
+  .form-check {
+    margin-bottom: 5px;
+  }
 }
 
 @media only screen and (max-width: 768px) {
