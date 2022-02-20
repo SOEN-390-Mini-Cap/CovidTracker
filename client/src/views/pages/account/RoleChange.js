@@ -53,6 +53,7 @@ function RoleChange() {
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({ defaultValues, resolver: yupResolver(AssignRoleSchema) });
 
@@ -71,12 +72,13 @@ function RoleChange() {
                 autoClose: 5000,
             });
         }
+        reset();
     };
 
     return (
         <div>
             <BreadCrumbsPage breadCrumbTitle="Roles" breadCrumbParent="User" breadCrumbActive="Roles" />
-            <Card className="assign-role-card mx-auto">
+            <Card className="basic-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Add a Role</CardTitle>
                 </CardBody>

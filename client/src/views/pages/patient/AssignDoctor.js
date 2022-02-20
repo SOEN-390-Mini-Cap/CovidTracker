@@ -11,7 +11,7 @@ async function assignDoctor(data, token) {
     await axios.post(
         `http://localhost:8080/patients/${data.patientId}/doctors`,
         {
-            doctorId: data.doctorId.value,
+            doctorId: data.doctorId,
         },
         {
             headers: {
@@ -37,6 +37,7 @@ function AssignDoctor() {
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({ defaultValues, resolver: yupResolver(AssignDoctorSchema) });
 
@@ -55,12 +56,13 @@ function AssignDoctor() {
                 autoClose: 5000,
             });
         }
+        reset();
     };
 
     return (
         <div>
             <BreadCrumbsPage breadCrumbTitle="Assign Doctor" breadCrumbParent="User" breadCrumbActive="Assign Doctor" />
-            <Card className="assign-role-card mx-auto">
+            <Card className="basic-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Assign a Patient to a Doctor</CardTitle>
                 </CardBody>
@@ -78,7 +80,9 @@ function AssignDoctor() {
                                     <Input autoFocus type="number" invalid={!!errors.patientId} {...field} />
                                 )}
                             />
-                            {errors.patientId && <FormFeedback className="d-block">{errors.patientId.message}</FormFeedback>}
+                            {errors.patientId && (
+                                <FormFeedback className="d-block">{errors.patientId.message}</FormFeedback>
+                            )}
                         </div>
                         <div className="mb-1">
                             <Label className="form-label" for="d-role">
@@ -92,7 +96,9 @@ function AssignDoctor() {
                                     <Input autoFocus type="number" invalid={!!errors.doctorId} {...field} />
                                 )}
                             />
-                            {errors.doctorId && <FormFeedback className="d-block">{errors.doctorId.message}</FormFeedback>}
+                            {errors.doctorId && (
+                                <FormFeedback className="d-block">{errors.doctorId.message}</FormFeedback>
+                            )}
                         </div>
                         <Button onClick={handleSubmit(onSubmit)} color="primary" block className="mt-2 mb-1">
                             Assign a Doctor
