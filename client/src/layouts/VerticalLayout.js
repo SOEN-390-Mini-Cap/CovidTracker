@@ -1,17 +1,40 @@
 import Layout from "@layouts/VerticalLayout";
 import navigation from "@src/navigation/vertical";
 import { Link } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { NavItem, NavLink } from "reactstrap";
 import { handleLogout } from "@store/authentication";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { handleProfile } from "@store/authentication";
 
 const selectUser = (state) => state.auth.userData.user;
+const selectToken = (state) => state.auth.userData.token;
+
+async function getProfile(token) {
+    const res = await axios.get("http://localhost:8080/users/me", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}
 
 const CustomNavbar = () => {
     const dispatch = useDispatch();
     const user = useSelector(selectUser);
+    const token = useSelector(selectToken);
+
+    useEffect(() => {
+        async function f() {
+            const userData = await getProfile(token);
+            dispatch(handleProfile({ user: userData }));
+            console.log(userData);
+        }
+        f();
+    }, [dispatch, token]);
 
     const logoIcon = (
         <svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">

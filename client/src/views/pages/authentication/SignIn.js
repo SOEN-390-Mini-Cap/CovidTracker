@@ -35,6 +35,7 @@ const SignIn = () => {
     const defaultValues = {
         password: "",
         email: "",
+        rememberMe: true,
     };
 
     const SignInSchema = yup.object().shape({
@@ -133,7 +134,9 @@ const SignIn = () => {
                                         id="rememberMe"
                                         name="rememberMe"
                                         control={control}
-                                        render={({ field }) => <Input type="checkbox" id="remember-me" {...field} />}
+                                        render={({ field }) => (
+                                            <Input type="checkbox" id="remember-me" checked={field.value} {...field} />
+                                        )}
                                     />
                                     <Label className="form-check-label" for="remember-me">
                                         Remember Me

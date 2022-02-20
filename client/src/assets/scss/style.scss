@@ -86,6 +86,11 @@ input[type="checkbox"] {
   .card-title {
     font-size: 15px;
   }
+
+  .card-body,
+  .card-footer {
+    padding: 17px;
+  }
 }
 
 .status-report-fields-card {
