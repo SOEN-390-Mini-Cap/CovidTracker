@@ -8,11 +8,11 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 async function defineStatusReport(data, token) {
-    console.log(data);
-    await axios.put(
-        `http://localhost:8080/patients/${data.patientId}/statuses/fields`,
+    const { patientId, ...fields } = data;
+    await axios.post(
+        `http://localhost:8080/patients/${patientId}/statuses/fields`,
         {
-            role: data.role.value,
+            ...fields,
         },
         {
             headers: {
