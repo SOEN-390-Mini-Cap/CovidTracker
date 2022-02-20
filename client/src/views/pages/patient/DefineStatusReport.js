@@ -27,6 +27,19 @@ const selectToken = (state) => state.auth.userData.token;
 function DefineStatusReport() {
     const defaultValues = {
         patientId: "",
+        temperature: true,
+        weight: true,
+        fever: false,
+        cough: false,
+        shortnessOfBreath: false,
+        lossOfTasteAndSmell: false,
+        nausea: false,
+        stomachAches: false,
+        vomiting: false,
+        headache: false,
+        musclePain: false,
+        soreThroat: false,
+        otherSymptoms: true,
     };
 
     const defineStatusReportSchema = yup.object().shape({
@@ -36,59 +49,59 @@ function DefineStatusReport() {
     const primarySymptoms = [
         {
             name: "Fever",
-            value: false,
+            id: "fever",
             disabled: false,
         },
         {
             name: "Cough",
-            value: false,
+            id: "cough",
             disabled: false,
         },
         {
             name: "Shortness of Breath",
-            value: false,
+            id: "shortnessOfBreath",
             disabled: false,
         },
         {
             name: "Loss of Taste and Smell",
-            value: false,
+            id: "lossOfTasteAndSmell",
             disabled: false,
         },
     ];
     const secondarySymptoms = [
         {
             name: "Nausea",
-            value: false,
+            id: "nausea",
             disabled: false,
         },
         {
             name: "Stomach Aches",
-            value: false,
+            id: "stomachAches",
             disabled: false,
         },
         {
             name: "Vomiting",
-            value: false,
+            id: "vomiting",
             disabled: false,
         },
         {
             name: "Headache",
-            value: false,
+            id: "headache",
             disabled: false,
         },
         {
             name: "Muscle Pain",
-            value: false,
+            id: "musclePain",
             disabled: false,
         },
         {
             name: "Sore Throat",
-            value: false,
+            id: "soreThroat",
             disabled: false,
         },
         {
             name: "Other Symptoms",
-            value: true,
+            id: "otherSymptoms",
             disabled: true,
         },
     ];
@@ -109,7 +122,7 @@ function DefineStatusReport() {
                 autoClose: 5000,
             });
         } catch (error) {
-            toast.error("Could not Assign Status Report for a Patient", {
+            toast.error("Status report could not be defined", {
                 position: "top-right",
                 autoClose: 5000,
             });
@@ -149,61 +162,81 @@ function DefineStatusReport() {
                             <Label className="form-label">General</Label>
                             <div className="d-flex">
                                 <div className="form-check w-50">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
+                                    <Controller
                                         id="temperature"
-                                        disabled={true}
-                                        checked={true}
+                                        name="temperature"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Input
+                                                type="checkbox"
+                                                defaultChecked={field.value}
+                                                disabled={true}
+                                                {...field}
+                                            />
+                                        )}
                                     />
-                                    <label htmlFor="checkbox">Temperature</label>
+                                    <Label className="form-check-label">Temperature</Label>
                                 </div>
                                 <div className="form-check w-50">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
+                                    <Controller
                                         id="weight"
-                                        disabled={true}
-                                        checked={true}
+                                        name="weight"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Input
+                                                type="checkbox"
+                                                defaultChecked={field.value}
+                                                disabled={true}
+                                                {...field}
+                                            />
+                                        )}
                                     />
-                                    <label htmlFor="checkbox">Weight</label>
+                                    <Label className="form-check-label">Weight</Label>
                                 </div>
                             </div>
                         </div>
                         <div className="d-flex">
                             <div className="w-50 me-1">
-                                <Label className="form-label" for="patientId" position="left">
-                                    Primary Symptoms
-                                </Label>
-                                {primarySymptoms.map((object, key) => (
+                                <Label className="form-label">Primary Symptoms</Label>
+                                {primarySymptoms.map((fieldData, key) => (
                                     <div className="form-check" key={key}>
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id={object.name}
-                                            disabled={object.disabled}
-                                            checked={object.value}
-                                            onChange={() => (object.value = !object.value)}
+                                        <Controller
+                                            id={fieldData.id}
+                                            name={fieldData.id}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    disabled={fieldData.disabled}
+                                                    defaultChecked={field.value}
+                                                    {...field}
+                                                />
+                                            )}
                                         />
-                                        <label htmlFor="checkbox">{object.name}</label>
+                                        <Label className="form-check-label">{fieldData.name}</Label>
                                     </div>
                                 ))}
                             </div>
                             <div>
-                                <Label className="form-label" for="patientId" position="right">
-                                    Secondary Symptoms
-                                </Label>
-                                {secondarySymptoms.map((object, key) => (
+                                <Label className="form-label">Secondary Symptoms</Label>
+                                {secondarySymptoms.map((fieldData, key) => (
                                     <div className="form-check" key={key}>
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            id={object.name}
-                                            disabled={object.disabled}
-                                            checked={object.value}
-                                            onChange={() => (object.value = !object.value)}
+                                        <Controller
+                                            id={fieldData.id}
+                                            name={fieldData.id}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    disabled={fieldData.disabled}
+                                                    defaultChecked={field.value}
+                                                    {...field}
+                                                />
+                                            )}
                                         />
-                                        <label htmlFor="checkbox">{object.name}</label>
+                                        <Label className="form-check-label">{fieldData.name}</Label>
                                     </div>
                                 ))}
                             </div>
