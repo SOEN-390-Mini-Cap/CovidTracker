@@ -23,6 +23,20 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/define_status_report",
+        component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
+        meta: {
+            accessibleBy: ["DOCTOR"],
+        },
+    },
+    {
+        path: "/status_report",
+        component: lazy(() => import("../../views/pages/patient/StatusReport")),
+        meta: {
+            accessibleBy: ["PATIENT"],
+        },
+    },
+    {
         path: "/sign_in",
         component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",
@@ -43,13 +57,6 @@ const PagesRoutes = [
         component: lazy(() => import("../../views/pages/user/RoleChange")),
         meta: {
             accessibleBy: ["ADMIN"],
-        },
-    },
-    {
-        path: "/define_status_report",
-        component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
-        meta: {
-            accessibleBy: ["DOCTOR"],
         },
     },
     {
