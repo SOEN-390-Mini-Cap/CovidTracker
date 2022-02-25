@@ -15,12 +15,6 @@ export class PatientService {
         @inject("Repository")
         @named("PatientRepository")
         private readonly patientRepository: PatientRepository,
-        @inject("Repository")
-        @named("StatusRepository")
-        private readonly statusRepository: StatusRepository,
-        @inject("Service")
-        @named("AuthenticationService")
-        private readonly authenticationService: AuthenticationService,
     ) {}
 
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
@@ -30,31 +24,5 @@ export class PatientService {
         }
 
         await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
-    }
-
-    async setStatusFields(doctorId: number, patientId: number, fields: StatusFields): Promise<void> {
-        // verify 3 required fields are present and true
-        const includesRequiredFields = !!(fields.temperature && fields.weight && fields.otherSymptoms);
-        if (!includesRequiredFields) {
-            throw new Error("The required status fields have not been set properly");
-        }
-
-        if (!(await this.authenticationService.isUserPatientOfDoctor(patientId, doctorId))) {
-            throw new AuthorizationError();
-        }
-
-        if (await this.statusRepository.findStatusFields(patientId)) {
-            throw new Error("The status fields have already been set for this patient");
-        }
-
-        await this.statusRepository.updateStatusFields(patientId, fields);
-    }
-
-    async getPatientStatusFields(reqUserId: number, patientId: number): Promise<StatusFields> {
-        if (!(reqUserId === patientId)) {
-            throw new AuthorizationError();
-        }
-
-        return this.statusRepository.findStatusFields(patientId);
     }
 }
