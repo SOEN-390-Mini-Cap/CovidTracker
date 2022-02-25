@@ -3,22 +3,23 @@ import { Request, Response } from "restify";
 import { Controller, Post, interfaces, Get } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
-import { PatientService } from "../services/patient_service";
+import {StatusService} from "../services/status_service";
 
 @Controller("/statuses")
 @injectable()
 export class StatusController implements interfaces.Controller {
     constructor(
         @inject("Service")
-        @named("PatientService")
-        private readonly patientService: PatientService,
+        @named("StatusService")
+        private readonly statusService: StatusService,
     ) {}
 
-    @Post("/", "injectAuthDataMiddleware", "isValidPatientMiddleware")
+    @Post("/patients/:patientId", "injectAuthDataMiddleware", "isValidPatientMiddleware")
     private async postStatus(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = postStatusSchema.validate({
                 status: req.body,
+                patientId: req.params.patientId,
             });
 
             if (error) {
@@ -26,7 +27,7 @@ export class StatusController implements interfaces.Controller {
                 return;
             }
 
-            await this.patientService.submitStatus(req["token"].userId, value.status);
+            await this.statusService.postStatus(req["token"].userId, value.patientId, value.status);
 
             res.json(201);
         } catch (error) {
@@ -46,7 +47,7 @@ export class StatusController implements interfaces.Controller {
                 return;
             }
 
-            const status = await this.patientService.getStatus(value.statusId, req["token"].userId, req["token"].role);
+            const status = await this.statusService.getStatus(value.statusId, req["token"].userId, req["token"].role);
 
             res.json(200, status);
         } catch (error) {
@@ -57,6 +58,7 @@ export class StatusController implements interfaces.Controller {
 
 const postStatusSchema = Joi.object({
     status: Joi.object().required(),
+    patientId: Joi.number().required(),
 }).required();
 
 const getStatusSchema = Joi.object({

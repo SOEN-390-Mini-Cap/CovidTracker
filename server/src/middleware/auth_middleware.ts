@@ -54,15 +54,4 @@ function isValidRoleMiddleware(roles: Role[]) {
     };
 }
 
-function isSamePatientMiddleware(req: Request, res: Response, next: Next): void {
-    const userId = req["token"].userId;
-    const requestPatientId = +req.params.patientId;
-
-    if (userId !== requestPatientId) {
-        res.json(403, `Patient ${userId} is different than patientId in request`);
-    }
-
-    next();
-}
-
-export { injectAuthDataMiddleware, isValidRoleMiddleware, isSamePatientMiddleware };
+export { injectAuthDataMiddleware, isValidRoleMiddleware };

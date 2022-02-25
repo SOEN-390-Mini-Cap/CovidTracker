@@ -57,12 +57,7 @@ export class PatientController implements interfaces.Controller {
         }
     }
 
-    @Get(
-        "/:patientId/statuses/fields",
-        "injectAuthDataMiddleware",
-        "isValidPatientMiddleware",
-        "isSamePatientMiddleware",
-    )
+    @Get("/:patientId/statuses/fields", "injectAuthDataMiddleware", "isValidPatientMiddleware")
     private async getPatientStatusFields(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = patientSchema.validate({ patientId: req.params.patientId });
@@ -72,7 +67,7 @@ export class PatientController implements interfaces.Controller {
                 return;
             }
 
-            const statusFields = await this.patientService.getPatientStatusFields(value.patientId);
+            const statusFields = await this.patientService.getPatientStatusFields(req["token"].userId, value.patientId);
 
             res.json(200, statusFields);
         } catch (error) {

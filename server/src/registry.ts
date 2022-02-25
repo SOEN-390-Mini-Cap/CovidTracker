@@ -10,7 +10,6 @@ import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
 import {
     injectAuthDataMiddleware,
-    isSamePatientMiddleware,
     isValidRoleMiddleware,
 } from "./middleware/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
@@ -84,6 +83,5 @@ container.bind<RequestHandler>("injectAuthDataMiddleware").toConstantValue(injec
 container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidRoleMiddleware([Role.ADMIN]));
 container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidRoleMiddleware([Role.DOCTOR]));
 container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidRoleMiddleware([Role.PATIENT]));
-container.bind<RequestHandler>("isSamePatientMiddleware").toConstantValue(isSamePatientMiddleware);
 
 export { container };
