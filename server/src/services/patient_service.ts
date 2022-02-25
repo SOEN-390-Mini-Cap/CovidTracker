@@ -1,13 +1,6 @@
 import "reflect-metadata";
-import {inject, injectable, named} from "inversify";
-import {StatusRepository} from "../repositories/status_repository";
-import {StatusFields} from "../entities/status_fields";
-import {PatientRepository} from "../repositories/patient_repository";
-import {AuthorizationError} from "../entities/errors/authorization_error";
-import {datesAreOnSameDay} from "../helpers/date_helper";
-import {Role} from "../entities/role";
-import {AuthenticationService} from "./authentication_service";
-import {AuthenticationError} from "../entities/errors/authentication_error";
+import { inject, injectable, named } from "inversify";
+import { PatientRepository } from "../repositories/patient_repository";
 
 @injectable()
 export class PatientService {

@@ -8,10 +8,7 @@ import { Pool } from "pg";
 import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
-import {
-    injectAuthDataMiddleware,
-    isValidRoleMiddleware,
-} from "./middleware/auth_middleware";
+import { injectAuthDataMiddleware, isValidRoleMiddleware } from "./middleware/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
 import { DoctorRepository } from "./repositories/doctor_repository";
 import { AdminRepository } from "./repositories/admin_repository";
@@ -23,6 +20,8 @@ import { StatusRepository } from "./repositories/status_repository";
 import { DoctorController } from "./controllers/doctor_controller";
 import { DoctorService } from "./services/doctor_service";
 import { Role } from "./entities/role";
+import { StatusController } from "./controllers/status_controller";
+import { StatusService } from "./services/status_service";
 
 const container = new Container();
 
@@ -35,6 +34,7 @@ container
 container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTargetNamed("UserController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(PatientController).whenTargetNamed("PatientController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(DoctorController).whenTargetNamed("DoctorController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(StatusController).whenTargetNamed("StatusController");
 
 // Services
 container
@@ -45,6 +45,7 @@ container
 container.bind<UserService>("Service").to(UserService).inSingletonScope().whenTargetNamed("UserService");
 container.bind<PatientService>("Service").to(PatientService).inSingletonScope().whenTargetNamed("PatientService");
 container.bind<DoctorService>("Service").to(DoctorService).inSingletonScope().whenTargetNamed("DoctorService");
+container.bind<StatusService>("Service").to(StatusService).inSingletonScope().whenTargetNamed("StatusService");
 
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
