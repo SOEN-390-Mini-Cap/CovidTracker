@@ -42,7 +42,7 @@ export async function seedDb(): Promise<void> {
     await patientRepository.addPatient(4);
     await patientRepository.addPatient(5);
 
-    await statusRepository.updatePatientStatusFields(5, { weight: true, temperature: true, otherSymptoms: true });
+    await statusRepository.updateStatusFields(5, { weight: true, temperature: true, otherSymptoms: true });
 
     // add admin
     await adminRepository.addAdmin(6);

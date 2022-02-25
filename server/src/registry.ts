@@ -8,7 +8,11 @@ import { Pool } from "pg";
 import { UserController } from "./controllers/user_controller";
 import { UserService } from "./services/user_service";
 import { RequestHandler } from "restify";
-import { extractJwtMiddleware, isSamePatientMiddleware, isValidRoleMiddleware } from "./controllers/auth_middleware";
+import {
+    injectAuthDataMiddleware,
+    isSamePatientMiddleware,
+    isValidRoleMiddleware,
+} from "./controllers/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
 import { DoctorRepository } from "./repositories/doctor_repository";
 import { AdminRepository } from "./repositories/admin_repository";
@@ -76,16 +80,10 @@ container
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
 
 // Middleware
-container.bind<RequestHandler>("extractJwtMiddleware").toConstantValue(extractJwtMiddleware);
-container
-    .bind<RequestHandler>("isValidAdminMiddleware")
-    .toConstantValue(isValidRoleMiddleware([Role.ADMIN])(container));
-container
-    .bind<RequestHandler>("isValidDoctorMiddleware")
-    .toConstantValue(isValidRoleMiddleware([Role.DOCTOR])(container));
-container
-    .bind<RequestHandler>("isValidPatientMiddleware")
-    .toConstantValue(isValidRoleMiddleware([Role.PATIENT])(container));
+container.bind<RequestHandler>("injectAuthDataMiddleware").toConstantValue(injectAuthDataMiddleware(container));
+container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidRoleMiddleware([Role.ADMIN]));
+container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidRoleMiddleware([Role.DOCTOR]));
+container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidRoleMiddleware([Role.PATIENT]));
 container.bind<RequestHandler>("isSamePatientMiddleware").toConstantValue(isSamePatientMiddleware);
 
 export { container };

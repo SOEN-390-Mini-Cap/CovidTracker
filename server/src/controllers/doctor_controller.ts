@@ -13,7 +13,7 @@ export class DoctorController implements interfaces.Controller {
         private readonly doctorService: DoctorService,
     ) {}
 
-    @Get("/patient_counts", "extractJwtMiddleware", "isValidAdminMiddleware")
+    @Get("/patient_counts", "injectAuthDataMiddleware", "isValidAdminMiddleware")
     private async getPatientCounts(req: Request, res: Response): Promise<void> {
         try {
             const patientCounts = await this.doctorService.getPatientCounts();

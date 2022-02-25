@@ -15,7 +15,7 @@ export class UserController implements interfaces.Controller {
         private readonly userService: UserService,
     ) {}
 
-    @Get("/me", "extractJwtMiddleware")
+    @Get("/me", "injectAuthDataMiddleware")
     private async me(req: Request, res: Response): Promise<void> {
         try {
             const userId = req["token"].userId;
@@ -28,7 +28,7 @@ export class UserController implements interfaces.Controller {
         }
     }
 
-    @Put("/:userId/roles", "extractJwtMiddleware", "isValidAdminMiddleware")
+    @Put("/:userId/roles", "injectAuthDataMiddleware", "isValidAdminMiddleware")
     private async assignRole(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = roleSchema.validate({

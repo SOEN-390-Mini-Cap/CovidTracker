@@ -1,56 +1,56 @@
-import { Next, Request, RequestHandler, Response } from "restify";
+import { Next, Request, Response } from "restify";
 import * as jwt from "jsonwebtoken";
 import { Role } from "../entities/role";
 import { UserService } from "../services/user_service";
 import { Container } from "inversify";
 
-function extractJwtMiddleware(req: Request, res: Response, next: Next): void {
-    const authHeader = req.headers.authorization;
+function injectAuthDataMiddleware(container: Container) {
+    return async (req: Request, res: Response, next: Next): Promise<void> => {
+        const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        res.json(401, "No authorization header found");
-        return;
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-        if (err) {
-            res.json(403, "Invalid token provided");
+        if (!authHeader) {
+            res.json(401, "No authorization header found");
             return;
         }
 
-        req["token"] = {
-            ...req["token"],
-            userId: +payload["userId"],
-        };
-        next();
-    });
+        const token = authHeader.split(" ")[1];
+
+        jwt.verify(token, process.env.JWT_SECRET, async (err, payload) => {
+            if (err) {
+                res.json(403, "Invalid token provided");
+                return;
+            }
+
+            const userService = container.getNamed<UserService>("Service", "UserService");
+
+            const userId = +payload["userId"];
+            const role = await userService.findRoleByUserId(userId);
+
+            req["token"] = {
+                ...req["token"],
+                userId,
+                role,
+            };
+            next();
+        });
+    };
 }
 
 function isValidRoleMiddleware(roles: Role[]) {
-    return (container: Container): RequestHandler => {
-        return async (req: Request, res: Response, next: Next): Promise<void> => {
-            try {
-                const userService = container.getNamed<UserService>("Service", "UserService");
+    return async (req: Request, res: Response, next: Next): Promise<void> => {
+        try {
+            const role = req["token"].role;
 
-                const userId = req["token"].userId;
-                const role = await userService.findRoleByUserId(userId);
-
-                const isRoleValid = roles.includes(role);
-                if (!isRoleValid) {
-                    res.json(403, `Role ${role} is not valid for this operation`);
-                    return;
-                }
-
-                req["token"] = {
-                    ...req["token"],
-                };
-                next();
-            } catch (error) {
-                res.json(500, { error: error.message });
+            const isRoleValid = roles.includes(role);
+            if (!isRoleValid) {
+                res.json(403, `Role ${role} is not valid for this operation`);
+                return;
             }
-        };
+
+            next();
+        } catch (error) {
+            res.json(500, { error: error.message });
+        }
     };
 }
 
@@ -65,4 +65,4 @@ function isSamePatientMiddleware(req: Request, res: Response, next: Next): void 
     next();
 }
 
-export { extractJwtMiddleware, isValidRoleMiddleware, isSamePatientMiddleware };
+export { injectAuthDataMiddleware, isValidRoleMiddleware, isSamePatientMiddleware };
