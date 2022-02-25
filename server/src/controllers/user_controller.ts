@@ -19,7 +19,30 @@ export class UserController implements interfaces.Controller {
     private async me(req: Request, res: Response): Promise<void> {
         try {
             const userId = req["token"].userId;
-            const user = await this.userService.findUserByUserId(userId);
+            const user = await this.userService.findMe(userId);
+
+            user.account.password = "";
+            res.json(200, user);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
+    @Get("/:userId", "injectAuthDataMiddleware")
+    private async getUser(req: Request, res: Response): Promise<void> {
+        try {
+            console.log("test");
+
+            const { value, error } = getUserSchema.validate({
+                userId: req.params.userId,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const user = await this.userService.findUser(req["token"].userId, req["token"].role, value.userId);
 
             user.account.password = "";
             res.json(200, user);
@@ -55,4 +78,8 @@ const roleSchema = Joi.object({
     role: Joi.string()
         .valid(...ROLES)
         .required(),
+}).required();
+
+const getUserSchema = Joi.object({
+    userId: Joi.number().required(),
 }).required();
