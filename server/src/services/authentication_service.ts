@@ -7,8 +7,7 @@ import { Token } from "../entities/token";
 import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { AuthenticationError } from "../entities/errors/authentication_error";
-import {PatientRepository} from "../repositories/patient_repository";
-import {AuthorizationError} from "../entities/errors/authorization_error";
+import { PatientRepository } from "../repositories/patient_repository";
 
 @injectable()
 export class AuthenticationService {
