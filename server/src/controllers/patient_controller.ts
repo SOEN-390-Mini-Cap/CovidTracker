@@ -79,48 +79,6 @@ export class PatientController implements interfaces.Controller {
             res.json(error.statusCode || 500, { error: error.message });
         }
     }
-
-    @Post("/:patientId/statuses", "injectAuthDataMiddleware", "isValidPatientMiddleware", "isSamePatientMiddleware")
-    private async submitStatus(req: Request, res: Response): Promise<void> {
-        try {
-            const { value, error } = statusSchema.validate({
-                patientId: req.params.patientId,
-                status: req.body,
-            });
-
-            if (error) {
-                res.json(400, error);
-                return;
-            }
-
-            await this.patientService.submitStatus(value.patientId, value.status);
-
-            res.json(201);
-        } catch (error) {
-            res.json(error.statusCode || 500, { error: error.message });
-        }
-    }
-
-    @Get("/:patientId/statuses/:statusId", "injectAuthDataMiddleware")
-    private async getStatus(req: Request, res: Response): Promise<void> {
-        try {
-            const { value, error } = getStatusSchema.validate({
-                patientId: req.params.patientId,
-                statusId: req.params.statusId,
-            });
-
-            if (error) {
-                res.json(400, error);
-                return;
-            }
-
-            const status = await this.patientService.getStatus(value.statusId, req["token"].role, req["token"].userId);
-
-            res.json(200, status);
-        } catch (error) {
-            res.json(error.statusCode || 500, { error: error.message });
-        }
-    }
 }
 
 const doctorSchema = Joi.object({
@@ -135,13 +93,3 @@ const statusFieldsSchema = Joi.object({
 }).required();
 
 const patientSchema = Joi.object({ patientId: Joi.number().required() }).required();
-
-const statusSchema = Joi.object({
-    patientId: Joi.number().required(),
-    status: Joi.object().required(),
-}).required();
-
-const getStatusSchema = Joi.object({
-    patientId: Joi.number().required(),
-    statusId: Joi.number().required(),
-}).required();

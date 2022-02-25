@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 
-async function submitStatusReport(data, patientId, token) {
+async function submitStatusReport(data, token) {
     await axios.post(
-        `http://localhost:8080/patients/${patientId}/statuses`,
+        `http://localhost:8080/statuses`,
         {
             ...data,
         },
@@ -125,7 +125,7 @@ function StatusReport() {
 
     const onSubmit = async (data) => {
         try {
-            await submitStatusReport(data, userId, token);
+            await submitStatusReport(data, token);
             toast.success("Status Report Submitted", {
                 position: "top-right",
                 autoClose: 5000,

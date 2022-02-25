@@ -12,7 +12,7 @@ import {
     injectAuthDataMiddleware,
     isSamePatientMiddleware,
     isValidRoleMiddleware,
-} from "./controllers/auth_middleware";
+} from "./middleware/auth_middleware";
 import { PatientRepository } from "./repositories/patient_repository";
 import { DoctorRepository } from "./repositories/doctor_repository";
 import { AdminRepository } from "./repositories/admin_repository";
