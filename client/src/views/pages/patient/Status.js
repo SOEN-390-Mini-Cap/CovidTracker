@@ -96,7 +96,9 @@ function Status() {
                 <BreadCrumbsPage
                     breadCrumbTitle={`#${statusId} Status Report Details`}
                     breadCrumbParent="Patient"
-                    breadCrumbParent2={<Link to={`/statuses/patients/${patient?.account?.userId}`}>Status Reports</Link>}
+                    breadCrumbParent2={
+                        <Link to={`/statuses/patients/${patient?.account?.userId}`}>Status Reports</Link>
+                    }
                     breadCrumbActive="Status Report Details"
                 />
             ) : (
@@ -138,7 +140,7 @@ function Status() {
                                     <br />
                                     {patient.account.email}
                                     <br />
-                                    {status.status.temperature}&deg;C
+                                    {status.status.temperature} &deg;C
                                     <br />
                                     {status.status.weight} lbs
                                     <br />
