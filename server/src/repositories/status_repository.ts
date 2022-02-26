@@ -59,7 +59,7 @@ export class StatusRepository {
             LIMIT 1;
         `;
         const res = await client.query(sql, [patientId]).finally(() => client.release());
-        return this.buildStatus(res);
+        return this.buildStatus(res.rows[0]);
     }
 
     async findStatus(statusId: number): Promise<Status> {
@@ -75,15 +75,35 @@ export class StatusRepository {
             WHERE s.status_id = $1;
         `;
         const res = await client.query(sql, [statusId]).finally(() => client.release());
-        return this.buildStatus(res);
+        return this.buildStatus(res.rows[0]);
     }
 
-    private buildStatus({ rows }: QueryResult): Status {
-        if (rows.length == 0) {
+    async findStatusesForPatient(patientId: number): Promise<Status[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                s.status_id,
+                s.patient_id,
+                s.status,
+                s.created_on
+            FROM statuses AS s
+            WHERE s.patient_id = $1
+            ORDER BY s.created_on DESC;
+        `;
+        const res = await client.query(sql, [patientId]).finally(() => client.release());
+        return this.buildStatuses(res);
+    }
+
+    private buildStatuses({ rows }: QueryResult): Status[] {
+        return rows.map(this.buildStatus);
+    }
+
+    private buildStatus(row: any): Status {
+        if (!row) {
             return null;
         }
 
-        const row = rows[0];
         return {
             statusId: row.status_id,
             patientId: row.patient_id,
