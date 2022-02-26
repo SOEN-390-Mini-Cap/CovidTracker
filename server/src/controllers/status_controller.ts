@@ -58,7 +58,7 @@ export class StatusController implements interfaces.Controller {
     @Get("/patients/:patientId", "injectAuthDataMiddleware")
     private async getStatusesForPatient(req: Request, res: Response): Promise<void> {
         try {
-            const { value, error } = getStatusesForPatient.validate({
+            const { value, error } = getStatusesForPatientSchema.validate({
                 patientId: req.params.patientId,
             });
 
@@ -129,7 +129,7 @@ const getStatusSchema = Joi.object({
     statusId: Joi.number().required(),
 }).required();
 
-const getStatusesForPatient = Joi.object({ patientId: Joi.number().required() }).required();
+const getStatusesForPatientSchema = Joi.object({ patientId: Joi.number().required() }).required();
 
 const postStatusFieldsSchema = Joi.object({
     doctorId: Joi.number().required(),
