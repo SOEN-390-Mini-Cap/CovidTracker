@@ -5,10 +5,10 @@ import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 
 describe("status_controller.ts API", () => {
-    // patientId -> 5
-    const patientToken =
+    const patient5Token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY0NTEzNzk0Mn0.UcpnGpWBhdM4OEgKOrJEWXoknk9-I_2Cf19pJWkS5eY";
-    const patient3Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NTg1NTI0NX0.ieUOhLZclBcogP6SBReqAf5ELNoWclub7sjnEm-q6k4";
+    const patient3Token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NTg1NTI0NX0.ieUOhLZclBcogP6SBReqAf5ELNoWclub7sjnEm-q6k4";
 
     beforeEach(async () => {
         await restoreDb();
@@ -34,7 +34,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "No other symptoms",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(201);
         });
@@ -57,7 +57,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
             const res = await agent(app)
                 .post("/statuses/patients/5")
                 .send({
@@ -75,7 +75,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("A patient can only submit one status report per calendar day");
@@ -88,7 +88,7 @@ describe("status_controller.ts API", () => {
                     temperature: 30.2,
                     weight: 150,
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("Status is malformed");
@@ -112,7 +112,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(403);
         });
@@ -143,7 +143,7 @@ describe("status_controller.ts API", () => {
         });
 
         it("should return 200 status code and empty list of patients statuses", async () => {
-            const res = await agent(app).get("/statuses/patients/5").set("Authorization", `Bearer ${patientToken}`);
+            const res = await agent(app).get("/statuses/patients/5").set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(200);
             expect(res.body).to.deep.equal([]);
