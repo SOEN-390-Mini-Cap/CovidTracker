@@ -37,6 +37,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/status/:statusId",
+        component: lazy(() => import("../../views/pages/patient/Status")),
+        meta: {
+            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
+        },
+    },
+    {
         path: "/sign_in",
         component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",

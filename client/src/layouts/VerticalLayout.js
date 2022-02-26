@@ -31,7 +31,6 @@ const CustomNavbar = () => {
         async function f() {
             const userData = await getProfile(token);
             dispatch(handleProfile({ user: userData }));
-            console.log(userData);
         }
         f();
     }, [dispatch, token]);
