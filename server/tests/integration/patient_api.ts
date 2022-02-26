@@ -19,7 +19,7 @@ describe("patient_controller.ts API", () => {
     describe("POST /patients/:patientId/doctors endpoint", () => {
         it("should return 201 status", async () => {
             const res = await agent(app)
-                .post("/patients/3/doctors")
+                .post("/patients/4/doctors")
                 .send({
                     doctorId: 1,
                 })
@@ -30,7 +30,7 @@ describe("patient_controller.ts API", () => {
 
         it("should return 500 status when admin tries to re-assign patient to new doctor", async () => {
             const res = await agent(app)
-                .post("/patients/4/doctors")
+                .post("/patients/5/doctors")
                 .send({
                     doctorId: 2,
                 })
@@ -42,7 +42,7 @@ describe("patient_controller.ts API", () => {
 
         it("should return 403 unauthorized status when user role is not admin", async () => {
             const res = await agent(app)
-                .post("/patients/3/doctors")
+                .post("/patients/4/doctors")
                 .send({
                     doctorId: 1,
                 })
