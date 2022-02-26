@@ -1,13 +1,9 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Input, Label } from "reactstrap";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Card, CardBody, CardFooter, CardTitle, Input, Label } from "reactstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import {Fragment, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 async function getStatus(token, statusId) {
     const res = await axios.get(`http://localhost:8080/statuses/${statusId}`, {
@@ -92,8 +88,6 @@ function Status() {
         f();
     }, [token, statusId]);
 
-    console.log(patient, status);
-
     return (
         <div>
             <BreadCrumbsPage
@@ -112,28 +106,28 @@ function Status() {
                             <div className="d-flex mb-1">
                                 <div className="w-50">
                                     Patient ID
-                                    <br/>
+                                    <br />
                                     Name
-                                    <br/>
+                                    <br />
                                     Email
-                                    <br/>
+                                    <br />
                                     Temperature
-                                    <br/>
+                                    <br />
                                     Weight
-                                    <br/>
+                                    <br />
                                     Last Updated
                                 </div>
                                 <div className="w-50">
                                     {patient.account.userId}
-                                    <br/>
+                                    <br />
                                     {`${patient.firstName} ${patient.lastName}`}
-                                    <br/>
+                                    <br />
                                     {patient.account.email}
-                                    <br/>
+                                    <br />
                                     {status.status.temperature}&deg;C
-                                    <br/>
+                                    <br />
                                     {status.status.weight} lbs
-                                    <br/>
+                                    <br />
                                     {new Date(status.createdOn).toDateString()}
                                 </div>
                             </div>
@@ -141,41 +135,37 @@ function Status() {
                             <div className="d-flex mb-1">
                                 <div className="w-50 me-1">
                                     <Label className="form-label">Primary Symptoms</Label>
-                                    {primarySymptoms.map(
-                                        (fieldData, key) =>
-                                            (
-                                                <div className="form-check" key={key}>
-                                                    <Input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        checked={status.status[fieldData.id]}
-                                                    />
-                                                    <Label className="form-check-label">{fieldData.name}</Label>
-                                                </div>
-                                            ),
-                                    )}
+                                    {primarySymptoms.map((fieldData, key) => (
+                                        <div className="form-check" key={key}>
+                                            <Input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={status.status[fieldData.id]}
+                                                readOnly={true}
+                                            />
+                                            <Label className="form-check-label">{fieldData.name}</Label>
+                                        </div>
+                                    ))}
                                 </div>
                                 <div>
                                     <Label className="form-label">Secondary Symptoms</Label>
-                                    {secondarySymptoms.map(
-                                        (fieldData, key) =>
-                                            (
-                                                <div className="form-check" key={key}>
-                                                    <Input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        checked={status.status[fieldData.id]}
-                                                    />
-                                                    <Label className="form-check-label">{fieldData.name}</Label>
-                                                </div>
-                                            ),
-                                    )}
+                                    {secondarySymptoms.map((fieldData, key) => (
+                                        <div className="form-check" key={key}>
+                                            <Input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={status.status[fieldData.id]}
+                                                readOnly={true}
+                                            />
+                                            <Label className="form-check-label">{fieldData.name}</Label>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
                             <div className="mb-2">
                                 Other Symptoms
-                                <br/>
+                                <br />
                                 {status.status.otherSymptoms}
                             </div>
                         </Fragment>

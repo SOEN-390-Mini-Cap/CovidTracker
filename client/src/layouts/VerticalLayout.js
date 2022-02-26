@@ -86,15 +86,10 @@ const CustomNavbar = () => {
 };
 
 const VerticalLayout = (props) => {
-    // DEV NOTE: Remove once layout is complete in future sprints
-    // const [menuData, setMenuData] = useState([])
+    const user = useSelector(selectUser);
 
-    // ** For ServerSide navigation
-    // useEffect(() => {
-    //   axios.get(URL).then(response => setMenuData(response.data))
-    // }, [])
     return (
-        <Layout menuData={navigation} navbar={<CustomNavbar />} footer={<div />} {...props}>
+        <Layout menuData={navigation(user.account.userId)} navbar={<CustomNavbar />} footer={<div />} {...props}>
             {props.children}
         </Layout>
     );
