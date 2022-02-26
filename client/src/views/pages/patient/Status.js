@@ -3,7 +3,7 @@ import { Card, CardBody, CardFooter, CardTitle, Input, Label } from "reactstrap"
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 async function getStatus(token, statusId) {
     const res = await axios.get(`http://localhost:8080/statuses/${statusId}`, {
@@ -26,6 +26,7 @@ async function getUser(token, userId) {
 }
 
 const selectToken = (state) => state.auth.userData.token;
+const selectRole = (state) => state.auth.userData.user.role;
 
 const primarySymptoms = [
     {
@@ -75,6 +76,7 @@ const secondarySymptoms = [
 function Status() {
     const { statusId } = useParams();
     const token = useSelector(selectToken);
+    const role = useSelector(selectRole);
     const [status, setStatus] = useState(null);
     const [patient, setPatient] = useState(null);
 
@@ -90,12 +92,24 @@ function Status() {
 
     return (
         <div>
-            <BreadCrumbsPage
-                breadCrumbTitle={`#${statusId} Status Report Details`}
-                breadCrumbParent="Patient"
-                breadCrumbParent2="Status Reports"
-                breadCrumbActive="Status Report Details"
-            />
+            {role === "PATIENT" ? (
+                <BreadCrumbsPage
+                    breadCrumbTitle={`#${statusId} Status Report Details`}
+                    breadCrumbParent="Patient"
+                    breadCrumbParent2={<Link to={`/statuses/patients/${patient?.account?.userId}`}>Status Reports</Link>}
+                    breadCrumbActive="Status Report Details"
+                />
+            ) : (
+                <BreadCrumbsPage
+                    breadCrumbTitle={`#${statusId} Status Report Details`}
+                    breadCrumbParent="Patient"
+                    breadCrumbParent2="Patient List"
+                    breadCrumbParent3={
+                        <Link to={`/statuses/patients/${patient?.account?.userId}`}>Status Reports</Link>
+                    }
+                    breadCrumbActive="Status Report Details"
+                />
+            )}
             <Card className="basic-card status-report-fields-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Status Report Details</CardTitle>
