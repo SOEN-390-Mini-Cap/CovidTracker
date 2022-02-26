@@ -7,7 +7,8 @@ import { Role } from "../../../src/entities/role";
 
 describe("user_controller.ts", () => {
     const userService: any = {
-        findUserByUserId: Function,
+        findMe: Function,
+        findUser: Function,
         assignRole: Function,
     };
     const controller = new UserController(userService);
@@ -28,7 +29,7 @@ describe("user_controller.ts", () => {
     });
 
     describe("UserController::me", () => {
-        let findUserByUserIdStub: SinonStub;
+        let findMeStub: SinonStub;
 
         beforeEach(() => {
             req = {
@@ -37,22 +38,57 @@ describe("user_controller.ts", () => {
                 },
             };
 
-            findUserByUserIdStub = sandbox.stub(userService, "findUserByUserId");
-            findUserByUserIdStub.withArgs(1).resolves(mockUser);
+            findMeStub = sandbox.stub(userService, "findMe");
+            findMeStub.withArgs(1).resolves(mockUser);
         });
 
         it("should return user when user is found by id", async () => {
             await (controller as any).me(req, res);
 
-            expect(findUserByUserIdStub.calledWithExactly(1)).to.equal(true);
+            expect(findMeStub.calledWithExactly(1)).to.equal(true);
             expect(resJsonStub.calledWithExactly(200, mockExpectedUser)).to.equal(true);
         });
 
         it("should return status 500 if service throws an error", async () => {
             req.token.userId = 2;
-            findUserByUserIdStub.rejects(new Error("error message"));
+            findMeStub.rejects(new Error("error message"));
 
             await (controller as any).me(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("UserController::getUser", () => {
+        let findUserStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: Role.PATIENT,
+                },
+                params: {
+                    userId: 1,
+                },
+            };
+
+            findUserStub = sandbox.stub(userService, "findUser");
+            findUserStub.withArgs(1, Role.PATIENT, 1).resolves(mockUser);
+        });
+
+        it("should return user when user is found by id", async () => {
+            await (controller as any).getUser(req, res);
+
+            expect(findUserStub.calledWithExactly(1, Role.PATIENT, 1)).to.equal(true);
+            expect(resJsonStub.calledWithExactly(200, mockExpectedUser)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            req.token.userId = 2;
+            findUserStub.rejects(new Error("error message"));
+
+            await (controller as any).getUser(req, res);
 
             expect(resJsonStub.calledWith(500)).to.equal(true);
         });

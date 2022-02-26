@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 async function submitStatusReport(data, patientId, token) {
     await axios.post(
-        `http://localhost:8080/patients/${patientId}/statuses`,
+        `http://localhost:8080/statuses/patients/${patientId}`,
         {
             ...data,
         },
@@ -23,7 +23,7 @@ async function submitStatusReport(data, patientId, token) {
 }
 
 async function getFields(patientId, token) {
-    const res = await axios.get(`http://localhost:8080/patients/${patientId}/statuses/fields`, {
+    const res = await axios.get(`http://localhost:8080/statuses/fields/patients/${patientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

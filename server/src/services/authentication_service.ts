@@ -7,6 +7,7 @@ import { Token } from "../entities/token";
 import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { AuthenticationError } from "../entities/errors/authentication_error";
+import { PatientRepository } from "../repositories/patient_repository";
 
 @injectable()
 export class AuthenticationService {
@@ -14,6 +15,9 @@ export class AuthenticationService {
         @inject("Repository")
         @named("UserRepository")
         private readonly userRepository: UserRepository,
+        @inject("Repository")
+        @named("PatientRepository")
+        private readonly patientRepository: PatientRepository,
     ) {}
 
     async signUp(userData: RequestUser, addressData: RequestAddress): Promise<Token> {
@@ -46,5 +50,10 @@ export class AuthenticationService {
             },
             process.env.JWT_SECRET,
         );
+    }
+
+    async isUserPatientOfDoctor(patientId: number, doctorId: number): Promise<boolean> {
+        const assignedDoctorId = await this.patientRepository.findAssignedDoctorId(patientId);
+        return assignedDoctorId === doctorId;
     }
 }

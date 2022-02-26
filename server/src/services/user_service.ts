@@ -8,6 +8,8 @@ import { DoctorRepository } from "../repositories/doctor_repository";
 import { AdminRepository } from "../repositories/admin_repository";
 import { HealthOfficialRepository } from "../repositories/health_official_repository";
 import { ImmigrationOfficerRepository } from "../repositories/immigration_officer_repository";
+import { AuthorizationError } from "../entities/errors/authorization_error";
+import { AuthenticationService } from "./authentication_service";
 
 @injectable()
 export class UserService {
@@ -30,9 +32,30 @@ export class UserService {
         @inject("Repository")
         @named("ImmigrationOfficerRepository")
         private readonly immigrationOfficerRepository: ImmigrationOfficerRepository,
+        @inject("Service")
+        @named("AuthenticationService")
+        private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async findUserByUserId(userId: number): Promise<User> {
+    async findMe(userId: number): Promise<User> {
+        const user = await this.userRepository.findUserByUserId(userId);
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        return user;
+    }
+
+    async findUser(reqUserId: number, reqUserRole: Role, userId: number): Promise<User> {
+        const canUserAccess =
+            (await this.authenticationService.isUserPatientOfDoctor(userId, reqUserId)) ||
+            reqUserId === userId ||
+            reqUserRole === Role.HEALTH_OFFICIAL;
+        if (!canUserAccess) {
+            throw new AuthorizationError();
+        }
+
         const user = await this.userRepository.findUserByUserId(userId);
 
         if (!user) {

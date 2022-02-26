@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 async function defineStatusReport(data, token) {
     const { patientId, ...fields } = data;
     await axios.post(
-        `http://localhost:8080/patients/${patientId}/statuses/fields`,
+        `http://localhost:8080/statuses/fields/patients/${patientId}`,
         {
             ...fields,
         },

@@ -2,14 +2,13 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { Pool, QueryResult } from "pg";
 import { StatusFields } from "../entities/status_fields";
-import { Status } from "../entities/status";
-import { PatientStatus } from "../entities/patient_status";
+import { Status, StatusBody } from "../entities/status";
 
 @injectable()
 export class StatusRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async updatePatientStatusFields(patientId: number, fields: StatusFields): Promise<void> {
+    async updateStatusFields(patientId: number, fields: StatusFields): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -32,7 +31,7 @@ export class StatusRepository {
         return res.rows[0]?.status_fields;
     }
 
-    async addStatus(patientId: number, status: Status): Promise<void> {
+    async insertStatus(patientId: number, status: StatusBody): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -45,7 +44,7 @@ export class StatusRepository {
         await client.query(sql, [patientId, JSON.stringify(status)]).finally(() => client.release());
     }
 
-    async findLatestStatus(patientId: number): Promise<PatientStatus> {
+    async findLatestStatus(patientId: number): Promise<Status> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -63,7 +62,23 @@ export class StatusRepository {
         return this.buildStatus(res);
     }
 
-    private buildStatus({ rows }: QueryResult): PatientStatus {
+    async findStatus(statusId: number): Promise<Status> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                s.status_id,
+                s.patient_id,
+                s.status,
+                s.created_on
+            FROM statuses AS s
+            WHERE s.status_id = $1;
+        `;
+        const res = await client.query(sql, [statusId]).finally(() => client.release());
+        return this.buildStatus(res);
+    }
+
+    private buildStatus({ rows }: QueryResult): Status {
         if (rows.length == 0) {
             return null;
         }
