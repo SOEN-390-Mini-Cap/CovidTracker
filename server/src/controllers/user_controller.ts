@@ -31,8 +31,6 @@ export class UserController implements interfaces.Controller {
     @Get("/:userId", "injectAuthDataMiddleware")
     private async getUser(req: Request, res: Response): Promise<void> {
         try {
-            console.log("test");
-
             const { value, error } = getUserSchema.validate({
                 userId: req.params.userId,
             });

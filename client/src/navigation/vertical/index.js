@@ -60,7 +60,7 @@ export default [
             },
             {
                 id: "statusReport",
-                title: "Status Report",
+                title: "Submit Status Report",
                 icon: <Circle />,
                 navLink: "/status_report",
                 accessibleBy: ["PATIENT"],
