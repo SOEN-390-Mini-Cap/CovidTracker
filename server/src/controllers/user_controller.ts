@@ -21,7 +21,6 @@ export class UserController implements interfaces.Controller {
             const userId = req["token"].userId;
             const user = await this.userService.findMe(userId);
 
-            user.account.password = "";
             res.json(200, user);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
@@ -31,8 +30,6 @@ export class UserController implements interfaces.Controller {
     @Get("/:userId", "injectAuthDataMiddleware")
     private async getUser(req: Request, res: Response): Promise<void> {
         try {
-            console.log("test");
-
             const { value, error } = getUserSchema.validate({
                 userId: req.params.userId,
             });
@@ -44,7 +41,6 @@ export class UserController implements interfaces.Controller {
 
             const user = await this.userService.findUser(req["token"].userId, req["token"].role, value.userId);
 
-            user.account.password = "";
             res.json(200, user);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });

@@ -78,7 +78,7 @@ export class UserRepository {
         `;
         const res = await client.query(sql, [email]).finally(async () => client.release());
 
-        return this.buildUser(res.rows[0]);
+        return this.buildUser(res.rows[0], true);
     }
 
     async findUserByUserId(userId: number): Promise<User> {
@@ -195,10 +195,10 @@ export class UserRepository {
     }
 
     buildUsers({ rows }: QueryResult): User[] {
-        return rows.map(this.buildUser);
+        return rows.map((row) => this.buildUser(row));
     }
 
-    buildUser(row: any): User {
+    buildUser(row: any, keepPassword = false): User {
         if (!row) {
             return null;
         }
@@ -222,7 +222,7 @@ export class UserRepository {
             account: {
                 userId: row.user_id,
                 email: row.email,
-                password: row.password,
+                password: keepPassword ? row.password : "",
                 createdOn: new Date(row.created_on),
             },
         };
