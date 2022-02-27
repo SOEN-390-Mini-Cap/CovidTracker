@@ -21,7 +21,6 @@ export class UserController implements interfaces.Controller {
             const userId = req["token"].userId;
             const user = await this.userService.findMe(userId);
 
-            user.account.password = "";
             res.json(200, user);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
@@ -42,7 +41,6 @@ export class UserController implements interfaces.Controller {
 
             const user = await this.userService.findUser(req["token"].userId, req["token"].role, value.userId);
 
-            user.account.password = "";
             res.json(200, user);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });

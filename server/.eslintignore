@@ -1,1 +1,4 @@
 build/*
+.nyc_output
+coverage
+mochawesome-report

@@ -46,7 +46,7 @@ describe("user_controller.ts", () => {
             await (controller as any).me(req, res);
 
             expect(findMeStub.calledWithExactly(1)).to.equal(true);
-            expect(resJsonStub.calledWithExactly(200, mockExpectedUser)).to.equal(true);
+            expect(resJsonStub.calledWithExactly(200, mockUser)).to.equal(true);
         });
 
         it("should return status 500 if service throws an error", async () => {
@@ -81,7 +81,7 @@ describe("user_controller.ts", () => {
             await (controller as any).getUser(req, res);
 
             expect(findUserStub.calledWithExactly(1, Role.PATIENT, 1)).to.equal(true);
-            expect(resJsonStub.calledWithExactly(200, mockExpectedUser)).to.equal(true);
+            expect(resJsonStub.calledWithExactly(200, mockUser)).to.equal(true);
         });
 
         it("should return status 500 if service throws an error", async () => {
@@ -156,30 +156,6 @@ describe("user_controller.ts", () => {
 });
 
 const mockUser: User = {
-    firstName: "john",
-    lastName: "smith",
-    phoneNumber: "514-245-6532",
-    gender: Gender.MALE,
-    dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
-    role: Role.USER,
-    address: {
-        addressId: 2,
-        streetAddress: "1001th street",
-        streetAddressLineTwo: "",
-        city: "Montreal",
-        province: "Quebec",
-        postalCode: "A1B 2C3",
-        country: "Canada",
-    },
-    account: {
-        userId: 1,
-        email: "test3@test.com",
-        password: "password",
-        createdOn: new Date("2022-01-28T01:48:02.322Z"),
-    },
-};
-
-const mockExpectedUser: User = {
     firstName: "john",
     lastName: "smith",
     phoneNumber: "514-245-6532",

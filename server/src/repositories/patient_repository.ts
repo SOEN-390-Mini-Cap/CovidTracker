@@ -4,6 +4,7 @@ import { Pool, QueryResult } from "pg";
 import { Role } from "../entities/role";
 import { UserRepository } from "./user_repository";
 import { PatientCount } from "../entities/patient_counts";
+import { User } from "../entities/user";
 
 @injectable()
 export class PatientRepository {
@@ -65,6 +66,71 @@ export class PatientRepository {
 
         const res = await client.query(sql).finally(() => client.release());
         return this.buildPatientCounts(res);
+    }
+
+    async findPatients(): Promise<User[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                u.user_id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.phone_number,
+                u.gender,
+                u.date_of_birth,
+                u.created_on,
+                r.role_name,
+                a.address_id,
+                a.street_address,
+                a.street_address_line_two,
+                a.city,
+                a.province,
+                a.postal_code,
+                a.country
+            FROM users AS u
+            JOIN patients AS p ON u.user_id = p.patient_id
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id;
+        `;
+
+        const res = await client.query(sql).finally(() => client.release());
+        return this.userRepository.buildUsers(res);
+    }
+
+    async findPatientsAssignedToDoctor(doctorId: number): Promise<User[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                u.user_id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.phone_number,
+                u.gender,
+                u.date_of_birth,
+                u.created_on,
+                r.role_name,
+                a.address_id,
+                a.street_address,
+                a.street_address_line_two,
+                a.city,
+                a.province,
+                a.postal_code,
+                a.country
+            FROM users AS u
+            JOIN patients AS p ON u.user_id = p.patient_id
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id
+            WHERE p.assigned_doctor_id = $1;
+        `;
+
+        const res = await client.query(sql, [doctorId]).finally(() => client.release());
+        return this.userRepository.buildUsers(res);
     }
 
     private buildPatientCounts({ rows }: QueryResult): PatientCount[] {
