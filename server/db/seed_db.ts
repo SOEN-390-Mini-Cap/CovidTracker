@@ -8,6 +8,7 @@ import { DoctorRepository } from "../src/repositories/doctor_repository";
 import { PatientRepository } from "../src/repositories/patient_repository";
 import { AdminRepository } from "../src/repositories/admin_repository";
 import { StatusRepository } from "../src/repositories/status_repository";
+import { HealthOfficialRepository } from "../src/repositories/health_official_repository";
 
 export async function seedDb(): Promise<void> {
     const pool = new Pool();
@@ -16,6 +17,7 @@ export async function seedDb(): Promise<void> {
     const patientRepository = new PatientRepository(pool, userRepository);
     const adminRepository = new AdminRepository(pool, userRepository);
     const statusRepository = new StatusRepository(pool);
+    const healthOfficialRepository = new HealthOfficialRepository(pool, userRepository);
 
     // add addresses
     for (const address of addresses) {
@@ -44,6 +46,9 @@ export async function seedDb(): Promise<void> {
 
     // add admin
     await adminRepository.addAdmin(6);
+
+    // add health official
+    await healthOfficialRepository.addHealthOfficial(7);
 
     // assign patient to doctor
     await patientRepository.updateAssignedDoctor(3, 1);
