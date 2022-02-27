@@ -1,6 +1,10 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
 import { PatientRepository } from "../repositories/patient_repository";
+import { ReqUser } from "../entities/req_user";
+import { User } from "../entities/user";
+import { Role } from "../entities/role";
+import { AuthorizationError } from "../entities/errors/authorization_error";
 
 @injectable()
 export class PatientService {
@@ -17,5 +21,20 @@ export class PatientService {
         }
 
         await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
+    }
+
+    async getPatients(reqUser: ReqUser): Promise<User[]> {
+        return this.getPatientsStrategy(reqUser);
+    }
+
+    private async getPatientsStrategy(reqUser: ReqUser): Promise<User[]> {
+        if (reqUser.role === Role.DOCTOR) {
+            return this.patientRepository.findPatientsAssignedToDoctor(reqUser.userId);
+        }
+        if (reqUser.role === Role.HEALTH_OFFICIAL) {
+            return this.patientRepository.findPatients();
+        }
+
+        throw new AuthorizationError();
     }
 }
