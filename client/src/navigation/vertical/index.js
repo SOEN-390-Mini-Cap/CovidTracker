@@ -1,6 +1,6 @@
 import { Activity, Circle, Heart, Home, User } from "react-feather";
 
-export default [
+export default (userId) => [
     {
         id: "dashboard",
         title: "Dashboard",
@@ -59,10 +59,17 @@ export default [
                 accessibleBy: ["DOCTOR"],
             },
             {
-                id: "statusReport",
-                title: "Status Report",
+                id: "submitStatusReport",
+                title: "Submit Status Report",
                 icon: <Circle />,
                 navLink: "/status_report",
+                accessibleBy: ["PATIENT"],
+            },
+            {
+                id: "statusReports",
+                title: "Status Reports",
+                icon: <Circle />,
+                navLink: `/statuses/patients/${userId}`,
                 accessibleBy: ["PATIENT"],
             },
         ],
