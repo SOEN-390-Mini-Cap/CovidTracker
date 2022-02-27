@@ -50,14 +50,31 @@ export class StatusService {
         // if doctor -> status id is patient of doctor
         // if health official
         const canUserAccess =
-            (await this.authenticationService.isUserPatientOfDoctor(status.patientId, reqUserId)) ||
-            reqUserId === status.patientId ||
+            (await this.authenticationService.isUserPatientOfDoctor(status?.patientId, reqUserId)) ||
+            reqUserId === status?.patientId ||
             role === Role.HEALTH_OFFICIAL;
         if (!canUserAccess) {
             throw new AuthorizationError();
         }
 
         return status;
+    }
+
+    async getStatusesForPatient(reqUserId: number, role: Role, patientId: number): Promise<Status[]> {
+        const statuses = await this.statusRepository.findStatusesForPatient(patientId);
+
+        // if patient -> jwt id and status id match
+        // if doctor -> status id is patient of doctor
+        // if health official
+        const canUserAccess =
+            (await this.authenticationService.isUserPatientOfDoctor(patientId, reqUserId)) ||
+            reqUserId === patientId ||
+            role === Role.HEALTH_OFFICIAL;
+        if (!canUserAccess) {
+            throw new AuthorizationError();
+        }
+
+        return statuses;
     }
 
     async postStatusFields(doctorId: number, patientId: number, fields: StatusFields): Promise<void> {

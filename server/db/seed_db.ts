@@ -42,14 +42,62 @@ export async function seedDb(): Promise<void> {
     await patientRepository.addPatient(4);
     await patientRepository.addPatient(5);
 
-    await statusRepository.updateStatusFields(5, { weight: true, temperature: true, otherSymptoms: true });
-
     // add admin
     await adminRepository.addAdmin(6);
 
     // assign patient to doctor
-    await patientRepository.updateAssignedDoctor(4, 1);
+    await patientRepository.updateAssignedDoctor(3, 1);
     await patientRepository.updateAssignedDoctor(5, 2);
+
+    // add status fields
+    await statusRepository.updateStatusFields(3, {
+        temperature: true,
+        weight: true,
+        fever: true,
+        cough: false,
+        shortnessOfBreath: false,
+        lossOfTasteAndSmell: true,
+        nausea: false,
+        stomachAches: false,
+        vomiting: false,
+        headache: false,
+        musclePain: false,
+        soreThroat: false,
+        otherSymptoms: true,
+    });
+
+    await statusRepository.updateStatusFields(5, {
+        temperature: true,
+        weight: true,
+        fever: true,
+        cough: false,
+        shortnessOfBreath: false,
+        lossOfTasteAndSmell: true,
+        nausea: false,
+        stomachAches: false,
+        vomiting: false,
+        headache: false,
+        musclePain: false,
+        soreThroat: false,
+        otherSymptoms: true,
+    });
+
+    // add status reports
+    await statusRepository.insertStatus(3, {
+        weight: 150,
+        temperature: 29,
+        fever: true,
+        cough: false,
+        shortnessOfBreath: false,
+        lossOfTasteAndSmell: true,
+        nausea: false,
+        stomachAches: false,
+        vomiting: false,
+        headache: false,
+        musclePain: false,
+        soreThroat: false,
+        otherSymptoms: "No other symptoms",
+    });
 
     await pool.end();
 }

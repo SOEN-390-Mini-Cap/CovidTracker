@@ -55,6 +55,30 @@ export class StatusController implements interfaces.Controller {
         }
     }
 
+    @Get("/patients/:patientId", "injectAuthDataMiddleware")
+    private async getStatusesForPatient(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = getStatusesForPatientSchema.validate({
+                patientId: req.params.patientId,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const statuses = await this.statusService.getStatusesForPatient(
+                req["token"].userId,
+                req["token"].role,
+                value.patientId,
+            );
+
+            res.json(200, statuses);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
     @Post("/fields/patients/:patientId", "injectAuthDataMiddleware", "isValidDoctorMiddleware")
     private async postStatusFields(req: Request, res: Response): Promise<void> {
         try {
@@ -104,6 +128,8 @@ const postStatusSchema = Joi.object({
 const getStatusSchema = Joi.object({
     statusId: Joi.number().required(),
 }).required();
+
+const getStatusesForPatientSchema = Joi.object({ patientId: Joi.number().required() }).required();
 
 const postStatusFieldsSchema = Joi.object({
     doctorId: Joi.number().required(),

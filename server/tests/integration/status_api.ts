@@ -4,10 +4,11 @@ import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 
-describe("patient_controller.ts API", () => {
-    // patientId -> 5
-    const patientToken =
+describe("status_controller.ts API", () => {
+    const patient5Token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY0NTEzNzk0Mn0.UcpnGpWBhdM4OEgKOrJEWXoknk9-I_2Cf19pJWkS5eY";
+    const patient3Token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NTg1NTI0NX0.ieUOhLZclBcogP6SBReqAf5ELNoWclub7sjnEm-q6k4";
 
     beforeEach(async () => {
         await restoreDb();
@@ -19,11 +20,21 @@ describe("patient_controller.ts API", () => {
             const res = await agent(app)
                 .post("/statuses/patients/5")
                 .send({
-                    temperature: 30.2,
                     weight: 150,
-                    otherSymptoms: "N/A",
+                    temperature: 29,
+                    fever: true,
+                    cough: false,
+                    shortnessOfBreath: false,
+                    lossOfTasteAndSmell: true,
+                    nausea: false,
+                    stomachAches: false,
+                    vomiting: false,
+                    headache: false,
+                    musclePain: false,
+                    soreThroat: false,
+                    otherSymptoms: "No other symptoms",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(201);
         });
@@ -34,17 +45,37 @@ describe("patient_controller.ts API", () => {
                 .send({
                     temperature: 30.2,
                     weight: 150,
+                    fever: true,
+                    cough: false,
+                    shortnessOfBreath: false,
+                    lossOfTasteAndSmell: true,
+                    nausea: false,
+                    stomachAches: false,
+                    vomiting: false,
+                    headache: false,
+                    musclePain: false,
+                    soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
             const res = await agent(app)
                 .post("/statuses/patients/5")
                 .send({
                     temperature: 30.2,
                     weight: 150,
+                    fever: true,
+                    cough: false,
+                    shortnessOfBreath: false,
+                    lossOfTasteAndSmell: true,
+                    nausea: false,
+                    stomachAches: false,
+                    vomiting: false,
+                    headache: false,
+                    musclePain: false,
+                    soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("A patient can only submit one status report per calendar day");
@@ -57,7 +88,7 @@ describe("patient_controller.ts API", () => {
                     temperature: 30.2,
                     weight: 150,
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("Status is malformed");
@@ -69,8 +100,57 @@ describe("patient_controller.ts API", () => {
                 .send({
                     temperature: 30.2,
                     weight: 150,
+                    fever: true,
+                    cough: false,
+                    shortnessOfBreath: false,
+                    lossOfTasteAndSmell: true,
+                    nausea: false,
+                    stomachAches: false,
+                    vomiting: false,
+                    headache: false,
+                    musclePain: false,
+                    soreThroat: false,
+                    otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${patientToken}`);
+                .set("Authorization", `Bearer ${patient5Token}`);
+
+            expect(res.status).to.equal(403);
+        });
+    });
+
+    describe("GET /statuses/patients/:patientId endpoint", () => {
+        it("should return 200 status code and list of patients statuses", async () => {
+            const res = await agent(app).get("/statuses/patients/3").set("Authorization", `Bearer ${patient3Token}`);
+
+            expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(1);
+            expect(res.body[0].patientId).to.equal(3);
+            expect(res.body[0].status).to.deep.equal({
+                weight: 150,
+                temperature: 29,
+                fever: true,
+                cough: false,
+                shortnessOfBreath: false,
+                lossOfTasteAndSmell: true,
+                nausea: false,
+                stomachAches: false,
+                vomiting: false,
+                headache: false,
+                musclePain: false,
+                soreThroat: false,
+                otherSymptoms: "No other symptoms",
+            });
+        });
+
+        it("should return 200 status code and empty list of patients statuses", async () => {
+            const res = await agent(app).get("/statuses/patients/5").set("Authorization", `Bearer ${patient5Token}`);
+
+            expect(res.status).to.equal(200);
+            expect(res.body).to.deep.equal([]);
+        });
+
+        it("should return 403 unauthorized status when requesting patientId is not the same as the logged in patient", async () => {
+            const res = await agent(app).get("/statuses/patients/5").set("Authorization", `Bearer ${patient3Token}`);
 
             expect(res.status).to.equal(403);
         });
