@@ -24,15 +24,15 @@ export class PatientService {
     }
 
     async getPatients(reqUser: ReqUser): Promise<User[]> {
-        return this.getPatientsStrategy(reqUser);
+        return this.getPatientsStrategy(reqUser)();
     }
 
-    private async getPatientsStrategy(reqUser: ReqUser): Promise<User[]> {
+    private getPatientsStrategy(reqUser: ReqUser): () => Promise<User[]> {
         if (reqUser.role === Role.DOCTOR) {
-            return this.patientRepository.findPatientsAssignedToDoctor(reqUser.userId);
+            return this.patientRepository.findPatientsAssignedToDoctor.bind(this.patientRepository, reqUser.userId);
         }
         if (reqUser.role === Role.HEALTH_OFFICIAL) {
-            return this.patientRepository.findPatients();
+            return this.patientRepository.findPatients.bind(this.patientRepository);
         }
 
         throw new AuthorizationError();

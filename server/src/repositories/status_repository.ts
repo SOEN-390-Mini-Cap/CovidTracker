@@ -8,6 +8,24 @@ import { Status, StatusBody } from "../entities/status";
 export class StatusRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
+    async findStatusesByDoctor(doctorId: number): Promise<Status[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                s.status_id,
+                s.patient_id,
+                s.status,
+                s.created_on
+            FROM statuses AS s
+            JOIN patients AS p ON p.patient_id = s.patient_id
+            WHERE p.assigned_doctor_id = $1
+            ORDER BY s.created_on DESC;
+        `;
+        const res = await client.query(sql, [doctorId]).finally(() => client.release());
+        return this.buildStatuses(res);
+    }
+
     async updateStatusFields(patientId: number, fields: StatusFields): Promise<void> {
         const client = await this.pool.connect();
 
