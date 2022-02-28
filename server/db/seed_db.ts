@@ -1,8 +1,6 @@
 import "dotenv/config";
 import { Pool } from "pg";
-import { users } from "./seed_data/user_data";
 import * as bcrypt from "bcrypt";
-import { addresses } from "./seed_data/address_data";
 import { UserRepository } from "../src/repositories/user_repository";
 import { DoctorRepository } from "../src/repositories/doctor_repository";
 import { PatientRepository } from "../src/repositories/patient_repository";
@@ -11,10 +9,9 @@ import { StatusRepository } from "../src/repositories/status_repository";
 import { HealthOfficialRepository } from "../src/repositories/health_official_repository";
 import faker from "@faker-js/faker";
 import { Address } from "../src/entities/address";
-import {User} from "../src/entities/user";
-import {Gender} from "../src/entities/gender";
-import {RequestUser} from "../src/entities/request/RequestUser";
-import {ImmigrationOfficerRepository} from "../src/repositories/immigration_officer_repository";
+import { Gender } from "../src/entities/gender";
+import { RequestUser } from "../src/entities/request/RequestUser";
+import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
 import { sampleSymptoms } from "./seed_data/sample_symptoms";
 
 export async function seedDb(): Promise<void> {
