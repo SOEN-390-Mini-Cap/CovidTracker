@@ -31,6 +31,7 @@
         "restify-cors-middleware2": "^2.1.2"
     },
     "devDependencies": {
+        "@faker-js/faker": "^6.0.0-alpha.7",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/bcrypt": "^5.0.0",
         "@types/chai": "^4.3.0",
