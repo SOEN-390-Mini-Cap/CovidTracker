@@ -7,6 +7,7 @@ import { Status, StatusBody } from "../entities/status";
 import { datesAreOnSameDay } from "../helpers/date_helper";
 import { Role } from "../entities/role";
 import { AuthenticationService } from "./authentication_service";
+import { ReqUser } from "../entities/req_user";
 
 @injectable()
 export class StatusService {
@@ -18,6 +19,18 @@ export class StatusService {
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
     ) {}
+
+    async getStatuses(reqUser: ReqUser): Promise<Status[]> {
+        return this.getStatusesStrategy(reqUser)();
+    }
+
+    private getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
+        if (reqUser.role === Role.DOCTOR) {
+            return this.statusRepository.findStatusesByDoctor.bind(this.statusRepository, reqUser.userId);
+        }
+
+        throw new AuthorizationError();
+    }
 
     async postStatus(reqUserId: number, patientId: number, status: StatusBody): Promise<void> {
         if (!(reqUserId === patientId)) {

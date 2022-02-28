@@ -14,6 +14,17 @@ export class StatusController implements interfaces.Controller {
         private readonly statusService: StatusService,
     ) {}
 
+    @Get("/", "injectAuthDataMiddleware")
+    private async getStatuses(req: Request, res: Response): Promise<void> {
+        try {
+            const statuses = await this.statusService.getStatuses(req["token"]);
+
+            res.json(200, statuses);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
     @Post("/patients/:patientId", "injectAuthDataMiddleware", "isValidPatientMiddleware")
     private async postStatus(req: Request, res: Response): Promise<void> {
         try {
