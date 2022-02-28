@@ -135,6 +135,8 @@ const VerticalLayout = props => {
   if (!isMounted) {
     return null
   }
+
+  const CustomNavbar = navbar;
   return (
     <div
       className={classnames(
@@ -182,8 +184,8 @@ const VerticalLayout = props => {
         )}
       >
         <div className='navbar-container d-flex content'>
-          {navbar ? (
-            navbar
+          {CustomNavbar ? (
+            <CustomNavbar setMenuVisibility={setMenuVisibility} />
           ) : (
             <NavbarComponent
               setMenuVisibility={setMenuVisibility}
