@@ -104,13 +104,13 @@ export async function seedDb(seedVal = 1): Promise<void> {
     }
 
     // assign doctors to patients
-    for (let i = numPatients[0]; i < numPatients[1]; i++) {
+    for (let i = numPatients[0]; i < numPatients[1] - 1; i++) {
         const doctorId = faker.datatype.number({ min: numDoctors[0], max: numDoctors[1] - 1 });
         await patientRepository.updateAssignedDoctor(i, doctorId);
     }
 
     // assign status fields
-    for (let i = numPatients[0]; i < numPatients[1]; i++) {
+    for (let i = numPatients[0]; i < numPatients[1] - 1; i++) {
         const fields = {
             temperature: true,
             weight: true,
@@ -128,22 +128,24 @@ export async function seedDb(seedVal = 1): Promise<void> {
         };
         await statusRepository.updateStatusFields(i, fields);
 
-        // add status reports
-        const numStatusesPerPatient = 10;
-        for (let j = 0; j < numStatusesPerPatient; j++) {
-            const status = Object.keys(fields)
-                .filter((key) => fields[key])
-                .reduce((obj, key) => {
-                    obj[key] = faker.datatype.boolean();
-                    return obj;
-                }, {});
+        if (i < numPatients[1] - 2) {
+            // add status reports
+            const numStatusesPerPatient = 10;
+            for (let j = 0; j < numStatusesPerPatient; j++) {
+                const status = Object.keys(fields)
+                    .filter((key) => fields[key])
+                    .reduce((obj, key) => {
+                        obj[key] = faker.datatype.boolean();
+                        return obj;
+                    }, {});
 
-            await statusRepository.insertStatus(i, {
-                ...status,
-                weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
-                temperature: faker.datatype.number({ min: 35, max: 41, precision: 0.1 }),
-                otherSymptoms: sampleSymptoms[faker.datatype.number({ min: 0, max: sampleSymptoms.length - 1 })],
-            });
+                await statusRepository.insertStatus(i, {
+                    ...status,
+                    weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
+                    temperature: faker.datatype.number({ min: 35, max: 41, precision: 0.1 }),
+                    otherSymptoms: sampleSymptoms[faker.datatype.number({ min: 0, max: sampleSymptoms.length - 1 })],
+                });
+            }
         }
     }
 
