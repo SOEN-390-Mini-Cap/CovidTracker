@@ -1,5 +1,5 @@
 CREATE TABLE test_results(
-    test_id INT PRIMARY KEY,
+    test_id SERIAL PRIMARY KEY,
     patient_id INT NOT NULL,
     test_result VARCHAR(255) NOT NULL,
     type_of_test VARCHAR(255) NOT NULL,
