@@ -31,6 +31,20 @@ describe("authentication_controller.ts API", () => {
         });
 
         it("should return 500 status user email already exists", async () => {
+            await agent(app).post("/auth/sign_up").send({
+                firstName: "fname",
+                lastName: "lname",
+                phoneNumber: "1231231234",
+                gender: "MALE",
+                dateOfBirth: "2000-01-25T18:09:13.127Z",
+                streetAddress: "1000th place",
+                city: "city name",
+                postalCode: "A1B 2C3",
+                province: "Quebec",
+                email: "new-test@test.com",
+                password: "Test123!",
+            });
+
             const res = await agent(app).post("/auth/sign_up").send({
                 firstName: "fname",
                 lastName: "lname",
@@ -41,7 +55,7 @@ describe("authentication_controller.ts API", () => {
                 city: "city name",
                 postalCode: "A1B 2C3",
                 province: "Quebec",
-                email: "test1@test.com",
+                email: "new-test@test.com",
                 password: "Test123!",
             });
 
@@ -52,8 +66,22 @@ describe("authentication_controller.ts API", () => {
 
     describe("POST /auth/sign_in endpoint", () => {
         it("should return 200 status and token when sign in is successful", async () => {
+            await agent(app).post("/auth/sign_up").send({
+                firstName: "fname",
+                lastName: "lname",
+                phoneNumber: "1231231234",
+                gender: "MALE",
+                dateOfBirth: "2000-01-25T18:09:13.127Z",
+                streetAddress: "1000th place",
+                city: "city name",
+                postalCode: "A1B 2C3",
+                province: "Quebec",
+                email: "new-test@test.com",
+                password: "Test123!",
+            });
+
             const res = await agent(app).post("/auth/sign_in").send({
-                email: "test1@test.com",
+                email: "new-test@test.com",
                 password: "Test123!",
             });
 
@@ -72,8 +100,22 @@ describe("authentication_controller.ts API", () => {
         });
 
         it("should return 401 status when password does not match", async () => {
+            await agent(app).post("/auth/sign_up").send({
+                firstName: "fname",
+                lastName: "lname",
+                phoneNumber: "1231231234",
+                gender: "MALE",
+                dateOfBirth: "2000-01-25T18:09:13.127Z",
+                streetAddress: "1000th place",
+                city: "city name",
+                postalCode: "A1B 2C3",
+                province: "Quebec",
+                email: "new-test@test.com",
+                password: "Test123!",
+            });
+
             const res = await agent(app).post("/auth/sign_in").send({
-                email: "test1@test.com",
+                email: "new-test@test.com",
                 password: "Password123!",
             });
 

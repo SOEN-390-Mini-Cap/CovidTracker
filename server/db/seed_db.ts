@@ -14,7 +14,7 @@ import { RequestUser } from "../src/entities/request/RequestUser";
 import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
 import { sampleSymptoms } from "./seed_data/sample_symptoms";
 
-export async function seedDb(): Promise<void> {
+export async function seedDb(seedVal = 1): Promise<void> {
     const pool = new Pool();
     const userRepository = new UserRepository(pool);
     const doctorRepository = new DoctorRepository(pool, userRepository);
@@ -27,7 +27,7 @@ export async function seedDb(): Promise<void> {
     faker.setLocale("en_CA");
 
     // insert addresses
-    const numAddresses = [1, 3];
+    const numAddresses = [1, seedVal + 1];
     for (let i = numAddresses[0]; i < numAddresses[1]; i++) {
         const isEveryFifth = i % 5 === 0;
 
@@ -44,10 +44,10 @@ export async function seedDb(): Promise<void> {
         await userRepository.addAddress(address);
     }
 
-    // 50 patients per address
-    const numPatients = [1, 50 * (numAddresses[1] - 1) + 1];
+    // 5 patients per address
+    const numPatients = [1, 5 * (numAddresses[1] - 1) + 1];
     // 20 patients per doctor
-    const numDoctors = [numPatients[1], numPatients[1] + (numPatients[1] - 1) / 20];
+    const numDoctors = [numPatients[1], numPatients[1] + Math.ceil((numPatients[1] - 1) / 20)];
     const numAdmins = [numDoctors[1], numDoctors[1] + 1];
     const numHealthOfficials = [numAdmins[1], numAdmins[1] + 1];
     const numImmigrationOfficers = [numHealthOfficials[1], numHealthOfficials[1] + 1];
