@@ -54,11 +54,23 @@ export async function seedDb(): Promise<void> {
 
     // insert users
     const numUsers = numImmigrationOfficers[1];
-    for (let i = 0; i < numUsers; i++) {
+    for (let i = 1; i < numUsers; i++) {
         const rawGender = faker.name.gender(true);
         const firstName = faker.name.firstName(rawGender);
         const lastName = faker.name.lastName(rawGender);
-        const email = faker.internet.email(firstName, lastName);
+        let email = faker.internet.email(firstName, lastName);
+        if (i === numDoctors[0]) {
+            email = "doctor@test.com";
+        }
+        if (i === numAdmins[0]) {
+            email = "admin@test.com";
+        }
+        if (i === numHealthOfficials[0]) {
+            email = "health_official@test.com";
+        }
+        if (i === numImmigrationOfficers[0]) {
+            email = "immigration_officer@test.com";
+        }
 
         const user: RequestUser = {
             email,
