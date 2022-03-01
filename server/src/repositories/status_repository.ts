@@ -15,7 +15,8 @@ export class StatusRepository {
             SELECT
                 s.status_id,
                 s.patient_id,
-                s.status,
+                s.status_body,
+                s.is_reviewed,
                 s.created_on
             FROM statuses AS s
             JOIN patients AS p ON p.patient_id = s.patient_id
@@ -55,13 +56,19 @@ export class StatusRepository {
         const sql = `
             INSERT INTO statuses (
                 patient_id,
-                created_on,
-                status
+                status_body,
+                is_reviewed,
+                created_on
             )
-            VALUES ($1, $2, $3);
+            VALUES ($1, $2, $3, $4);
         `;
         await client
-            .query(sql, [status.patientId, status.createdOn.toISOString(), JSON.stringify(status)])
+            .query(sql, [
+                status.patientId,
+                JSON.stringify(status.statusBody),
+                status.isReviewed,
+                status.createdOn.toISOString(),
+            ])
             .finally(() => client.release());
     }
 
@@ -72,7 +79,8 @@ export class StatusRepository {
             SELECT
                 s.status_id,
                 s.patient_id,
-                s.status,
+                s.status_body,
+                s.is_reviewed,
                 s.created_on
             FROM statuses AS s
             WHERE s.patient_id = $1
@@ -90,7 +98,8 @@ export class StatusRepository {
             SELECT
                 s.status_id,
                 s.patient_id,
-                s.status,
+                s.status_body,
+                s.is_reviewed,
                 s.created_on
             FROM statuses AS s
             WHERE s.status_id = $1;
@@ -106,7 +115,8 @@ export class StatusRepository {
             SELECT
                 s.status_id,
                 s.patient_id,
-                s.status,
+                s.status_body,
+                s.is_reviewed,
                 s.created_on
             FROM statuses AS s
             WHERE s.patient_id = $1
@@ -128,8 +138,9 @@ export class StatusRepository {
         return {
             statusId: row.status_id,
             patientId: row.patient_id,
+            isReviewed: row.is_reviewed,
             createdOn: new Date(row.created_on),
-            status: row.status,
+            statusBody: row.status_body,
         };
     }
 }

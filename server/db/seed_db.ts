@@ -153,8 +153,9 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
                 await statusRepository.insertStatus({
                     statusId: null,
                     patientId: i,
+                    isReviewed: false,
                     createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
-                    status: {
+                    statusBody: {
                         ...status,
                         weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
                         temperature: faker.datatype.number({ min: 35, max: 41, precision: 0.1 }),

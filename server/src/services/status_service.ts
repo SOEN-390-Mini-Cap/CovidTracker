@@ -56,8 +56,9 @@ export class StatusService {
         await this.statusRepository.insertStatus({
             statusId: null,
             patientId,
+            isReviewed: false,
             createdOn: new Date(),
-            status,
+            statusBody: status,
         });
     }
 
