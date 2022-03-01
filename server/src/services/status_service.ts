@@ -32,7 +32,7 @@ export class StatusService {
         throw new AuthorizationError();
     }
 
-    async postStatus(reqUserId: number, patientId: number, status: StatusBody): Promise<void> {
+    async postStatus(reqUserId: number, patientId: number, statusBody: StatusBody): Promise<void> {
         if (!(reqUserId === patientId)) {
             throw new AuthorizationError();
         }
@@ -47,8 +47,8 @@ export class StatusService {
         // by the patients doctor
         const userStatusFields = await this.statusRepository.findStatusFields(patientId);
         const isFormattedStatus =
-            Object.keys(status).length === Object.keys(userStatusFields).length &&
-            Object.keys(status).every((field) => status[field] !== null && field in userStatusFields);
+            Object.keys(statusBody).length === Object.keys(userStatusFields).length &&
+            Object.keys(statusBody).every((field) => statusBody[field] !== null && field in userStatusFields);
         if (!isFormattedStatus) {
             throw new Error("Status is malformed");
         }
@@ -58,7 +58,7 @@ export class StatusService {
             patientId,
             isReviewed: false,
             createdOn: new Date(),
-            statusBody: status,
+            statusBody,
         });
     }
 
