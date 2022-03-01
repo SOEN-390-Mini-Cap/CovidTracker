@@ -53,7 +53,12 @@ export class StatusService {
             throw new Error("Status is malformed");
         }
 
-        await this.statusRepository.insertStatus(patientId, status);
+        await this.statusRepository.insertStatus({
+            statusId: null,
+            patientId,
+            createdOn: new Date(),
+            status,
+        });
     }
 
     async getStatus(statusId: number, reqUserId: number, role: Role): Promise<Status> {

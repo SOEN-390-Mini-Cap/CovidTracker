@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { Pool, QueryResult } from "pg";
 import { StatusFields } from "../entities/status_fields";
-import { Status, StatusBody } from "../entities/status";
+import { Status } from "../entities/status";
 
 @injectable()
 export class StatusRepository {
@@ -49,17 +49,20 @@ export class StatusRepository {
         return res.rows[0]?.status_fields;
     }
 
-    async insertStatus(patientId: number, status: StatusBody): Promise<void> {
+    async insertStatus(status: Status): Promise<void> {
         const client = await this.pool.connect();
 
         const sql = `
             INSERT INTO statuses (
                 patient_id,
+                created_on,
                 status
             )
-            VALUES ($1, $2);
+            VALUES ($1, $2, $3);
         `;
-        await client.query(sql, [patientId, JSON.stringify(status)]).finally(() => client.release());
+        await client
+            .query(sql, [status.patientId, status.createdOn.toISOString(), JSON.stringify(status)])
+            .finally(() => client.release());
     }
 
     async findLatestStatus(patientId: number): Promise<Status> {

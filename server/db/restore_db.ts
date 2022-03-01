@@ -1,8 +1,9 @@
 import "dotenv/config";
 import { Pool } from "pg";
+import { schemas } from "./schemas";
 
 export async function restoreDb(): Promise<void> {
-    const tables = ["addresses", "users", "patients", "doctors", "admins", "health_officials", "immigration_officers"];
+    const [, ...tables] = schemas;
 
     const pool = new Pool();
 

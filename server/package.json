@@ -10,7 +10,7 @@
         "test": "npm run test:unit && npm run test:integration",
         "test:coverage": "nyc npm run test",
         "test:unit": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/unit -r dotenv/config --reporter mochawesome",
-        "test:integration": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/integration -r dotenv/config",
+        "test:integration": "DOTENV_CONFIG_PATH=.env.test mocha ./src ./tests/integration -r dotenv/config --timeout 5000",
         "test:db:init": "DOTENV_CONFIG_PATH=.env.test ts-node db/init_db.ts -r dotenv/config",
         "lint": "eslint '*/**/*.{js,ts}' --max-warnings=0",
         "lint:fix": "eslint '*/**/*.{js,ts}' --fix",
@@ -31,6 +31,7 @@
         "restify-cors-middleware2": "^2.1.2"
     },
     "devDependencies": {
+        "@faker-js/faker": "^6.0.0-alpha.7",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@types/bcrypt": "^5.0.0",
         "@types/chai": "^4.3.0",

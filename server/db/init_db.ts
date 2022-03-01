@@ -1,24 +1,13 @@
 import "dotenv/config";
 import { Pool } from "pg";
 import { readFileSync } from "fs";
+import { schemas } from "./schemas";
 
 (async () => {
     const pool = new Pool();
 
     const baseDir = `${__dirname}/schemas`;
-    const schemas = [
-        "roles.sql",
-        "addresses.sql",
-        "users.sql",
-        "doctors.sql",
-        "patients.sql",
-        "admins.sql",
-        "health_officials.sql",
-        "immigration_officers.sql",
-        "statuses.sql",
-        "test_results.sql",
-    ];
-    const files = schemas.map((schema) => `${baseDir}/${schema}`);
+    const files = schemas.map((schema) => `${baseDir}/${schema}.sql`);
 
     await pool.query("BEGIN;");
 
