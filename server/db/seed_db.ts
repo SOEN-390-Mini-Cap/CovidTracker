@@ -10,11 +10,10 @@ import { HealthOfficialRepository } from "../src/repositories/health_official_re
 import faker from "@faker-js/faker";
 import { Address } from "../src/entities/address";
 import { Gender } from "../src/entities/gender";
-import { RequestUser } from "../src/entities/request/RequestUser";
 import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
 import { sampleSymptoms } from "./seed_data/sample_symptoms";
 
-export async function seedDb(seedVal = 1): Promise<void> {
+export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();
     const userRepository = new UserRepository(pool);
     const doctorRepository = new DoctorRepository(pool, userRepository);
@@ -24,10 +23,11 @@ export async function seedDb(seedVal = 1): Promise<void> {
     const healthOfficialRepository = new HealthOfficialRepository(pool, userRepository);
     const immigrationOfficerRepository = new ImmigrationOfficerRepository(pool, userRepository);
 
+    faker.seed(1);
     faker.setLocale("en_CA");
 
     // insert addresses
-    const numAddresses = [1, seedVal + 1];
+    const numAddresses = [1, sizeSeed + 1];
     for (let i = numAddresses[0]; i < numAddresses[1]; i++) {
         const isEveryFifth = i % 5 === 0;
 
@@ -72,18 +72,29 @@ export async function seedDb(seedVal = 1): Promise<void> {
             email = "immigration_officer@test.com";
         }
 
-        const user: RequestUser = {
-            email,
-            password: await bcrypt.hash("Test123!", 10),
+        await userRepository.addUser({
             firstName,
             lastName,
             phoneNumber: faker.phone.phoneNumber(),
             gender: rawGender === "Male" ? Gender.MALE : Gender.FEMALE,
             dateOfBirth: faker.date.between("1920-01-01T00:00:00.000Z", "2000-01-01T00:00:00.000Z"),
-        };
-        const addressId = faker.datatype.number({ min: numAddresses[0], max: numAddresses[1] - 1 });
-
-        await userRepository.addUser(user, addressId);
+            role: null,
+            address: {
+                addressId: faker.datatype.number({ min: numAddresses[0], max: numAddresses[1] - 1 }),
+                streetAddress: null,
+                streetAddressLineTwo: null,
+                city: null,
+                postalCode: null,
+                province: null,
+                country: null,
+            },
+            account: {
+                userId: null,
+                email: email,
+                password: await bcrypt.hash("Test123!", 10),
+                createdOn: faker.date.between("2021-12-01T00:00:00.000Z", "2022-01-01T00:00:00.000Z"),
+            },
+        });
     }
 
     // assign roles
@@ -139,11 +150,17 @@ export async function seedDb(seedVal = 1): Promise<void> {
                         return obj;
                     }, {});
 
-                await statusRepository.insertStatus(i, {
-                    ...status,
-                    weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
-                    temperature: faker.datatype.number({ min: 35, max: 41, precision: 0.1 }),
-                    otherSymptoms: sampleSymptoms[faker.datatype.number({ min: 0, max: sampleSymptoms.length - 1 })],
+                await statusRepository.insertStatus({
+                    statusId: null,
+                    patientId: i,
+                    createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                    status: {
+                        ...status,
+                        weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
+                        temperature: faker.datatype.number({ min: 35, max: 41, precision: 0.1 }),
+                        otherSymptoms:
+                            sampleSymptoms[faker.datatype.number({ min: 0, max: sampleSymptoms.length - 1 })],
+                    },
                 });
             }
         }

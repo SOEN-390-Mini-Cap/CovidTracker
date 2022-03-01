@@ -3,7 +3,8 @@ import { app } from "../../src";
 import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
-import { tokens } from "../fixtures/tokens";
+import { tokensFixture } from "../fixtures/tokens_fixture";
+import { get_patients_doctor_fixture, get_patients_health_official_fixture } from "../fixtures/get_patients_fixture";
 
 describe("patient_controller.ts API", () => {
     beforeEach(async () => {
@@ -18,7 +19,7 @@ describe("patient_controller.ts API", () => {
                 .send({
                     doctorId: 6,
                 })
-                .set("Authorization", `Bearer ${tokens.admin}`);
+                .set("Authorization", `Bearer ${tokensFixture.admin}`);
 
             expect(res.status).to.equal(201);
         });
@@ -29,7 +30,7 @@ describe("patient_controller.ts API", () => {
                 .send({
                     doctorId: 6,
                 })
-                .set("Authorization", `Bearer ${tokens.admin}`);
+                .set("Authorization", `Bearer ${tokensFixture.admin}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("Patient can not be assigned a new doctor");
@@ -41,29 +42,31 @@ describe("patient_controller.ts API", () => {
                 .send({
                     doctorId: 6,
                 })
-                .set("Authorization", `Bearer ${tokens.doctor}`);
+                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(403);
         });
     });
 
     describe("GET /patients endpoint", () => {
-        it("should return 200 status and list of all patients", async () => {
-            const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokens.healthOfficial}`);
+        it("should return 200 status and list of all patients as a health official", async () => {
+            const res = await agent(app)
+                .get("/patients")
+                .set("Authorization", `Bearer ${tokensFixture.healthOfficial}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body.length).to.deep.equal(5);
+            expect(res.body).to.deep.equal(get_patients_health_official_fixture);
         });
 
         it("should return 200 status and list of patients for a doctor", async () => {
-            const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokens.doctor}`);
+            const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body.length).to.equal(4);
+            expect(res.body).to.deep.equal(get_patients_doctor_fixture);
         });
 
         it("should return 403 unauthorized status when user role is accepted", async () => {
-            const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokens.admin}`);
+            const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokensFixture.admin}`);
 
             expect(res.status).to.equal(403);
         });

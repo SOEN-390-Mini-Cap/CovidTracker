@@ -23,8 +23,30 @@ export class AuthenticationService {
     async signUp(userData: RequestUser, addressData: RequestAddress): Promise<Token> {
         const addressId = await this.userRepository.addAddress(addressData);
 
-        userData.password = await bcrypt.hash(userData.password, 10);
-        const userId = await this.userRepository.addUser(userData, addressId);
+        const password = await bcrypt.hash(userData.password, 10);
+        const userId = await this.userRepository.addUser({
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            phoneNumber: userData.phoneNumber,
+            gender: userData.gender,
+            dateOfBirth: userData.dateOfBirth,
+            role: null,
+            address: {
+                addressId,
+                streetAddress: null,
+                streetAddressLineTwo: null,
+                city: null,
+                postalCode: null,
+                province: null,
+                country: null,
+            },
+            account: {
+                userId: null,
+                email: userData.email,
+                password,
+                createdOn: new Date(),
+            },
+        });
 
         return this.signToken(userId);
     }

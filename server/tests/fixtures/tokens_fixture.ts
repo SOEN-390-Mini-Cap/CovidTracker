@@ -1,4 +1,4 @@
-export const tokens = {
+export const tokensFixture = {
     patient3:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NjA5MDczMH0.QmbhcSJjj8LWfDro_KFPA8Nxusa14f7rbkLY6mt9Y0c",
     patient4:

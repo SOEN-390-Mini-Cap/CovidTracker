@@ -3,7 +3,9 @@ import { app } from "../../src";
 import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
-import { tokens } from "../fixtures/tokens";
+import { tokensFixture } from "../fixtures/tokens_fixture";
+import { getStatusesFixture } from "../fixtures/get_statuses_fixture";
+import { getStatusesForPatientFixture } from "../fixtures/get_statuses_for_patient_fixture";
 
 describe("status_controller.ts API", () => {
     beforeEach(async () => {
@@ -30,7 +32,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "No other symptoms",
                 })
-                .set("Authorization", `Bearer ${tokens.patient4}`);
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
             expect(res.status).to.equal(201);
         });
@@ -53,7 +55,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${tokens.patient4}`);
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
             const res = await agent(app)
                 .post("/statuses/patients/4")
                 .send({
@@ -71,7 +73,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${tokens.patient4}`);
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("A patient can only submit one status report per calendar day");
@@ -84,7 +86,7 @@ describe("status_controller.ts API", () => {
                     temperature: 30.2,
                     weight: 150,
                 })
-                .set("Authorization", `Bearer ${tokens.patient4}`);
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
             expect(res.status).to.equal(500);
             expect(res.body.error).to.equal("Status is malformed");
@@ -108,7 +110,7 @@ describe("status_controller.ts API", () => {
                     soreThroat: false,
                     otherSymptoms: "N/A",
                 })
-                .set("Authorization", `Bearer ${tokens.patient4}`);
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
             expect(res.status).to.equal(403);
         });
@@ -116,22 +118,27 @@ describe("status_controller.ts API", () => {
 
     describe("GET /statuses/patients/:patientId endpoint", () => {
         it("should return 200 status code and list of patients statuses", async () => {
-            const res = await agent(app).get("/statuses/patients/3").set("Authorization", `Bearer ${tokens.patient3}`);
+            const res = await agent(app)
+                .get("/statuses/patients/3")
+                .set("Authorization", `Bearer ${tokensFixture.patient3}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body.length).to.equal(10);
-            expect(res.body[0].patientId).to.equal(3);
+            expect(res.body).to.deep.equal(getStatusesForPatientFixture);
         });
 
         it("should return 200 status code and empty list of patients statuses", async () => {
-            const res = await agent(app).get("/statuses/patients/4").set("Authorization", `Bearer ${tokens.patient4}`);
+            const res = await agent(app)
+                .get("/statuses/patients/4")
+                .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
             expect(res.status).to.equal(200);
             expect(res.body).to.deep.equal([]);
         });
 
         it("should return 403 unauthorized status when requesting patientId is not the same as the logged in patient", async () => {
-            const res = await agent(app).get("/statuses/patients/4").set("Authorization", `Bearer ${tokens.patient3}`);
+            const res = await agent(app)
+                .get("/statuses/patients/4")
+                .set("Authorization", `Bearer ${tokensFixture.patient3}`);
 
             expect(res.status).to.equal(403);
         });
@@ -139,14 +146,14 @@ describe("status_controller.ts API", () => {
 
     describe("GET /statuses endpoint", () => {
         it("should return 200 status code and list of statuses", async () => {
-            const res = await agent(app).get("/statuses").set("Authorization", `Bearer ${tokens.doctor}`);
+            const res = await agent(app).get("/statuses").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body.length).to.equal(30);
+            expect(res.body).to.deep.equal(getStatusesFixture);
         });
 
         it("should return 403 unauthorized status when requesting user is wrong role", async () => {
-            const res = await agent(app).get("/statuses").set("Authorization", `Bearer ${tokens.admin}`);
+            const res = await agent(app).get("/statuses").set("Authorization", `Bearer ${tokensFixture.admin}`);
 
             expect(res.status).to.equal(403);
         });
