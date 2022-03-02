@@ -1,10 +1,8 @@
 import { Controller, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
-import { DoctorService } from "../services/doctor_service";
 import { Request, Response } from "restify";
 import * as Joi from "joi";
 import { TestService } from "../services/test_service";
-import { ROLES } from "../entities/role";
 import { RequestAddress } from "../entities/request/RequestAddress";
 
 @Controller("/tests")
