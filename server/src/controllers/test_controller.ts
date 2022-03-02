@@ -5,6 +5,7 @@ import { Request, Response } from "restify";
 import * as Joi from "joi";
 import { TestService } from "../services/test_service";
 import { ROLES } from "../entities/role";
+import { RequestAddress } from "../entities/request/RequestAddress";
 
 @Controller("/tests")
 @injectable()
@@ -19,10 +20,8 @@ export class TestController implements interfaces.Controller {
     private async postTestResult(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = postTestResultsSchema.validate({
-                results: req.body,
-                patiendId: req.params.patiendId,
-                currentUserId: req["token"].userId,
-                currentUserRole: req["token"].role,
+                ...req.body,
+                ...req.params,
             });
 
             if (error) {
@@ -30,11 +29,23 @@ export class TestController implements interfaces.Controller {
                 return;
             }
 
+            const addressData: RequestAddress = {
+                streetAddress: value.streetAddress,
+                streetAddressLineTwo: value.streetAddressLineTwo || "",
+                city: value.city,
+                postalCode: value.postalCode,
+                province: value.province,
+                country: "Canada",
+            };
+
             await this.testService.addTestResults(
-                value.results,
+                value.testResult,
+                value.typeOfTest,
+                value.dateOfTest,
+                addressData,
                 value.patientId,
-                value.currentUserId,
-                value.currentUserRole,
+                req["token"].userId,
+                req["token"].role,
             );
 
             res.json(200);
@@ -45,10 +56,13 @@ export class TestController implements interfaces.Controller {
 }
 
 const postTestResultsSchema = Joi.object({
-    results: Joi.object().required(),
+    testResult: Joi.string().required(),
+    typeOfTest: Joi.string().required(),
+    dateOfTest: Joi.date().required(),
+    streetAddress: Joi.string().required(),
+    streetAddressLineTwo: Joi.string().allow(null, ""),
+    city: Joi.string().required(),
+    postalCode: Joi.string().required(),
+    province: Joi.string().required(),
     patientId: Joi.number().required(),
-    currentUserId: Joi.number().required(),
-    currentUserRole: Joi.string()
-        .valid(...ROLES)
-        .required(),
 }).required();
