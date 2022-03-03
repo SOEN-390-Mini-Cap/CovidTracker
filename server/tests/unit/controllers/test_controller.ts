@@ -36,7 +36,7 @@ describe("test_controller.ts", () => {
                 },
                 body: {
                     result: "POSITIVE",
-                    testType: "NASAL",
+                    testType: "PCR",
                     testDate: "05/11/1999",
                     streetAddress: "1001th street",
                     city: "Montreal",
