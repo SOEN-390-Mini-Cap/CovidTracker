@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Controller, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
@@ -24,6 +25,7 @@ export class TestController implements interfaces.Controller {
             });
 
             if (error) {
+                console.log(error);
                 res.json(400, error);
                 return;
             }
@@ -55,11 +57,11 @@ export class TestController implements interfaces.Controller {
 }
 
 const postTestResultsSchema = Joi.object({
-    testResult: Joi.string()
+    result: Joi.string()
         .valid(...TestResultTypes)
         .required(),
-    typeOfTest: Joi.string().required(),
-    dateOfTest: Joi.date().required(),
+    testType: Joi.string().required(),
+    testDate: Joi.date().required(),
     streetAddress: Joi.string().required(),
     streetAddressLineTwo: Joi.string().allow(null, ""),
     city: Joi.string().required(),
