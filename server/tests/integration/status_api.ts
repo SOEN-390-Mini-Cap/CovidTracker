@@ -158,4 +158,39 @@ describe("status_controller.ts API", () => {
             expect(res.status).to.equal(403);
         });
     });
+
+    describe("PUT /statuses/:statusId/reviewed endpoint", () => {
+        it("should return 204 status when setting isReviewed true", async () => {
+            const res = await agent(app)
+                .put("/statuses/1/reviewed")
+                .send({
+                    isReviewed: true,
+                })
+                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+
+            expect(res.status).to.equal(204);
+        });
+
+        it("should return 204 status when setting isReviewed false", async () => {
+            const res = await agent(app)
+                .put("/statuses/1/reviewed")
+                .send({
+                    isReviewed: false,
+                })
+                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+
+            expect(res.status).to.equal(204);
+        });
+
+        it("should return 403 unauthorized status when requesting user is not the correct role", async () => {
+            const res = await agent(app)
+                .put("/statuses/1/reviewed")
+                .send({
+                    isReviewed: true,
+                })
+                .set("Authorization", `Bearer ${tokensFixture.healthOfficial}`);
+
+            expect(res.status).to.equal(403);
+        });
+    });
 });
