@@ -96,6 +96,16 @@ export class StatusService {
         return statuses;
     }
 
+    async putStatusReviewed(reqUser: ReqUser, statusId: number, isReviewed: boolean): Promise<void> {
+        const status = await this.statusRepository.findStatus(statusId);
+        const canUserAccess = await this.authenticationService.isUserPatientOfDoctor(status.patientId, reqUser.userId);
+        if (!canUserAccess) {
+            throw new AuthorizationError();
+        }
+
+        await this.statusRepository.updateStatusReviewed(statusId, isReviewed);
+    }
+
     async postStatusFields(doctorId: number, patientId: number, fields: StatusFields): Promise<void> {
         // verify 3 required fields are present and true
         const includesRequiredFields = !!(fields.temperature && fields.weight && fields.otherSymptoms);
