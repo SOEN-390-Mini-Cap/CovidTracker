@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Request, Response } from "restify";
-import {Controller, Post, interfaces, Get, Put} from "inversify-restify-utils";
+import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { StatusService } from "../services/status_service";
