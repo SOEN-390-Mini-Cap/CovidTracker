@@ -1,11 +1,12 @@
 import { inject, injectable, named } from "inversify";
 import { TestRepository } from "../repositories/test_repository";
 import { Role } from "../entities/role";
-import { TestResults } from "../entities/test";
 import { AuthenticationService } from "./authentication_service";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { UserRepository } from "../repositories/user_repository";
+import { TestResultType } from "../entities/test_result_type";
+import { TestResult } from "../entities/test_result";
 
 @injectable()
 export class TestService {
@@ -21,8 +22,8 @@ export class TestService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async addTestResults(
-        testResult: string,
+    async postTestResult(
+        testResult: TestResultType,
         typeOfTest: string,
         dateOfTest: Date,
         addressData: RequestAddress,
@@ -40,8 +41,14 @@ export class TestService {
 
         const addressId = await this.userRepository.addAddress(addressData);
 
-        const testResults: TestResults = { patientId, testResult, typeOfTest, dateOfTest, addressId };
+        const testResults: TestResult = {
+            patientId,
+            testResult,
+            testType: typeOfTest,
+            testDate: dateOfTest,
+            addressId,
+        };
 
-        await this.testRepository.addTestResult(testResults);
+        await this.testRepository.insertTestResult(testResults);
     }
 }

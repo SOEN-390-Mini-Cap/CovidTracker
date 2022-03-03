@@ -4,6 +4,7 @@ import { Request, Response } from "restify";
 import * as Joi from "joi";
 import { TestService } from "../services/test_service";
 import { RequestAddress } from "../entities/request/RequestAddress";
+import { TestResultTypes } from "../entities/test_result_type";
 
 @Controller("/tests")
 @injectable()
@@ -36,7 +37,7 @@ export class TestController implements interfaces.Controller {
                 country: "Canada",
             };
 
-            await this.testService.addTestResults(
+            await this.testService.postTestResult(
                 value.testResult,
                 value.typeOfTest,
                 value.dateOfTest,
@@ -46,7 +47,7 @@ export class TestController implements interfaces.Controller {
                 req["token"].role,
             );
 
-            res.json(200);
+            res.json(201);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
@@ -54,7 +55,9 @@ export class TestController implements interfaces.Controller {
 }
 
 const postTestResultsSchema = Joi.object({
-    testResult: Joi.string().required(),
+    testResult: Joi.string()
+        .valid(...TestResultTypes)
+        .required(),
     typeOfTest: Joi.string().required(),
     dateOfTest: Joi.date().required(),
     streetAddress: Joi.string().required(),
