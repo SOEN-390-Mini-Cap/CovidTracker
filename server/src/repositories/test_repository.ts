@@ -20,7 +20,7 @@ export class TestRepository {
         client
             .query(queryString, [
                 testResults.patientId,
-                testResults.testResult,
+                testResults.result,
                 testResults.testType,
                 testResults.testDate,
                 testResults.addressId,

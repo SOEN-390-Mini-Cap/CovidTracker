@@ -2,7 +2,7 @@ import { createSandbox, SinonStub } from "sinon";
 import { expect } from "chai";
 import { TestController } from "../../../src/controllers/test_controller";
 import { Role } from "../../../src/entities/role";
-import { any } from "joi";
+
 describe("test_controller.ts", () => {
     const testService: any = {
         postTestResult: Function,

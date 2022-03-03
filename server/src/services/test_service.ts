@@ -7,6 +7,7 @@ import { RequestAddress } from "../entities/request/RequestAddress";
 import { UserRepository } from "../repositories/user_repository";
 import { TestResultType } from "../entities/test_result_type";
 import { TestResult } from "../entities/test_result";
+import { TestType } from "../entities/test_type";
 
 @injectable()
 export class TestService {
@@ -23,9 +24,9 @@ export class TestService {
     ) {}
 
     async postTestResult(
-        testResult: TestResultType,
-        typeOfTest: string,
-        dateOfTest: Date,
+        result: TestResultType,
+        testType: TestType,
+        testDate: Date,
         addressData: RequestAddress,
         patientId: number,
         currentUserId: number,
@@ -43,9 +44,9 @@ export class TestService {
 
         const testResults: TestResult = {
             patientId,
-            testResult,
-            testType: typeOfTest,
-            testDate: dateOfTest,
+            result,
+            testType,
+            testDate,
             addressId,
         };
 

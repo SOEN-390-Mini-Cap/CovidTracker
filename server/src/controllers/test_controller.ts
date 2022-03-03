@@ -6,6 +6,7 @@ import * as Joi from "joi";
 import { TestService } from "../services/test_service";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { TestResultTypes } from "../entities/test_result_type";
+import { TestTypes } from "../entities/test_type";
 
 @Controller("/tests")
 @injectable()
@@ -25,7 +26,6 @@ export class TestController implements interfaces.Controller {
             });
 
             if (error) {
-                console.log(error);
                 res.json(400, error);
                 return;
             }
@@ -60,7 +60,9 @@ const postTestResultsSchema = Joi.object({
     result: Joi.string()
         .valid(...TestResultTypes)
         .required(),
-    testType: Joi.string().required(),
+    testType: Joi.string()
+        .valid(...TestTypes)
+        .required(),
     testDate: Joi.date().required(),
     streetAddress: Joi.string().required(),
     streetAddressLineTwo: Joi.string().allow(null, ""),
