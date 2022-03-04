@@ -1,6 +1,6 @@
 import { seedDb } from "./seed_db";
 
 (async () => {
-    await seedDb(1);
+    await seedDb();
     console.log("Finished seeding database...");
 })();
