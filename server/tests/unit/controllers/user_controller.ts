@@ -161,6 +161,7 @@ const mockUser: User = {
     phoneNumber: "514-245-6532",
     gender: Gender.MALE,
     dateOfBirth: new Date("2000-01-19T02:26:39.131Z"),
+    isPrioritized: false,
     role: Role.USER,
     address: {
         addressId: 2,

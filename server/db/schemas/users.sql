@@ -8,6 +8,7 @@ CREATE TABLE users (
     gender VARCHAR(10) NOT NULL,
     date_of_birth TIMESTAMP WITH TIME ZONE NOT NULL,
     created_on TIMESTAMP WITH TIME ZONE NOT NULL,
+    is_prioritized BOOLEAN NOT NULL,
     address_id INT NOT NULL,
     role_id INT NOT NULL,
     PRIMARY KEY (user_id),
