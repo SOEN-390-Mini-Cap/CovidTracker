@@ -118,8 +118,6 @@ function StatusReportInbox() {
         f();
     }, [token]);
 
-    console.log(statuses);
-
     return (
         <div>
             <BreadCrumbsPage
