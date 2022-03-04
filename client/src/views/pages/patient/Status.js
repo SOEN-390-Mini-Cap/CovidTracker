@@ -120,7 +120,7 @@ function Status() {
                     {status && patient && (
                         <Fragment>
                             <div className="d-flex mb-1">
-                                <div className="w-50">
+                                <div className="me-2">
                                     Patient ID
                                     <br />
                                     Name
@@ -133,16 +133,16 @@ function Status() {
                                     <br />
                                     Last Updated
                                 </div>
-                                <div className="w-50">
+                                <div>
                                     {patient.account.userId}
                                     <br />
                                     {`${patient.firstName} ${patient.lastName}`}
                                     <br />
                                     {patient.account.email}
                                     <br />
-                                    {status.status.temperature} &deg;C
+                                    {status.statusBody.temperature} &deg;C
                                     <br />
-                                    {status.status.weight} lbs
+                                    {status.statusBody.weight} lbs
                                     <br />
                                     {new Date(status.createdOn).toDateString()}
                                 </div>
@@ -156,7 +156,7 @@ function Status() {
                                             <Input
                                                 type="checkbox"
                                                 className="form-check-input"
-                                                checked={status.status[fieldData.id]}
+                                                checked={status.statusBody[fieldData.id]}
                                                 readOnly={true}
                                             />
                                             <Label className="form-check-label">{fieldData.name}</Label>
@@ -170,7 +170,7 @@ function Status() {
                                             <Input
                                                 type="checkbox"
                                                 className="form-check-input"
-                                                checked={status.status[fieldData.id]}
+                                                checked={status.statusBody[fieldData.id]}
                                                 readOnly={true}
                                             />
                                             <Label className="form-check-label">{fieldData.name}</Label>
@@ -182,7 +182,7 @@ function Status() {
                             <div className="mb-2">
                                 Other Symptoms
                                 <br />
-                                {status.status.otherSymptoms}
+                                {status.statusBody.otherSymptoms}
                             </div>
                         </Fragment>
                     )}

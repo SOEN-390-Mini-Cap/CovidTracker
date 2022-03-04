@@ -1,8 +1,9 @@
 export type Status = {
     statusId: number;
     patientId: number;
+    isReviewed: boolean;
     createdOn: Date;
-    status: StatusBody;
+    statusBody: StatusBody;
 };
 
 export type StatusBody = {

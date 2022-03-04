@@ -29,7 +29,7 @@ export class StatusController implements interfaces.Controller {
     private async postStatus(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = postStatusSchema.validate({
-                status: req.body,
+                statusBody: req.body,
                 patientId: req.params.patientId,
             });
 
@@ -38,7 +38,7 @@ export class StatusController implements interfaces.Controller {
                 return;
             }
 
-            await this.statusService.postStatus(req["token"].userId, value.patientId, value.status);
+            await this.statusService.postStatus(req["token"].userId, value.patientId, value.statusBody);
 
             res.json(201);
         } catch (error) {
@@ -132,7 +132,7 @@ export class StatusController implements interfaces.Controller {
 }
 
 const postStatusSchema = Joi.object({
-    status: Joi.object().required(),
+    statusBody: Joi.object().required(),
     patientId: Joi.number().required(),
 }).required();
 

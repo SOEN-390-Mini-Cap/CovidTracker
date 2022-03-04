@@ -4,7 +4,6 @@ import { Pool, PoolClient, QueryResult } from "pg";
 import { User } from "../entities/user";
 import { Gender } from "../entities/gender";
 import { Role } from "../entities/role";
-import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
 
 @injectable()
@@ -13,7 +12,7 @@ export class UserRepository {
 
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async addUser(userData: RequestUser, addressId: number): Promise<number> {
+    async addUser(user: User): Promise<number> {
         const client = await this.pool.connect();
 
         const sql = `
@@ -26,23 +25,25 @@ export class UserRepository {
                 gender,
                 date_of_birth,
                 address_id,
-                role_id
+                role_id,
+                created_on
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING user_id;
         `;
 
         const res = await client
             .query(sql, [
-                userData.email,
-                userData.password,
-                userData.firstName,
-                userData.lastName,
-                userData.phoneNumber,
-                userData.gender,
-                userData.dateOfBirth.toISOString(),
-                addressId,
+                user.account.email,
+                user.account.password,
+                user.firstName,
+                user.lastName,
+                user.phoneNumber,
+                user.gender,
+                user.dateOfBirth.toISOString(),
+                user.address.addressId,
                 UserRepository.defaultRoleId,
+                user.account.createdOn,
             ])
             .finally(async () => client.release());
 
