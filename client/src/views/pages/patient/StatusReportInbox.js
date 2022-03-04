@@ -2,20 +2,10 @@ import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
-import {
-    Badge,
-    Card,
-    CardBody,
-    CardText,
-    Col, DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Row,
-    UncontrolledDropdown
-} from "reactstrap";
+import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {Eye, ChevronDown} from "react-feather";
-import {Link} from "react-router-dom";
+import { Eye, ChevronDown } from "react-feather";
+import { Link } from "react-router-dom";
 
 const columns = [
     {
