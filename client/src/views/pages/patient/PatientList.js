@@ -2,10 +2,20 @@ import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
-import {Badge, Card, CardBody, CardText, Col, Row} from "reactstrap";
+import {
+    Badge,
+    Card,
+    CardBody,
+    CardText,
+    Col, DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Row,
+    UncontrolledDropdown
+} from "reactstrap";
 import DataTable from "react-data-table-component";
-import { Activity, ChevronDown, Heart } from "react-feather";
-import Avatar from "@components/avatar";
+import {Archive, ChevronDown, Edit, FileText, MoreVertical, Trash} from "react-feather";
+import {Link} from "react-router-dom";
 
 const columns = [
     {
@@ -68,14 +78,30 @@ const columns = [
     },
     {
         name: "Actions",
+        allowOverflow: true,
         width: "80px",
-        selector: (row) => (
-            <Fragment>
-                <span className="fw-bold">
-                    action
-                </span>
-            </Fragment>
-        ),
+        cell: (row) => {
+            return (
+                <div className="d-flex">
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="pe-1" tag="span">
+                            <MoreVertical size={15} />
+                        </DropdownToggle>
+                        <DropdownMenu end>
+                            <DropdownItem tag={Link} to={`/add_test/patients/${row.account.userId}`} className="w-100">
+                                Add Test Result
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to={`/tests/patients/${row.account.userId}`} className="w-100">
+                                Test Results
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to={`/statuses/patients/${row.account.userId}`} className="w-100">
+                                Status Reports
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                </div>
+            );
+        },
     },
 ];
 
@@ -102,8 +128,6 @@ function PatientList() {
         f();
     }, [token]);
 
-    console.log(patients)
-
     return (
         <div>
             <BreadCrumbsPage
@@ -117,7 +141,6 @@ function PatientList() {
                         <DataTable
                             noHeader
                             pagination
-                            responsive
                             data={patients}
                             columns={columns}
                             className="react-dataTable"
