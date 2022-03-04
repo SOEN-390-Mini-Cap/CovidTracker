@@ -22,6 +22,9 @@ import { DoctorService } from "./services/doctor_service";
 import { Role } from "./entities/role";
 import { StatusController } from "./controllers/status_controller";
 import { StatusService } from "./services/status_service";
+import { TestController } from "./controllers/test_controller";
+import { TestService } from "./services/test_service";
+import { TestRepository } from "./repositories/test_repository";
 
 const container = new Container();
 
@@ -35,6 +38,7 @@ container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTa
 container.bind<interfaces.Controller>(TYPE.Controller).to(PatientController).whenTargetNamed("PatientController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(DoctorController).whenTargetNamed("DoctorController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(StatusController).whenTargetNamed("StatusController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(TestController).whenTargetNamed("TestController");
 
 // Services
 container
@@ -46,6 +50,7 @@ container.bind<UserService>("Service").to(UserService).inSingletonScope().whenTa
 container.bind<PatientService>("Service").to(PatientService).inSingletonScope().whenTargetNamed("PatientService");
 container.bind<DoctorService>("Service").to(DoctorService).inSingletonScope().whenTargetNamed("DoctorService");
 container.bind<StatusService>("Service").to(StatusService).inSingletonScope().whenTargetNamed("StatusService");
+container.bind<TestService>("Service").to(TestService).inSingletonScope().whenTargetNamed("TestService");
 
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
@@ -75,6 +80,7 @@ container
     .to(StatusRepository)
     .inSingletonScope()
     .whenTargetNamed("StatusRepository");
+container.bind<TestRepository>("Repository").to(TestRepository).inSingletonScope().whenTargetNamed("TestRepository");
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
