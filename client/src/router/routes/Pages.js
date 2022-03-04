@@ -30,6 +30,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/statuses/inbox",
+        component: lazy(() => import("../../views/pages/patient/StatusReportInbox")),
+        meta: {
+            accessibleBy: ["DOCTOR"],
+        },
+    },
+    {
         path: "/status_report",
         component: lazy(() => import("../../views/pages/patient/StatusReport")),
         meta: {
