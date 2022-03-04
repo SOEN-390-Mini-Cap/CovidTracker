@@ -14,67 +14,51 @@ import {
     UncontrolledDropdown
 } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {Archive, ChevronDown, Edit, FileText, MoreVertical, Trash} from "react-feather";
+import {Eye, ChevronDown} from "react-feather";
 import {Link} from "react-router-dom";
 
 const columns = [
     {
-        name: "ID",
+        name: "#",
         sortable: true,
         width: "80px",
-        selector: (row) => row.account.userId,
+        selector: (row) => row.statusId,
     },
     {
         name: "Name",
         sortable: true,
+        minWidth: "280px",
         selector: (row) => (
             <Fragment>
                 <span className="fw-bold">
-                    {row.firstName} {row.lastName}
+                    {row.patient.firstName} {row.patient.lastName}
                 </span>
-                <br /> {row.account.email}
+                <br />
+                {row.patient.account.email}
             </Fragment>
         ),
     },
     {
-        name: "Address",
+        name: "Weight",
         sortable: true,
-        selector: (row) => (
-            <Fragment>
-                {row.address.streetAddress}
-                <br />
-                {row.address.city}, {row.address.province} {row.address.postalCode}
-                <br />
-                {row.address.country}
-            </Fragment>
-        ),
+        selector: (row) => `${row.statusBody.weight} lbs`,
     },
     {
-        name: "Date of Birth",
+        name: "Temperature",
         sortable: true,
-        width: "140px",
+        selector: (row) => <Fragment>{row.statusBody.temperature} &deg;C</Fragment>,
+    },
+    {
+        name: "Last Updated",
+        sortable: true,
         selector: (row) =>
-            new Date(row.dateOfBirth).toLocaleDateString("en-US", {
+            new Date(row.createdOn).toLocaleString("en-US", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
             }),
-    },
-    {
-        name: "Gender",
-        sortable: true,
-        width: "100px",
-        selector: (row) => (
-            <Badge pill color={row.gender === "MALE" ? "light-info" : "light-danger"}>
-                {row.gender}
-            </Badge>
-        ),
-    },
-    {
-        name: "Phone",
-        sortable: true,
-        width: "140px",
-        selector: (row) => row.phoneNumber,
     },
     {
         name: "Actions",
@@ -82,30 +66,27 @@ const columns = [
         width: "80px",
         cell: (row) => {
             return (
-                <div className="d-flex">
-                    <UncontrolledDropdown>
-                        <DropdownToggle className="pe-1" tag="span">
-                            <MoreVertical size={15} />
-                        </DropdownToggle>
-                        <DropdownMenu end>
-                            <DropdownItem tag={Link} to={`/add_test/patients/${row.account.userId}`} className="w-100">
-                                Add Test Result
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to={`/tests/patients/${row.account.userId}`} className="w-100">
-                                Test Results
-                            </DropdownItem>
-                            <DropdownItem tag={Link} to={`/statuses/patients/${row.account.userId}`} className="w-100">
-                                Status Reports
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                </div>
+                <Link to={`/statuses/${row.statusId}`} className="m-auto">
+                    <div>
+                        <Eye color="#5E5873" size={20} />
+                    </div>
+                </Link>
             );
         },
     },
 ];
 
 const selectToken = (state) => state.auth.userData.token;
+
+async function getStatuses(token) {
+    const res = await axios.get("http://localhost:8080/statuses", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}
 
 async function getPatients(token) {
     const res = await axios.get("http://localhost:8080/patients", {
@@ -119,29 +100,40 @@ async function getPatients(token) {
 
 function StatusReportInbox() {
     const token = useSelector(selectToken);
-    const [patients, setPatients] = useState(null);
+    const [statuses, setStatuses] = useState(null);
     useEffect(() => {
         async function f() {
+            const statuses = await getStatuses(token);
             const patients = await getPatients(token);
-            setPatients(patients);
+
+            const patientStatuses = statuses.map((status) => {
+                const patient = patients.find((p) => p.account.userId === status.patientId);
+                return {
+                    ...status,
+                    patient,
+                };
+            });
+            setStatuses(patientStatuses);
         }
         f();
     }, [token]);
 
+    console.log(statuses);
+
     return (
         <div>
             <BreadCrumbsPage
-                breadCrumbTitle="Patient List"
+                breadCrumbTitle="Status Report Inbox"
                 breadCrumbParent="Patient"
-                breadCrumbActive="Patient List"
+                breadCrumbActive="Status Report Inbox"
             />
-            {patients && (
+            {statuses && (
                 <Card className="overflow-hidden">
                     <div className="react-dataTable">
                         <DataTable
                             noHeader
                             pagination
-                            data={patients}
+                            data={statuses}
                             columns={columns}
                             className="react-dataTable"
                             sortIcon={<ChevronDown size={10} />}
