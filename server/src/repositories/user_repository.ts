@@ -26,9 +26,10 @@ export class UserRepository {
                 date_of_birth,
                 address_id,
                 role_id,
-                created_on
+                created_on,
+                is_prioritized
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING user_id;
         `;
 
@@ -44,6 +45,7 @@ export class UserRepository {
                 user.address.addressId,
                 UserRepository.defaultRoleId,
                 user.account.createdOn,
+                user.isPrioritized,
             ])
             .finally(async () => client.release());
 
@@ -64,6 +66,7 @@ export class UserRepository {
                 gender,
                 date_of_birth,
                 created_on,
+                is_prioritized,
                 role_name,
                 users.address_id,
                 street_address,
@@ -96,6 +99,7 @@ export class UserRepository {
                 gender,
                 date_of_birth,
                 created_on,
+                is_prioritized,
                 role_name,
                 users.address_id,
                 street_address,
@@ -210,6 +214,7 @@ export class UserRepository {
             phoneNumber: row.phone_number,
             gender: Gender[row.gender],
             dateOfBirth: new Date(row.date_of_birth),
+            isPrioritized: row.is_prioritized,
             role: Role[row.role_name],
             address: {
                 addressId: row.address_id,

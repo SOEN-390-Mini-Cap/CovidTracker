@@ -9,6 +9,7 @@ export interface User {
     phoneNumber: string;
     gender: Gender;
     dateOfBirth: Date;
+    isPrioritized: boolean;
     role: Role;
     address: Address;
     account: Account;

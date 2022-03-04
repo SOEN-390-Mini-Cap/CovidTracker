@@ -30,6 +30,7 @@ export class AuthenticationService {
             phoneNumber: userData.phoneNumber,
             gender: userData.gender,
             dateOfBirth: userData.dateOfBirth,
+            isPrioritized: false,
             role: null,
             address: {
                 addressId,
