@@ -5,6 +5,7 @@ import { ReqUser } from "../entities/req_user";
 import { User } from "../entities/user";
 import { Role } from "../entities/role";
 import { AuthorizationError } from "../entities/errors/authorization_error";
+import { AuthenticationService } from "./authentication_service";
 
 @injectable()
 export class PatientService {
@@ -12,6 +13,9 @@ export class PatientService {
         @inject("Repository")
         @named("PatientRepository")
         private readonly patientRepository: PatientRepository,
+        @inject("Service")
+        @named("AuthenticationService")
+        private readonly authenticationService: AuthenticationService,
     ) {}
 
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
@@ -36,5 +40,17 @@ export class PatientService {
         }
 
         throw new AuthorizationError();
+    }
+
+    async putPatientPrioritized(reqUser: ReqUser, patientId: number, isPrioritized: boolean): Promise<void> {
+        const canUserAccess =
+            (await this.authenticationService.isUserPatientOfDoctor(patientId, reqUser.userId)) ||
+            reqUser.role === Role.HEALTH_OFFICIAL ||
+            reqUser.role === Role.IMMIGRATION_OFFICER;
+        if (!canUserAccess) {
+            throw new AuthorizationError();
+        }
+
+        await this.patientRepository.updatePatientPrioritized(patientId, isPrioritized);
     }
 }

@@ -71,4 +71,28 @@ describe("patient_controller.ts API", () => {
             expect(res.status).to.equal(403);
         });
     });
+
+    describe("PUT /patients/:patientId/prioritize endpoint", () => {
+        it("should return 204 status when setting isPrioritized true", async () => {
+            const res = await agent(app)
+                .put("/patients/1/prioritize")
+                .send({
+                    isPrioritized: true,
+                })
+                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+
+            expect(res.status).to.equal(204);
+        });
+
+        it("should return 204 status when setting isPrioritized false", async () => {
+            const res = await agent(app)
+                .put("/patients/1/prioritize")
+                .send({
+                    isPrioritized: false,
+                })
+                .set("Authorization", `Bearer ${tokensFixture.immigrationOfficer}`);
+
+            expect(res.status).to.equal(204);
+        });
+    });
 });
