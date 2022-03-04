@@ -31,21 +31,29 @@ const columns = [
         sortable: true,
         selector: (row) => (
             <Fragment>
-                <span className="fw-bold">
-                    {row.firstName} {row.lastName}
-                </span>
-                <br /> {row.account.email}
+                {row.address.streetAddress}
+                <br />
+                {row.address.city}, {row.address.province} {row.address.postalCode}
+                <br />
+                {row.address.country}
             </Fragment>
         ),
     },
     {
         name: "Date of Birth",
         sortable: true,
-        selector: (row) => new Date(row.dateOfBirth).toDateString(),
+        width: "140px",
+        selector: (row) =>
+            new Date(row.dateOfBirth).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+            }),
     },
     {
         name: "Gender",
         sortable: true,
+        width: "100px",
         selector: (row) => (
             <Badge pill color={row.gender === "MALE" ? "light-info" : "light-danger"}>
                 {row.gender}
@@ -55,11 +63,12 @@ const columns = [
     {
         name: "Phone",
         sortable: true,
+        width: "140px",
         selector: (row) => row.phoneNumber,
     },
     {
         name: "Actions",
-        width: "120px",
+        width: "80px",
         selector: (row) => (
             <Fragment>
                 <span className="fw-bold">
@@ -108,6 +117,7 @@ function PatientList() {
                         <DataTable
                             noHeader
                             pagination
+                            responsive
                             data={patients}
                             columns={columns}
                             className="react-dataTable"
