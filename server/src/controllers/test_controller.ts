@@ -40,9 +40,9 @@ export class TestController implements interfaces.Controller {
             };
 
             await this.testService.postTestResult(
-                value.testResult,
-                value.typeOfTest,
-                value.dateOfTest,
+                value.result,
+                value.testType,
+                value.testDate,
                 addressData,
                 value.patientId,
                 req["token"].userId,

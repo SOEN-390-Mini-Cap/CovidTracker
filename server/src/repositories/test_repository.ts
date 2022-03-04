@@ -6,7 +6,7 @@ import { TestResult } from "../entities/test_result";
 export class TestRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async insertTestResult(testResults: TestResult) {
+    async insertTestResult(testResults: TestResult): Promise<void> {
         const client = await this.pool.connect();
 
         const queryString = `INSERT INTO test_results 
@@ -22,7 +22,7 @@ export class TestRepository {
                 testResults.patientId,
                 testResults.result,
                 testResults.testType,
-                testResults.testDate,
+                testResults.testDate.toISOString(),
                 testResults.addressId,
             ])
             .finally(() => client.release());
