@@ -5,6 +5,7 @@ export const get_patients_health_official_fixture = [
         phoneNumber: "920.669.4454 x191",
         gender: "MALE",
         dateOfBirth: "1982-04-09T12:48:11.039Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -28,6 +29,7 @@ export const get_patients_health_official_fixture = [
         phoneNumber: "(980)802-1086 x05469",
         gender: "MALE",
         dateOfBirth: "1952-12-10T10:36:13.512Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -51,6 +53,7 @@ export const get_patients_health_official_fixture = [
         phoneNumber: "1-207-696-7224 x721",
         gender: "MALE",
         dateOfBirth: "1925-11-13T16:49:41.165Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -74,6 +77,7 @@ export const get_patients_health_official_fixture = [
         phoneNumber: "600.792.9224",
         gender: "MALE",
         dateOfBirth: "1966-10-01T20:24:17.141Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -97,6 +101,7 @@ export const get_patients_health_official_fixture = [
         phoneNumber: "315.596.4450 x7506",
         gender: "MALE",
         dateOfBirth: "1931-03-13T19:26:26.899Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -123,6 +128,7 @@ export const get_patients_doctor_fixture = [
         phoneNumber: "920.669.4454 x191",
         gender: "MALE",
         dateOfBirth: "1982-04-09T12:48:11.039Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -146,6 +152,7 @@ export const get_patients_doctor_fixture = [
         phoneNumber: "(980)802-1086 x05469",
         gender: "MALE",
         dateOfBirth: "1952-12-10T10:36:13.512Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -169,6 +176,7 @@ export const get_patients_doctor_fixture = [
         phoneNumber: "1-207-696-7224 x721",
         gender: "MALE",
         dateOfBirth: "1925-11-13T16:49:41.165Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
@@ -192,6 +200,7 @@ export const get_patients_doctor_fixture = [
         phoneNumber: "600.792.9224",
         gender: "MALE",
         dateOfBirth: "1966-10-01T20:24:17.141Z",
+        isPrioritized: false,
         role: "PATIENT",
         address: {
             addressId: 1,
