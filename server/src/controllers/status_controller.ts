@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Request, Response } from "restify";
-import { Controller, Post, interfaces, Get } from "inversify-restify-utils";
+import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { StatusService } from "../services/status_service";
@@ -90,6 +90,27 @@ export class StatusController implements interfaces.Controller {
         }
     }
 
+    @Put("/:statusId/reviewed", "injectAuthDataMiddleware")
+    private async putStatusReviewed(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = putStatusReviewedSchema.validate({
+                statusId: req.params.statusId,
+                isReviewed: req.body.isReviewed,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            await this.statusService.putStatusReviewed(req["token"], value.statusId, value.isReviewed);
+
+            res.json(204);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
     @Post("/fields/patients/:patientId", "injectAuthDataMiddleware", "isValidDoctorMiddleware")
     private async postStatusFields(req: Request, res: Response): Promise<void> {
         try {
@@ -149,3 +170,8 @@ const postStatusFieldsSchema = Joi.object({
 }).required();
 
 const getStatusFieldsSchema = Joi.object({ patientId: Joi.number().required() }).required();
+
+const putStatusReviewedSchema = Joi.object({
+    statusId: Joi.number().required(),
+    isReviewed: Joi.bool().required(),
+}).required();

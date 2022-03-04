@@ -126,6 +126,17 @@ export class StatusRepository {
         return this.buildStatuses(res);
     }
 
+    async updateStatusReviewed(statusId: number, isReviewed: boolean): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            UPDATE statuses as s
+            SET is_reviewed = ($1)
+            WHERE s.status_id = ($2);
+        `;
+        await client.query(sql, [isReviewed, statusId]).finally(() => client.release());
+    }
+
     private buildStatuses({ rows }: QueryResult): Status[] {
         return rows.map(this.buildStatus);
     }
