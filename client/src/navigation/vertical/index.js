@@ -42,7 +42,7 @@ export default (userId) => [
         id: "patient",
         title: "Patient",
         icon: <Heart />,
-        accessibleBy: ["ADMIN", "DOCTOR", "PATIENT"],
+        accessibleBy: ["ADMIN", "DOCTOR", "PATIENT", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
         children: [
             {
                 id: "assignDoctor",
@@ -50,6 +50,13 @@ export default (userId) => [
                 icon: <Circle />,
                 navLink: "/assign_doctor",
                 accessibleBy: ["ADMIN"],
+            },
+            {
+                id: "patientList",
+                title: "Patient List",
+                icon: <Circle />,
+                navLink: "/patients",
+                accessibleBy: ["DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
             },
             {
                 id: "defineStatusReport",
