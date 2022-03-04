@@ -75,5 +75,5 @@ const doctorSchema = Joi.object({
 
 const putPatientPrioritizedSchema = Joi.object({
     patientId: Joi.number().required(),
-    isPrioritized: Joi.number().required(),
+    isPrioritized: Joi.bool().required(),
 }).required();
