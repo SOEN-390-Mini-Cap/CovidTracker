@@ -5,7 +5,7 @@ import { ReqUser } from "../entities/req_user";
 import { User } from "../entities/user";
 import { Role } from "../entities/role";
 import { AuthorizationError } from "../entities/errors/authorization_error";
-import {AuthenticationService} from "./authentication_service";
+import { AuthenticationService } from "./authentication_service";
 
 @injectable()
 export class PatientService {
