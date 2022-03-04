@@ -41,6 +41,18 @@ export class PatientRepository {
         client.release();
     }
 
+    async updatePatientPrioritized(patientId: number, isPrioritized: boolean): Promise<void> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            UPDATE users as u
+            SET is_prioritized = ($1)
+            WHERE u.user_id = ($2);
+        `;
+
+        await client.query(sql, [isPrioritized, patientId]).finally(() => client.release());
+    }
+
     async findAssignedDoctorId(patientId: number): Promise<number> {
         const client = await this.pool.connect();
 
