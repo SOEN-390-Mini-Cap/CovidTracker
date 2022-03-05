@@ -1,25 +1,16 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import {Fragment, useState, useEffect, forwardRef} from "react";
-import {Card, Input} from "reactstrap";
+import { Fragment, useState, useEffect } from "react";
+import { Card, Input } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
 
-const columns = [
+const columns = (statuses, setStatuses) => [
     {
         width: "80px",
-        selector: (row) => {
-            const x = () => {
-                console.log(row);
-            };
-            return (
-                <div className="form-check" onClick={x}>
-                    <Input type="checkbox" />
-                </div>
-            );
-        },
+        selector: (row) => <ReviewCheckbox statuses={statuses} setStatuses={setStatuses} row={row} />,
     },
     {
         name: "#",
@@ -79,6 +70,30 @@ const columns = [
     },
 ];
 
+function ReviewCheckbox({ row, statuses, setStatuses }) {
+    const token = useSelector(selectToken);
+
+    const onChange = async () => {
+        await putStatusReviewed(token, row.statusId, !row.isReviewed);
+        const patientStatuses = statuses.map((status) => {
+            if (status.statusId === row.statusId) {
+                return {
+                    ...status,
+                    isReviewed: !row.isReviewed,
+                };
+            }
+            return status;
+        });
+        setStatuses(patientStatuses);
+    };
+
+    return (
+        <div className="form-check">
+            <Input type="checkbox" checked={row.isReviewed} onChange={onChange} />
+        </div>
+    );
+}
+
 const selectToken = (state) => state.auth.userData.token;
 
 async function getStatuses(token) {
@@ -99,6 +114,20 @@ async function getPatients(token) {
     });
 
     return res.data;
+}
+
+async function putStatusReviewed(token, statusId, isReviewed) {
+    await axios.put(
+        `http://localhost:8080/statuses/${statusId}/reviewed`,
+        {
+            isReviewed,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 }
 
 function StatusReportInbox() {
@@ -135,7 +164,7 @@ function StatusReportInbox() {
                             noHeader
                             pagination
                             data={statuses}
-                            columns={columns}
+                            columns={columns(statuses, setStatuses)}
                             className="react-dataTable"
                             sortIcon={<ChevronDown size={10} />}
                             paginationRowsPerPageOptions={[10, 25, 50, 100]}
