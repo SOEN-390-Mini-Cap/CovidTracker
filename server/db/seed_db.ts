@@ -75,7 +75,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
         await userRepository.addUser({
             firstName,
             lastName,
-            phoneNumber: faker.phone.phoneNumber(),
+            phoneNumber: faker.phone.phoneNumber("###-###-####"),
             gender: rawGender === "Male" ? Gender.MALE : Gender.FEMALE,
             dateOfBirth: faker.date.between("1920-01-01T00:00:00.000Z", "2000-01-01T00:00:00.000Z"),
             isPrioritized: false,
