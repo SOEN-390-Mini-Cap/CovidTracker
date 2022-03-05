@@ -1,13 +1,26 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Fragment, useState, useEffect } from "react";
-import { Card } from "reactstrap";
+import {Fragment, useState, useEffect, forwardRef} from "react";
+import {Card, Input} from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
 
 const columns = [
+    {
+        width: "80px",
+        selector: (row) => {
+            const x = () => {
+                console.log(row);
+            };
+            return (
+                <div className="form-check" onClick={x}>
+                    <Input type="checkbox" />
+                </div>
+            );
+        },
+    },
     {
         name: "#",
         sortable: true,
