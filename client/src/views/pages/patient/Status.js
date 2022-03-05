@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useQRCode } from "next-qrcode";
 
 async function getStatus(token, statusId) {
     const res = await axios.get(`http://localhost:8080/statuses/${statusId}`, {
@@ -90,6 +91,19 @@ function Status() {
         f();
     }, [token, statusId]);
 
+    const { Image } = useQRCode();
+    const qrCode = (
+        <div className="d-flex justify-content-center my-2">
+            <Image
+                text={window.location.href}
+                options={{
+                    width: 175,
+                    margin: 0,
+                }}
+            />
+        </div>
+    );
+
     return (
         <div>
             {role === "PATIENT" ? (
@@ -117,6 +131,7 @@ function Status() {
                     <CardTitle className="mb-0">Status Report Details</CardTitle>
                 </CardBody>
                 <CardFooter>
+                    {qrCode}
                     {status && patient && (
                         <Fragment>
                             <div className="d-flex mb-1">
