@@ -66,6 +66,13 @@ export default (userId) => [
                 accessibleBy: ["DOCTOR"],
             },
             {
+                id: "statusReportInbox",
+                title: "Status Report Inbox",
+                icon: <Circle />,
+                navLink: "/statuses/inbox",
+                accessibleBy: ["DOCTOR"],
+            },
+            {
                 id: "submitStatusReport",
                 title: "Submit Status Report",
                 icon: <Circle />,
