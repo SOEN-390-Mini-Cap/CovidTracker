@@ -2,22 +2,12 @@ import BreadCrumbsPage from "@components/breadcrumbs";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
-import {
-    Badge,
-    Card,
-    CardBody,
-    CardText,
-    Col, DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Row,
-    UncontrolledDropdown
-} from "reactstrap";
+import { Badge, Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {Archive, ChevronDown, Edit, FileText, MoreVertical, Trash} from "react-feather";
-import {Link} from "react-router-dom";
+import { Flag, ChevronDown, MoreVertical } from "react-feather";
+import { Link } from "react-router-dom";
 
-const columns = [
+const columns = (setPatients) => [
     {
         name: "ID",
         sortable: true,
@@ -83,9 +73,10 @@ const columns = [
         cell: (row) => {
             return (
                 <div className="d-flex">
+                    <PrioritizeFlag row={row} setPatients={setPatients} />
                     <UncontrolledDropdown>
-                        <DropdownToggle className="pe-1" tag="span">
-                            <MoreVertical size={15} />
+                        <DropdownToggle tag="span">
+                            <MoreVertical color="#5E5873" size={20} />
                         </DropdownToggle>
                         <DropdownMenu end>
                             <DropdownItem tag={Link} to={`/add_test/patients/${row.account.userId}`} className="w-100">
@@ -105,6 +96,18 @@ const columns = [
     },
 ];
 
+function PrioritizeFlag({ row, setPatients }) {
+    const token = useSelector(selectToken);
+
+    const onClick = async () => {
+        await putPatientPrioritized(token, row.account.userId, !row.isPrioritized);
+        const patients = await getPatients(token);
+        setPatients(patients);
+    };
+
+    return <Flag color={row.isPrioritized ? "#EA5455" : "#5E5873"} size={20} onClick={onClick} />;
+}
+
 const selectToken = (state) => state.auth.userData.token;
 
 async function getPatients(token) {
@@ -115,6 +118,20 @@ async function getPatients(token) {
     });
 
     return res.data;
+}
+
+async function putPatientPrioritized(token, patientId, isPrioritized) {
+    await axios.put(
+        `http://localhost:8080/patients/${patientId}/prioritize`,
+        {
+            isPrioritized,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 }
 
 function PatientList() {
@@ -142,7 +159,7 @@ function PatientList() {
                             noHeader
                             pagination
                             data={patients}
-                            columns={columns}
+                            columns={columns(setPatients)}
                             className="react-dataTable"
                             sortIcon={<ChevronDown size={10} />}
                             paginationRowsPerPageOptions={[10, 25, 50, 100]}
