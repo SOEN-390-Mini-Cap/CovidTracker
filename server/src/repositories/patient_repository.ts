@@ -106,7 +106,8 @@ export class PatientRepository {
             FROM users AS u
             JOIN patients AS p ON u.user_id = p.patient_id
             JOIN roles AS r ON u.role_id = r.role_id
-            JOIN addresses AS a ON u.address_id = a.address_id;
+            JOIN addresses AS a ON u.address_id = a.address_id
+            ORDER BY u.is_prioritized DESC;
         `;
 
         const res = await client.query(sql).finally(() => client.release());
@@ -140,7 +141,8 @@ export class PatientRepository {
             JOIN patients AS p ON u.user_id = p.patient_id
             JOIN roles AS r ON u.role_id = r.role_id
             JOIN addresses AS a ON u.address_id = a.address_id
-            WHERE p.assigned_doctor_id = $1;
+            WHERE p.assigned_doctor_id = $1
+            ORDER BY u.is_prioritized DESC;
         `;
 
         const res = await client.query(sql, [doctorId]).finally(() => client.release());
