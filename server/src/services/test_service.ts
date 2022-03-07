@@ -23,6 +23,10 @@ export class TestService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
+    async getTestResult(testId: number, userId: number, roleId: number): Promise<void> {
+        return;
+    }
+
     async postTestResult(
         result: TestResultType,
         testType: TestType,
