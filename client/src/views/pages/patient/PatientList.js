@@ -7,15 +7,16 @@ import {
     Card,
     CardBody,
     CardText,
-    Col, DropdownItem,
+    Col,
+    DropdownItem,
     DropdownMenu,
     DropdownToggle,
     Row,
-    UncontrolledDropdown
+    UncontrolledDropdown,
 } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {Archive, ChevronDown, Edit, FileText, MoreVertical, Trash} from "react-feather";
-import {Link} from "react-router-dom";
+import { Archive, ChevronDown, Edit, FileText, MoreVertical, Trash } from "react-feather";
+import { Link } from "react-router-dom";
 
 const columns = [
     {

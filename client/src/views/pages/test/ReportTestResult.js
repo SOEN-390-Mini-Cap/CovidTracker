@@ -15,8 +15,6 @@ import { useParams } from "react-router-dom";
 
 function ReportTestResult() {
     async function submitTestResult(data, patientId, token) {
-        console.log("test");
-        console.log(data);
         await axios.post(
             `http://localhost:8080/tests/patients/${patientId}`,
             {
@@ -122,8 +120,6 @@ function ReportTestResult() {
         { value: "Yukon", label: "Yukon" },
     ];
 
-    console.log(errors);
-
     const { patientId } = useParams();
 
     const onSubmit = async (data) => {
@@ -146,7 +142,7 @@ function ReportTestResult() {
     return (
         <div>
             <BreadCrumbsPage
-                breadCrumbTitle="Add Test Result for"
+                breadCrumbTitle={`Add Test Result for ${patientId}`}
                 breadCrumbParent="Patient"
                 breadCrumbParent2="Patient List"
                 breadCrumbActive="Add Test Result"
