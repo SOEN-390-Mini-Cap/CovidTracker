@@ -27,4 +27,19 @@ export class TestRepository {
             ])
             .finally(() => client.release());
     }
+
+    async findTestByTestId(testId: number): Promise<any> {
+        const client = await this.pool.connect();
+        const queryString = `SELECT *
+                             FROM test_results AS tr
+                             WHERE tr.test_id = $1`;
+
+        const res = await client.query(queryString, [testId]).finally(async () => client.release());
+        const row = res.rows[0];
+        if (!row) {
+            return null;
+        }
+
+        return { testId: row.test_id, patientId: row.patient_id, result: row.result, testType: row.test_type };
+    }
 }

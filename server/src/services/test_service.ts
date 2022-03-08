@@ -23,8 +23,22 @@ export class TestService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async getTestResult(testId: number, userId: number, roleId: number): Promise<void> {
-        return;
+    async getTestResult(testId: number, userId: number, userRole: Role): Promise<void> {
+        const testData = await this.testRepository.findTestByTestId(testId);
+        console.log(userRole);
+        console.log(testData.patientId);
+        console.log(userId);
+        const userAccess =
+            userRole === Role.HEALTH_OFFICIAL ||
+            (userRole === Role.PATIENT && testData.patientId === userId) ||
+            (userRole === Role.DOCTOR &&
+                (await this.authenticationService.isUserPatientOfDoctor(testData.patientId, userId)));
+
+        if (!userAccess) {
+            throw new AuthorizationError();
+        }
+
+        return testData;
     }
 
     async postTestResult(

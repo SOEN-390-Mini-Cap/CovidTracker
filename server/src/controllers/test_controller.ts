@@ -21,7 +21,7 @@ export class TestController implements interfaces.Controller {
     @Get("/:testId", "injectAuthDataMiddleware")
     private async getTestResult(req: Request, res: Response): Promise<void> {
         try {
-            const { value, error } = postTestResultsSchema.validate({
+            const { value, error } = getTestResultSchema.validate({
                 ...req.params,
             });
 
@@ -29,8 +29,8 @@ export class TestController implements interfaces.Controller {
                 res.json(400, error);
                 return;
             }
-            const data = {};
-            // const data = await this.testService.getTestResult(value.testId, req['token'].userId);
+
+            const data = await this.testService.getTestResult(value.testId, req["token"].userId, req["token"].role);
             res.json(200, data);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
