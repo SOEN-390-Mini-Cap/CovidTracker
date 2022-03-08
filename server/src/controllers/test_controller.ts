@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Controller, interfaces, Post } from "inversify-restify-utils";
+import { Controller, Get, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
 import * as Joi from "joi";
@@ -16,6 +16,25 @@ export class TestController implements interfaces.Controller {
         @named("TestService")
         private readonly testService: TestService,
     ) {}
+
+    @Get("/:testId", "injectAuthDataMiddleware")
+    private async getTestResult(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = getTestResultSchema.validate({
+                ...req.params,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const data = await this.testService.getTestResult(value.testId, req["token"].userId, req["token"].role);
+            res.json(200, data);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
 
     @Post("/patients/:patientId", "injectAuthDataMiddleware")
     private async postTestResult(req: Request, res: Response): Promise<void> {
@@ -70,4 +89,8 @@ const postTestResultsSchema = Joi.object({
     postalCode: Joi.string().required(),
     province: Joi.string().required(),
     patientId: Joi.number().required(),
+}).required();
+
+const getTestResultSchema = Joi.object({
+    testId: Joi.number().required(),
 }).required();

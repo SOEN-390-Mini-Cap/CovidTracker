@@ -23,6 +23,21 @@ export class TestService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
+    async getTestResult(testId: number, userId: number, userRole: Role): Promise<TestResult> {
+        const testData = await this.testRepository.findTestByTestId(testId);
+        const userAccess =
+            userRole === Role.HEALTH_OFFICIAL ||
+            (userRole === Role.PATIENT && testData.patientId === userId) ||
+            (userRole === Role.DOCTOR &&
+                (await this.authenticationService.isUserPatientOfDoctor(testData.patientId, userId)));
+
+        if (!userAccess) {
+            throw new AuthorizationError();
+        }
+
+        return testData;
+    }
+
     async postTestResult(
         result: TestResultType,
         testType: TestType,
@@ -43,11 +58,20 @@ export class TestService {
         const addressId = await this.userRepository.addAddress(addressData);
 
         const testResults: TestResult = {
+            testId: null,
             patientId,
             result,
             testType,
             testDate,
-            addressId,
+            address: {
+                addressId,
+                streetAddress: null,
+                streetAddressLineTwo: null,
+                country: null,
+                city: null,
+                postalCode: null,
+                province: null,
+            },
         };
 
         await this.testRepository.insertTestResult(testResults);

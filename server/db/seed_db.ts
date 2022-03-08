@@ -12,6 +12,9 @@ import { Address } from "../src/entities/address";
 import { Gender } from "../src/entities/gender";
 import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
 import { sampleSymptoms } from "./seed_data/sample_symptoms";
+import { TestRepository } from "../src/repositories/test_repository";
+import { TestType } from "../src/entities/test_type";
+import { TestResultType } from "../src/entities/test_result_type";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();
@@ -22,6 +25,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
     const statusRepository = new StatusRepository(pool);
     const healthOfficialRepository = new HealthOfficialRepository(pool, userRepository);
     const immigrationOfficerRepository = new ImmigrationOfficerRepository(pool, userRepository);
+    const testRepository = new TestRepository(pool);
 
     faker.seed(1);
     faker.setLocale("en_CA");
@@ -167,6 +171,23 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             }
         }
     }
+
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 3,
+        testDate: new Date("01/11/1999"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.NEGATIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
 
     await pool.end();
 }
