@@ -25,9 +25,6 @@ export class TestService {
 
     async getTestResult(testId: number, userId: number, userRole: Role): Promise<TestResult> {
         const testData = await this.testRepository.findTestByTestId(testId);
-        console.log(userRole);
-        console.log(testData.patientId);
-        console.log(userId);
         const userAccess =
             userRole === Role.HEALTH_OFFICIAL ||
             (userRole === Role.PATIENT && testData.patientId === userId) ||

@@ -7,7 +7,6 @@ import { TestService } from "../services/test_service";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { TestResultTypes } from "../entities/test_result_type";
 import { TestTypes } from "../entities/test_type";
-import { requests } from "sinon";
 
 @Controller("/tests")
 @injectable()
