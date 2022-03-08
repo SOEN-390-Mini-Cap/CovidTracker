@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Pool } from "pg";
-import { TestResult } from "../entities/test_result";
+import { TestResult, TestResultWithAddress } from "../entities/test_result";
+import { Address } from "../entities/address";
 
 @injectable()
 export class TestRepository {
@@ -28,7 +29,7 @@ export class TestRepository {
             .finally(() => client.release());
     }
 
-    async findTestByTestId(testId: number): Promise<any> {
+    async findTestByTestId(testId: number): Promise<TestResultWithAddress> {
         const client = await this.pool.connect();
         const queryString = `SELECT *
                              FROM test_results AS tr
@@ -39,7 +40,34 @@ export class TestRepository {
         if (!row) {
             return null;
         }
+        const address = await this.findAddressById(row.address_id);
+        return {
+            patientId: row.patient_id,
+            result: row.result,
+            testDate: row.test_date,
+            testType: row.test_type,
+            ...address,
+        };
+    }
 
-        return { testId: row.test_id, patientId: row.patient_id, result: row.result, testType: row.test_type };
+    async findAddressById(addressId: number): Promise<Address> {
+        const client = await this.pool.connect();
+        const queryString = `SELECT *
+                             FROM addresses AS a
+                             WHERE a.address_id = $1`;
+        const res = await client.query(queryString, [addressId]).finally(async () => client.release());
+        const row = res.rows[0];
+        if (!row) {
+            return null;
+        }
+        return {
+            addressId: row.address_id,
+            streetAddress: row.street_address,
+            streetAddressLineTwo: row.street_address_line_two,
+            city: row.city,
+            province: row.province,
+            postalCode: row.postal_code,
+            country: row.country,
+        };
     }
 }

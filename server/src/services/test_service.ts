@@ -23,7 +23,7 @@ export class TestService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async getTestResult(testId: number, userId: number, userRole: Role): Promise<void> {
+    async getTestResult(testId: number, userId: number, userRole: Role): Promise<TestResult> {
         const testData = await this.testRepository.findTestByTestId(testId);
         console.log(userRole);
         console.log(testData.patientId);
