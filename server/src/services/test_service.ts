@@ -58,11 +58,20 @@ export class TestService {
         const addressId = await this.userRepository.addAddress(addressData);
 
         const testResults: TestResult = {
+            testId: null,
             patientId,
             result,
             testType,
             testDate,
-            addressId,
+            address: {
+                addressId,
+                streetAddress: null,
+                streetAddressLineTwo: null,
+                country: null,
+                city: null,
+                postalCode: null,
+                province: null,
+            },
         };
 
         await this.testRepository.insertTestResult(testResults);

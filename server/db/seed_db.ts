@@ -173,11 +173,20 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
     }
 
     await testRepository.insertTestResult({
+        testId: null,
         patientId: 3,
         testDate: new Date("01/11/1999"),
         testType: TestType.ANTIGEN,
         result: TestResultType.NEGATIVE,
-        addressId: 1,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
     });
 
     await pool.end();

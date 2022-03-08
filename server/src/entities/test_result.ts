@@ -3,11 +3,10 @@ import { TestType } from "./test_type";
 import { Address } from "./address";
 
 export type TestResult = {
+    testId: number;
     patientId: number;
     result: TestResultType;
     testType: TestType;
     testDate: Date;
-    addressId: number;
+    address: Address;
 };
-
-export type TestResultWithAddress = TestResult & Address;
