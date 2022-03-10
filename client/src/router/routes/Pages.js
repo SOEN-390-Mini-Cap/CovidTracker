@@ -58,6 +58,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/statuses/:statusId",
+        component: lazy(() => import("../../views/pages/patient/Status")),
+        meta: {
+            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
+        },
+    },
+    {
         path: "/add_test/patients/:patientId",
         component: lazy(() => import("../../views/pages/test/ReportTestResult")),
         meta: {
@@ -65,8 +72,15 @@ const PagesRoutes = [
         },
     },
     {
-        path: "/statuses/:statusId",
-        component: lazy(() => import("../../views/pages/patient/Status")),
+        path: "/tests/patients/:patientId",
+        component: lazy(() => import("../../views/pages/Home")),
+        meta: {
+            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
+        },
+    },
+    {
+        path: "/tests/:testId",
+        component: lazy(() => import("../../views/pages/test/TestResult")),
         meta: {
             accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
         },

@@ -87,43 +87,24 @@ input[type="checkbox"] {
     font-size: 15px;
   }
 
+  .form-check-label {
+    font-size: 12px;
+  }
+
+  .form-check {
+    margin-bottom: 5px;
+  }
+
   .card-body,
   .card-footer {
     padding: 17px;
+    line-height: 18px;
+    font-size: 12px;
   }
 }
 
-.status-report-fields-card {
+.small-margin-card {
   margin-top: 100px;
-
-  .form-check-label {
-    font-size: 12px;
-  }
-
-  .form-check {
-    margin-bottom: 5px;
-  }
-
-  .card-footer {
-    font-size: 12px;
-  }
-}
-
-.add-test-fields-card {
-  margin-top: 20px;
-  margin-bottom: 100px;
-
-  .form-check-label {
-    font-size: 12px;
-  }
-
-  .form-check {
-    margin-bottom: 5px;
-  }
-
-  .card-footer {
-    font-size: 12px;
-  }
 }
 
 @media only screen and (max-width: 768px) {

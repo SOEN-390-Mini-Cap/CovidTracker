@@ -95,8 +95,8 @@ function ReportTestResult() {
     });
 
     const testResultOptions = [
-        { value: "NEGATIVE", label: "NEGATIVE" },
         { value: "POSITIVE", label: "POSITIVE" },
+        { value: "NEGATIVE", label: "NEGATIVE" },
     ];
 
     const typeOfTestOptions = [
@@ -147,7 +147,7 @@ function ReportTestResult() {
                 breadCrumbParent2="Patient List"
                 breadCrumbActive="Add Test Result"
             />
-            <Card className="basic-card add-test-fields-card mx-auto">
+            <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Add a Test Result</CardTitle>
                 </CardBody>
