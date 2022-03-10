@@ -139,7 +139,7 @@ function DefineStatusReport() {
                 breadCrumbParent="Patient"
                 breadCrumbActive="Define Status Report"
             />
-            <Card className="basic-card status-report-fields-card mx-auto">
+            <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Define Status Report for a Patient</CardTitle>
                 </CardBody>

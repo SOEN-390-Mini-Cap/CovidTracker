@@ -2,7 +2,7 @@ import BreadCrumbsPage from "@components/breadcrumbs";
 import { Card, CardBody, CardFooter, CardTitle, Input, Label } from "reactstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQRCode } from "next-qrcode";
 
@@ -59,8 +59,6 @@ function TestResult() {
         </div>
     );
 
-    console.log(patient, test);
-
     return (
         <div>
             {role === "PATIENT" ? (
@@ -79,13 +77,50 @@ function TestResult() {
                     breadCrumbActive="Test Result Details"
                 />
             )}
-            <Card className="basic-card status-report-fields-card mx-auto">
+            <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Test Result Details</CardTitle>
                 </CardBody>
                 <CardFooter>
                     {qrCode}
-                    <p>Hello World!</p>
+                    {patient && test && (
+                        <div className="d-flex mb-1 mx-2">
+                            <div className="me-2" style={{ fontWeight: 500 }}>
+                                Patient ID:
+                                <br />
+                                Name:
+                                <br />
+                                Email:
+                                <br />
+                                Date:
+                                <br />
+                                Type:
+                                <br />
+                                Result:
+                                <br />
+                                Address:
+                            </div>
+                            <div>
+                                {patient.account.userId}
+                                <br />
+                                {`${patient.firstName} ${patient.lastName}`}
+                                <br />
+                                {patient.account.email}
+                                <br />
+                                {new Date(test.testDate).toDateString()}
+                                <br />
+                                {test.testType}
+                                <br />
+                                {test.result}
+                                <br />
+                                {test.address.streetAddress}
+                                <br />
+                                {test.address.city}, {test.address.province} {test.address.postalCode}
+                                <br />
+                                {test.address.country}
+                            </div>
+                        </div>
+                    )}
                 </CardFooter>
             </Card>
         </div>

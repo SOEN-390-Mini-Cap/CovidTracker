@@ -126,7 +126,7 @@ function Status() {
                     breadCrumbActive="Status Report Details"
                 />
             )}
-            <Card className="basic-card status-report-fields-card mx-auto">
+            <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Status Report Details</CardTitle>
                 </CardBody>
@@ -135,7 +135,7 @@ function Status() {
                     {status && patient && (
                         <Fragment>
                             <div className="d-flex mb-1">
-                                <div className="me-2">
+                                <div className="me-2" style={{ fontWeight: 500 }}>
                                     Patient ID
                                     <br />
                                     Name

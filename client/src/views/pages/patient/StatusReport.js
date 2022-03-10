@@ -147,7 +147,7 @@ function StatusReport() {
                 breadCrumbParent="Patient"
                 breadCrumbActive="Status Report"
             />
-            <Card className="basic-card status-report-fields-card mx-auto">
+            <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Submit Status Report</CardTitle>
                 </CardBody>
