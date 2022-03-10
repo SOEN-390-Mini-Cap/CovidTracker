@@ -95,8 +95,8 @@ function ReportTestResult() {
     });
 
     const testResultOptions = [
-        { value: "NEGATIVE", label: "NEGATIVE" },
         { value: "POSITIVE", label: "POSITIVE" },
+        { value: "NEGATIVE", label: "NEGATIVE" },
     ];
 
     const typeOfTestOptions = [
