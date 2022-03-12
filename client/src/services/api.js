@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const baseUrl = `http://${process.env.SERVER_DOMAIN}:${process.env.SERVER_PORT}`;
+
 export async function submitTestResult(data, patientId, token) {
     await axios.post(
-        `http://localhost:8080/tests/patients/${patientId}`,
+        `${baseUrl}/tests/patients/${patientId}`,
         {
             result: data.testResult.value,
             testType: data.typeOfTest.value,
@@ -22,7 +24,7 @@ export async function submitTestResult(data, patientId, token) {
 }
 
 export async function getTest(token, testId) {
-    const res = await axios.get(`http://localhost:8080/tests/${testId}`, {
+    const res = await axios.get(`${baseUrl}/tests/${testId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -32,7 +34,7 @@ export async function getTest(token, testId) {
 }
 
 export async function getUser(token, userId) {
-    const res = await axios.get(`http://localhost:8080/users/${userId}`, {
+    const res = await axios.get(`${baseUrl}/users/${userId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -43,7 +45,7 @@ export async function getUser(token, userId) {
 
 export async function assignRole(data, token) {
     await axios.put(
-        `http://localhost:8080/users/${data.userId}/roles`,
+        `${baseUrl}/users/${data.userId}/roles`,
         {
             role: data.role.value,
         },
@@ -57,7 +59,7 @@ export async function assignRole(data, token) {
 
 export async function assignDoctor(data, token) {
     await axios.post(
-        `http://localhost:8080/patients/${data.patientId}/doctors`,
+        `${baseUrl}/patients/${data.patientId}/doctors`,
         {
             doctorId: data.doctorId,
         },
@@ -72,7 +74,7 @@ export async function assignDoctor(data, token) {
 export async function defineStatusReport(data, token) {
     const { patientId, ...fields } = data;
     await axios.post(
-        `http://localhost:8080/statuses/fields/patients/${patientId}`,
+        `${baseUrl}/statuses/fields/patients/${patientId}`,
         {
             ...fields,
         },
@@ -85,7 +87,7 @@ export async function defineStatusReport(data, token) {
 }
 
 export async function getPatients(token) {
-    const res = await axios.get("http://localhost:8080/patients", {
+    const res = await axios.get(`${baseUrl}/patients`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -96,7 +98,7 @@ export async function getPatients(token) {
 
 export async function putPatientPrioritized(token, patientId, isPrioritized) {
     await axios.put(
-        `http://localhost:8080/patients/${patientId}/prioritize`,
+        `${baseUrl}/patients/${patientId}/prioritize`,
         {
             isPrioritized,
         },
@@ -109,7 +111,7 @@ export async function putPatientPrioritized(token, patientId, isPrioritized) {
 }
 
 export async function getStatus(token, statusId) {
-    const res = await axios.get(`http://localhost:8080/statuses/${statusId}`, {
+    const res = await axios.get(`${baseUrl}/statuses/${statusId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -120,7 +122,7 @@ export async function getStatus(token, statusId) {
 
 export async function submitStatusReport(data, patientId, token) {
     await axios.post(
-        `http://localhost:8080/statuses/patients/${patientId}`,
+        `${baseUrl}/statuses/patients/${patientId}`,
         {
             ...data,
         },
@@ -133,7 +135,7 @@ export async function submitStatusReport(data, patientId, token) {
 }
 
 export async function getFields(patientId, token) {
-    const res = await axios.get(`http://localhost:8080/statuses/fields/patients/${patientId}`, {
+    const res = await axios.get(`${baseUrl}/statuses/fields/patients/${patientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -143,7 +145,7 @@ export async function getFields(patientId, token) {
 }
 
 export async function getStatuses(token) {
-    const res = await axios.get("http://localhost:8080/statuses", {
+    const res = await axios.get(`${baseUrl}/statuses`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -154,7 +156,7 @@ export async function getStatuses(token) {
 
 export async function putStatusReviewed(token, statusId, isReviewed) {
     await axios.put(
-        `http://localhost:8080/statuses/${statusId}/reviewed`,
+        `${baseUrl}/statuses/${statusId}/reviewed`,
         {
             isReviewed,
         },
@@ -167,7 +169,7 @@ export async function putStatusReviewed(token, statusId, isReviewed) {
 }
 
 export async function getPatientCounts(token) {
-    const res = await axios.get("http://localhost:8080/doctors/patient_counts", {
+    const res = await axios.get(`${baseUrl}/doctors/patient_counts`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -177,7 +179,7 @@ export async function getPatientCounts(token) {
 }
 
 export async function signIn(data) {
-    const res = await axios.post("http://localhost:8080/auth/sign_in", {
+    const res = await axios.post(`${baseUrl}/auth/sign_in`, {
         password: data.password,
         email: data.email,
     });
@@ -186,7 +188,7 @@ export async function signIn(data) {
 }
 
 export async function getProfile(token) {
-    const res = await axios.get("http://localhost:8080/users/me", {
+    const res = await axios.get(`${baseUrl}/users/me`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -196,7 +198,7 @@ export async function getProfile(token) {
 }
 
 export async function signUp(data) {
-    const res = await axios.post("http://localhost:8080/auth/sign_up", {
+    const res = await axios.post(`${baseUrl}/auth/sign_up`, {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phone.replaceAll("-", ""),
