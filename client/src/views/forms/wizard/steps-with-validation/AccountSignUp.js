@@ -1,53 +1,15 @@
-// ** React Imports
 import { Fragment } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
-// ** Utils
 import { isObjEmpty } from "@utils";
-
-// ** Custom Components
 import InputPasswordToggle from "@components/input-password-toggle";
 import { handleLogin } from "@store/authentication";
-
-// ** Third Party Components
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { ChevronLeft } from "react-feather";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-
-// ** Reactstrap Imports
 import { Form, Label, Input, Col, Button, FormFeedback } from "reactstrap";
-
-async function signUp(data) {
-    const res = await axios.post("http://localhost:8080/auth/sign_up", {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phone.replaceAll("-", ""),
-        gender: data.gender.value,
-        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        email: data.email,
-        password: data.password,
-        streetAddress: data.address1,
-        streetAddressLineTwo: data.address2,
-        city: data.city,
-        postalCode: data.postalCode,
-        province: data.province.value,
-    });
-
-    return res.data;
-}
-
-async function getProfile(token) {
-    const res = await axios.get("http://localhost:8080/users/me", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
+import { getProfile, signUp } from "../../../../services/api";
 
 const defaultValues = {
     email: "",

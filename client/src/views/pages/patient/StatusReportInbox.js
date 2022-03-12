@@ -1,5 +1,4 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Card, Input } from "reactstrap";
@@ -7,6 +6,7 @@ import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getPatients, getStatuses, putStatusReviewed } from "../../../services/api";
 
 const columns = (statuses, setStatuses) => [
     {
@@ -101,40 +101,6 @@ function ReviewCheckbox({ row, statuses, setStatuses }) {
 }
 
 const selectToken = (state) => state.auth.userData.token;
-
-async function getStatuses(token) {
-    const res = await axios.get("http://localhost:8080/statuses", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
-
-async function getPatients(token) {
-    const res = await axios.get("http://localhost:8080/patients", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
-
-async function putStatusReviewed(token, statusId, isReviewed) {
-    await axios.put(
-        `http://localhost:8080/statuses/${statusId}/reviewed`,
-        {
-            isReviewed,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
-}
 
 function StatusReportInbox() {
     const token = useSelector(selectToken);

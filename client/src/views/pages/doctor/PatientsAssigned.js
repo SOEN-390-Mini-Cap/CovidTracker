@@ -1,11 +1,11 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Card, CardBody, CardText, Col, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Activity, ChevronDown, Heart } from "react-feather";
 import Avatar from "@components/avatar";
+import { getPatientCounts } from "../../../services/api";
 
 const columns = [
     {
@@ -35,16 +35,6 @@ const columns = [
 ];
 
 const selectToken = (state) => state.auth.userData.token;
-
-async function getPatientCounts(token) {
-    const res = await axios.get("http://localhost:8080/doctors/patient_counts", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
 
 function PatientsAssigned() {
     const token = useSelector(selectToken);

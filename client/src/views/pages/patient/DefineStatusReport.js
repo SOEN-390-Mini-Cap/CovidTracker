@@ -3,24 +3,9 @@ import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Inpu
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
-async function defineStatusReport(data, token) {
-    const { patientId, ...fields } = data;
-    await axios.post(
-        `http://localhost:8080/statuses/fields/patients/${patientId}`,
-        {
-            ...fields,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
-}
+import { defineStatusReport } from "../../../services/api";
 
 const selectToken = (state) => state.auth.userData.token;
 

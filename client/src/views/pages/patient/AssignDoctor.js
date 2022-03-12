@@ -3,23 +3,9 @@ import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Inpu
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
-async function assignDoctor(data, token) {
-    await axios.post(
-        `http://localhost:8080/patients/${data.patientId}/doctors`,
-        {
-            doctorId: data.doctorId,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
-}
+import { assignDoctor } from "../../../services/api";
 
 const selectToken = (state) => state.auth.userData.token;
 

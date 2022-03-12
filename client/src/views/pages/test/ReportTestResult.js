@@ -9,32 +9,11 @@ import classnames from "classnames";
 import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { submitTestResult } from "../../../services/api";
 
 function ReportTestResult() {
-    async function submitTestResult(data, patientId, token) {
-        await axios.post(
-            `http://localhost:8080/tests/patients/${patientId}`,
-            {
-                result: data.testResult.value,
-                testType: data.typeOfTest.value,
-                testDate: data.dateOfTest.toISOString(),
-                streetAddress: data.address,
-                streetAddressLineTwo: data.addressLine2,
-                city: data.city,
-                postalCode: data.postalCode,
-                province: data.province.value,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            },
-        );
-    }
-
     const selectToken = (state) => state.auth.userData.token;
     const token = useSelector(selectToken);
 
