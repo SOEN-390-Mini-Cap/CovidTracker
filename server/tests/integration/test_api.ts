@@ -97,6 +97,36 @@ describe("test_controller.ts API", () => {
             expect(res.status).to.equal(403);
         });
     });
+    describe("GET /tests/patients/:patientId endpoint", () => {
+        it("should return 200 status if test is fetched successfully when patient access there own tests", async () => {
+            const res = await agent(app)
+                .get("/tests/patients/3")
+                .set("Authorization", `Bearer ${tokensFixture.patient3}`);
+            expect(res.status).to.equal(200);
+        });
+        it("should return 200 status if test is fetched successfully when health official access a test", async () => {
+            const res = await agent(app)
+                .get("/tests/patients/3")
+                .set("Authorization", `Bearer ${tokensFixture.healthOfficial}`);
+            expect(res.status).to.equal(200);
+        });
+
+        it("should return 200 when doctor access there patient's test", async () => {
+            const res = await agent(app)
+                .get("/tests/patients/3")
+                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+            expect(res.status).to.equal(200);
+        });
+
+        it("should return 403 when user is patient but the test does not belong to that patient", async () => {
+            const res = await agent(app)
+                .get("/tests/patients/3")
+                .set("Authorization", `Bearer ${tokensFixture.patient5}`);
+
+            expect(res.status).to.equal(403);
+        });
+    });
+
     describe("GET /tests/:testId endpoint", () => {
         it("should return 200 status if test is fetched successfully when patient access there own test", async () => {
             const res = await agent(app).get("/tests/1").set("Authorization", `Bearer ${tokensFixture.patient3}`);

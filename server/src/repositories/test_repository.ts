@@ -29,6 +29,17 @@ export class TestRepository {
             .finally(() => client.release());
     }
 
+    async findTestByPatientId(patientId: number): Promise<TestResult[]> {
+        const client = await this.pool.connect();
+        const queryString = `SELECT * 
+                            FROM test_results as tr, addresses as a
+                            WHERE tr.address_id = a.address_id
+                            AND tr.patient_id=$1`;
+        const res = await client.query(queryString, [patientId]).finally(async () => client.release());
+        const result = this.buildTestResults(res.rows);
+        return result;
+    }
+
     async findTestByTestId(testId: number): Promise<TestResult> {
         const client = await this.pool.connect();
         const queryString = `SELECT *
@@ -41,18 +52,11 @@ export class TestRepository {
         if (!row) {
             return null;
         }
-        const address = this.buildAddress(row);
-        return {
-            testId: row.test_id,
-            patientId: row.patient_id,
-            result: row.result,
-            testDate: row.test_date,
-            testType: row.test_type,
-            address: address,
-        };
+
+        return this.buildTestResult(row);
     }
 
-    buildAddress(row: any): Address {
+    private static buildAddress(row: any): Address {
         return {
             addressId: row.address_id,
             streetAddress: row.street_address,
@@ -61,6 +65,21 @@ export class TestRepository {
             postalCode: row.postal_code,
             country: row.country,
             province: row.province,
+        };
+    }
+
+    private buildTestResults(rows: any): TestResult[] {
+        return rows.map(this.buildTestResult);
+    }
+
+    buildTestResult(row: any): TestResult {
+        return {
+            testId: row.test_id,
+            patientId: row.patient_id,
+            result: row.result,
+            testDate: row.test_date,
+            testType: row.test_type,
+            address: TestRepository.buildAddress(row),
         };
     }
 }

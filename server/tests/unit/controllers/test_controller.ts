@@ -7,6 +7,7 @@ describe("test_controller.ts", () => {
     const testService: any = {
         postTestResult: Function,
         getTestResult: Function,
+        getPatientTests: Function,
     };
 
     const controller = new TestController(testService);
@@ -59,6 +60,43 @@ describe("test_controller.ts", () => {
             req.params = null;
             await (controller as any).getTestResult(req, res);
             expect(getTestResultStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+    });
+
+    describe("test_controller::getPatientTests", () => {
+        let getPatientTestsStub: SinonStub;
+        beforeEach(() => {
+            req = {
+                params: {
+                    patientId: 1,
+                },
+                token: {
+                    userId: 3,
+                    userRole: Role.PATIENT,
+                },
+            };
+
+            getPatientTestsStub = sandbox.stub(testService, "getPatientTests");
+            getPatientTestsStub.resolves();
+        });
+
+        it("should return status 201 if no error", async () => {
+            await (controller as any).getPatientTests(req, res);
+            expect(getPatientTestsStub.calledOnce).to.equal(true);
+            expect(resJsonStub.calledWith(200)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws error", async () => {
+            getPatientTestsStub.throws(new Error());
+            await (controller as any).getPatientTests(req, res);
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+
+        it("should return status 400 if body is not as expected", async () => {
+            req.params = null;
+            await (controller as any).getPatientTests(req, res);
+            expect(getPatientTestsStub.notCalled).to.equal(true);
             expect(resJsonStub.calledWith(400)).to.equal(true);
         });
     });
