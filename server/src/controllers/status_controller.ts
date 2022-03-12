@@ -17,7 +17,7 @@ export class StatusController implements interfaces.Controller {
     @Get("/", "injectAuthDataMiddleware")
     private async getStatuses(req: Request, res: Response): Promise<void> {
         try {
-            const statuses = await this.statusService.getStatuses(req["token"]);
+            const statuses = await this.statusService.getStatusesStrategy(req["token"])();
 
             res.json(200, statuses);
         } catch (error) {

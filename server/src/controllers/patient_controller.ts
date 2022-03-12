@@ -59,7 +59,7 @@ export class PatientController implements interfaces.Controller {
     @Get("/", "injectAuthDataMiddleware")
     async getPatients(req: Request, res: Response): Promise<void> {
         try {
-            const patients = await this.patientService.getPatients(req["token"]);
+            const patients = await this.patientService.getPatientsStrategy(req["token"])();
 
             res.json(200, patients);
         } catch (error) {

@@ -20,11 +20,7 @@ export class StatusService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async getStatuses(reqUser: ReqUser): Promise<Status[]> {
-        return this.getStatusesStrategy(reqUser)();
-    }
-
-    private getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
+    getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
         if (reqUser.role === Role.DOCTOR) {
             return this.statusRepository.findStatusesByDoctor.bind(this.statusRepository, reqUser.userId);
         }
