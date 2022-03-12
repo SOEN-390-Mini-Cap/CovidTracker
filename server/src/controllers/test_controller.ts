@@ -36,6 +36,30 @@ export class TestController implements interfaces.Controller {
         }
     }
 
+    @Get("/patients/:patientId", "injectAuthDataMiddleware")
+    private async getPatientTests(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = getPatientTestSchema.validate({
+                ...req.params,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const testList = await this.testService.getPatientTests(
+                value.patientId,
+                req["token"].userId,
+                req["token"].role,
+            );
+
+            res.json(200, testList);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
     @Post("/patients/:patientId", "injectAuthDataMiddleware")
     private async postTestResult(req: Request, res: Response): Promise<void> {
         try {
@@ -93,4 +117,8 @@ const postTestResultsSchema = Joi.object({
 
 const getTestResultSchema = Joi.object({
     testId: Joi.number().required(),
+}).required();
+
+const getPatientTestSchema = Joi.object({
+    patientId: Joi.number().required(),
 }).required();

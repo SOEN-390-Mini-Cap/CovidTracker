@@ -29,9 +29,26 @@ export class TestRepository {
             .finally(() => client.release());
     }
 
+    async findTestsByPatientId(patientId: number): Promise<TestResult[]> {
+        const client = await this.pool.connect();
+        const queryString = `SELECT tr.test_id, tr.patient_id, tr.result,
+                                tr.test_type, tr.test_date, a.address_id,
+                                a.street_address, a.street_address_line_two,
+                                a.city, a.province, a.postal_code, a.country
+                            FROM test_results as tr, addresses as a
+                            WHERE tr.address_id = a.address_id
+                            AND tr.patient_id=$1
+                            ORDER BY tr.test_date DESC`;
+        const res = await client.query(queryString, [patientId]).finally(async () => client.release());
+        return this.buildTestResults(res.rows);
+    }
+
     async findTestByTestId(testId: number): Promise<TestResult> {
         const client = await this.pool.connect();
-        const queryString = `SELECT *
+        const queryString = `SELECT tr.test_id, tr.patient_id, tr.result,
+                                    tr.test_type, tr.test_date, a.address_id,
+                                    a.street_address, a.street_address_line_two,
+                                    a.city, a.province, a.postal_code, a.country
                              FROM test_results AS tr, addresses as a
                              WHERE tr.address_id = a.address_id
                              AND tr.test_id = $1`;
@@ -41,18 +58,11 @@ export class TestRepository {
         if (!row) {
             return null;
         }
-        const address = this.buildAddress(row);
-        return {
-            testId: row.test_id,
-            patientId: row.patient_id,
-            result: row.result,
-            testDate: row.test_date,
-            testType: row.test_type,
-            address: address,
-        };
+
+        return this.buildTestResult(row);
     }
 
-    buildAddress(row: any): Address {
+    private static buildAddress(row: any): Address {
         return {
             addressId: row.address_id,
             streetAddress: row.street_address,
@@ -61,6 +71,21 @@ export class TestRepository {
             postalCode: row.postal_code,
             country: row.country,
             province: row.province,
+        };
+    }
+
+    private buildTestResults(rows: any): TestResult[] {
+        return rows.map(this.buildTestResult);
+    }
+
+    buildTestResult(row: any): TestResult {
+        return {
+            testId: row.test_id,
+            patientId: row.patient_id,
+            result: row.result,
+            testDate: row.test_date,
+            testType: row.test_type,
+            address: TestRepository.buildAddress(row),
         };
     }
 }

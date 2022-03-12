@@ -38,6 +38,19 @@ export class TestService {
         return testData;
     }
 
+    async getPatientTests(patientId: number, userId: number, userRole: Role): Promise<TestResult[]> {
+        const userAccess =
+            userRole === Role.HEALTH_OFFICIAL ||
+            (userRole === Role.PATIENT && patientId === userId) ||
+            (userRole === Role.DOCTOR && (await this.authenticationService.isUserPatientOfDoctor(patientId, userId)));
+
+        if (!userAccess) {
+            throw new AuthorizationError();
+        }
+
+        return this.testRepository.findTestsByPatientId(patientId);
+    }
+
     async postTestResult(
         result: TestResultType,
         testType: TestType,
