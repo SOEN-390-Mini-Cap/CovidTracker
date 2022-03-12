@@ -29,9 +29,12 @@ export class TestRepository {
             .finally(() => client.release());
     }
 
-    async findTestByPatientId(patientId: number): Promise<TestResult[]> {
+    async findTestsByPatientId(patientId: number): Promise<TestResult[]> {
         const client = await this.pool.connect();
-        const queryString = `SELECT * 
+        const queryString = `SELECT tr.test_id, tr.patient_id, tr.result,
+                                tr.test_type, tr.test_date, a.address_id,
+                                a.street_address, a.street_address_line_two,
+                                a.city, a.province, a.postal_code, a.country
                             FROM test_results as tr, addresses as a
                             WHERE tr.address_id = a.address_id
                             AND tr.patient_id=$1
@@ -42,7 +45,10 @@ export class TestRepository {
 
     async findTestByTestId(testId: number): Promise<TestResult> {
         const client = await this.pool.connect();
-        const queryString = `SELECT *
+        const queryString = `SELECT tr.test_id, tr.patient_id, tr.result,
+                                    tr.test_type, tr.test_date, a.address_id,
+                                    a.street_address, a.street_address_line_two,
+                                    a.city, a.province, a.postal_code, a.country
                              FROM test_results AS tr, addresses as a
                              WHERE tr.address_id = a.address_id
                              AND tr.test_id = $1`;

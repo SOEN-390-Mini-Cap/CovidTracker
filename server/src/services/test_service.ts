@@ -48,7 +48,7 @@ export class TestService {
             throw new AuthorizationError();
         }
 
-        return this.testRepository.findTestByPatientId(patientId);
+        return this.testRepository.findTestsByPatientId(patientId);
     }
 
     async postTestResult(
