@@ -6,7 +6,7 @@ import { Card, Input } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const columns = (statuses, setStatuses) => [
     {
