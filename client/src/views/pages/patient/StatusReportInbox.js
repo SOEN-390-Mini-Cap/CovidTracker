@@ -6,6 +6,7 @@ import { Card, Input } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
+import {toast} from "react-toastify";
 
 const columns = (statuses, setStatuses) => [
     {
@@ -75,6 +76,11 @@ function ReviewCheckbox({ row, statuses, setStatuses }) {
 
     const onChange = async () => {
         await putStatusReviewed(token, row.statusId, !row.isReviewed);
+        toast.success(!row.isReviewed ? "Status marked as reviewed" : "Status marked as unreviewed", {
+            position: "top-right",
+            autoClose: 2000,
+        });
+
         const patientStatuses = statuses.map((status) => {
             if (status.statusId === row.statusId) {
                 return {

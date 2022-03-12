@@ -6,6 +6,7 @@ import { Badge, Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDr
 import DataTable from "react-data-table-component";
 import { Flag, ChevronDown, MoreVertical } from "react-feather";
 import { Link } from "react-router-dom";
+import {toast} from "react-toastify";
 
 const columns = (setPatients) => [
     {
@@ -101,6 +102,11 @@ function PrioritizeFlag({ row, setPatients }) {
 
     const onClick = async () => {
         await putPatientPrioritized(token, row.account.userId, !row.isPrioritized);
+        toast.success(!row.isPrioritized ? "Patient prioritized" : "Patient unprioritized", {
+            position: "top-right",
+            autoClose: 2000,
+        });
+
         const patients = await getPatients(token);
         setPatients(patients);
     };
