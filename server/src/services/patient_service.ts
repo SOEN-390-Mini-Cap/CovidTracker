@@ -27,11 +27,7 @@ export class PatientService {
         await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
     }
 
-    async getPatients(reqUser: ReqUser): Promise<User[]> {
-        return this.getPatientsStrategy(reqUser)();
-    }
-
-    private getPatientsStrategy(reqUser: ReqUser): () => Promise<User[]> {
+    getPatientsStrategy(reqUser: ReqUser): () => Promise<User[]> {
         if (reqUser.role === Role.DOCTOR) {
             return this.patientRepository.findPatientsAssignedToDoctor.bind(this.patientRepository, reqUser.userId);
         }

@@ -72,25 +72,6 @@ export class StatusRepository {
             .finally(() => client.release());
     }
 
-    async findLatestStatus(patientId: number): Promise<Status> {
-        const client = await this.pool.connect();
-
-        const sql = `
-            SELECT
-                s.status_id,
-                s.patient_id,
-                s.status_body,
-                s.is_reviewed,
-                s.created_on
-            FROM statuses AS s
-            WHERE s.patient_id = $1
-            ORDER BY s.created_on DESC
-            LIMIT 1;
-        `;
-        const res = await client.query(sql, [patientId]).finally(() => client.release());
-        return this.buildStatus(res.rows[0]);
-    }
-
     async findStatus(statusId: number): Promise<Status> {
         const client = await this.pool.connect();
 

@@ -4,7 +4,6 @@ import { StatusRepository } from "../repositories/status_repository";
 import { StatusFields } from "../entities/status_fields";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { Status, StatusBody } from "../entities/status";
-import { datesAreOnSameDay } from "../helpers/date_helper";
 import { Role } from "../entities/role";
 import { AuthenticationService } from "./authentication_service";
 import { ReqUser } from "../entities/req_user";
@@ -20,11 +19,7 @@ export class StatusService {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    async getStatuses(reqUser: ReqUser): Promise<Status[]> {
-        return this.getStatusesStrategy(reqUser)();
-    }
-
-    private getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
+    getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
         if (reqUser.role === Role.DOCTOR) {
             return this.statusRepository.findStatusesByDoctor.bind(this.statusRepository, reqUser.userId);
         }
@@ -35,12 +30,6 @@ export class StatusService {
     async postStatus(reqUserId: number, patientId: number, statusBody: StatusBody): Promise<void> {
         if (!(reqUserId === patientId)) {
             throw new AuthorizationError();
-        }
-
-        // limit the patient to a single status report per calendar day
-        const patientStatus = await this.statusRepository.findLatestStatus(patientId);
-        if (patientStatus && datesAreOnSameDay(patientStatus.createdOn, new Date())) {
-            throw new Error("A patient can only submit one status report per calendar day");
         }
 
         // verify that status fields sent are the same status fields that were defined
