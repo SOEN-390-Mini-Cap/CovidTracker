@@ -8,8 +8,9 @@ import * as corsMiddleware from "restify-cors-middleware2";
 const server = new InversifyRestifyServer(container);
 
 const cors = corsMiddleware({
-    origins: ["http://localhost:3000"],
+    origins: ["*"],
     allowHeaders: ["Authorization"],
+    allowCredentialsAllOrigins: true,
 });
 
 const app = server.build();
