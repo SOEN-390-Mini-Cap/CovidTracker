@@ -34,10 +34,10 @@ export class TestRepository {
         const queryString = `SELECT * 
                             FROM test_results as tr, addresses as a
                             WHERE tr.address_id = a.address_id
-                            AND tr.patient_id=$1`;
+                            AND tr.patient_id=$1
+                            ORDER BY tr.test_date DESC`;
         const res = await client.query(queryString, [patientId]).finally(async () => client.release());
-        const result = this.buildTestResults(res.rows);
-        return result;
+        return this.buildTestResults(res.rows);
     }
 
     async findTestByTestId(testId: number): Promise<TestResult> {
