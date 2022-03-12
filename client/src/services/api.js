@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = `http://${process.env.SERVER_DOMAIN}:${process.env.SERVER_PORT}`;
+const baseUrl = `http://${process.env.REACT_APP_SERVER_DOMAIN}:${process.env.REACT_APP_SERVER_PORT}`;
 
 export async function submitTestResult(data, patientId, token) {
     await axios.post(
@@ -87,6 +87,7 @@ export async function defineStatusReport(data, token) {
 }
 
 export async function getPatients(token) {
+    console.log(process.env);
     const res = await axios.get(`${baseUrl}/patients`, {
         headers: {
             Authorization: `Bearer ${token}`,
