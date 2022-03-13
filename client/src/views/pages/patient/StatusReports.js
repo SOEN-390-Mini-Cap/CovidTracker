@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Card, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import { ChevronDown, Eye } from "react-feather";
 import DataTable from "react-data-table-component";
-import { Link } from "react-router-dom";
 
 async function getStatusReports(patientId, token) {
     const res = await axios.get(`http://localhost:8080/statuses/patients/${patientId}`, {
@@ -19,10 +18,12 @@ async function getStatusReports(patientId, token) {
 
 const selectToken = (state) => state.auth.userData.token;
 const selectUserId = (state) => state.auth.userData.user.account.userId;
+const selectUserRole = (state) => state.auth.userData.user.role;
 
 function StatusReports() {
     const token = useSelector(selectToken);
     const userId = useSelector(selectUserId);
+    const role = useSelector(selectUserRole).toLowerCase();
     const [statusReports, setStatusReports] = useState(null);
     const [isDataLoaded, setDataLoaded] = useState(false);
     const columns = [
@@ -78,7 +79,6 @@ function StatusReports() {
             const statusReports = await getStatusReports(userId, token);
             setStatusReports(statusReports);
             setDataLoaded(true);
-            console.log(statusReports);
         }
         f();
     }, [token, userId]);
@@ -89,7 +89,7 @@ function StatusReports() {
         <div>
             <BreadCrumbsPage
                 breadCrumbTitle="Status Reports"
-                breadCrumbParent="Patient"
+                breadCrumbParent={role.replace(/\b(\w)/g, (s) => s.toUpperCase())}
                 breadCrumbActive="Status Reports"
             />
             <Card className="overflow-hidden">
