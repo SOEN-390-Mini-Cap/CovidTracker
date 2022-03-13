@@ -8,7 +8,7 @@ import * as corsMiddleware from "restify-cors-middleware2";
 const server = new InversifyRestifyServer(container);
 
 const cors = corsMiddleware({
-    origins: ["*"],
+    origins: ["*", "http://covid-tracker-client-bucket.s3-website.us-east-2.amazonaws.com/"],
     allowHeaders: ["Authorization"],
     allowCredentialsAllOrigins: true,
 });
