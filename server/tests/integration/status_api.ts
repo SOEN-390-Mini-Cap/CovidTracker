@@ -37,7 +37,7 @@ describe("status_controller.ts API", () => {
             expect(res.status).to.equal(201);
         });
 
-        it("should return 500 status when patient tries to submit 2 statuses on the same calendar day", async () => {
+        it("should return 201 status when patient tries to submit 2 statuses on the same calendar day", async () => {
             await agent(app)
                 .post("/statuses/patients/4")
                 .send({
@@ -75,8 +75,7 @@ describe("status_controller.ts API", () => {
                 })
                 .set("Authorization", `Bearer ${tokensFixture.patient4}`);
 
-            expect(res.status).to.equal(500);
-            expect(res.body.error).to.equal("A patient can only submit one status report per calendar day");
+            expect(res.status).to.equal(201);
         });
 
         it("should return 500 status when status is missing fields defined by doctor", async () => {

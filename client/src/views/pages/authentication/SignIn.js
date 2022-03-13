@@ -5,29 +5,10 @@ import { handleLogin } from "@store/authentication";
 import InputPasswordToggle from "@components/input-password-toggle";
 import { Form, Input, Label, Button, Card, CardBody, FormFeedback } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
-import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Logo from "../../components/Logo";
-
-async function signIn(data) {
-    const res = await axios.post("http://localhost:8080/auth/sign_in", {
-        password: data.password,
-        email: data.email,
-    });
-
-    return res.data;
-}
-
-async function getProfile(token) {
-    const res = await axios.get("http://localhost:8080/users/me", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
+import { getProfile, signIn } from "../../../services/api";
 
 const formatErrorMessage = (err) => err.charAt(0).toUpperCase() + err.slice(1);
 

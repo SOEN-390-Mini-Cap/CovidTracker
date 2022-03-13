@@ -4,24 +4,10 @@ import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Inpu
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import classnames from "classnames";
-
-async function assignRole(data, token) {
-    await axios.put(
-        `http://localhost:8080/users/${data.userId}/roles`,
-        {
-            role: data.role.value,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
-}
+import { assignRole } from "../../../services/api";
 
 const selectToken = (state) => state.auth.userData.token;
 

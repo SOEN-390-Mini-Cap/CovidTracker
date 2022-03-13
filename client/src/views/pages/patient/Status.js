@@ -1,30 +1,10 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { Card, CardBody, CardFooter, CardTitle, Input, Label } from "reactstrap";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQRCode } from "next-qrcode";
-
-async function getStatus(token, statusId) {
-    const res = await axios.get(`http://localhost:8080/statuses/${statusId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
-
-async function getUser(token, userId) {
-    const res = await axios.get(`http://localhost:8080/users/${userId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
+import { getStatus, getUser } from "../../../services/api";
 
 const selectToken = (state) => state.auth.userData.token;
 const selectRole = (state) => state.auth.userData.user.role;

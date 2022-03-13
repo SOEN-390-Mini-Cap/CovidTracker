@@ -22,7 +22,7 @@ services:
             - /code/node_modules
             - ./server:/code
         ports:
-            - "8080:81"
+            - "8080:8080"
         depends_on:
             - db
         command: npm run dev

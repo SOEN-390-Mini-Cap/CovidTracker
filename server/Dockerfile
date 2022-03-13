@@ -1,6 +1,6 @@
 FROM node:16-slim AS base
 WORKDIR /code
-EXPOSE 81
+EXPOSE 8080
 
 FROM base AS dependencies
 COPY package.json package-lock.json ./
