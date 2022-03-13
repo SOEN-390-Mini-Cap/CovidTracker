@@ -1,103 +1,110 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { Card, DropdownToggle, UncontrolledDropdown } from "reactstrap";
+import { Fragment, useEffect, useState } from "react";
+import { Card } from "reactstrap";
 import { ChevronDown, Eye } from "react-feather";
 import DataTable from "react-data-table-component";
+import { Link, useParams } from "react-router-dom";
+import { getStatusReports, getUser } from "../../../services/api";
 
-async function getStatusReports(patientId, token) {
-    const res = await axios.get(`http://localhost:8080/statuses/patients/${patientId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+const columns = [
+    {
+        name: "#",
+        sortable: true,
+        width: "80px",
+        selector: (row) => row.statusId,
+    },
+    {
+        name: "Last Updated",
+        sortable: true,
+        width: "200px",
+        selector: (row) =>
+            new Date(row.createdOn).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+            }),
+    },
+    {
+        name: "Weight",
+        sortable: true,
+        width: "120px",
+        selector: (row) => `${row.statusBody.weight} lbs`,
+    },
+    {
+        name: "Temperature",
+        sortable: true,
+        width: "140px",
+        selector: (row) => <Fragment>{row.statusBody.temperature} &deg;C</Fragment>,
+    },
+    {
+        name: "Symptoms",
+        sortable: true,
+        wrap: true,
+        minWidth: "300px",
+        selector: (row) => row.statusBody.otherSymptoms,
+    },
+    {
+        name: "Actions",
+        allowOverflow: true,
+        width: "80px",
+        cell: (row) => {
+            return (
+                <Link to={`/statuses/${row.statusId}`} className="m-auto">
+                    <div>
+                        <Eye color="#5E5873" size={20} />
+                    </div>
+                </Link>
+            );
         },
-    });
-
-    return res.data;
-}
+    },
+];
 
 const selectToken = (state) => state.auth.userData.token;
-const selectUserId = (state) => state.auth.userData.user.account.userId;
 const selectUserRole = (state) => state.auth.userData.user.role;
 
 function StatusReports() {
+    const { patientId } = useParams();
     const token = useSelector(selectToken);
-    const userId = useSelector(selectUserId);
-    const role = useSelector(selectUserRole).toLowerCase();
+    const role = useSelector(selectUserRole);
     const [statusReports, setStatusReports] = useState(null);
-    const [isDataLoaded, setDataLoaded] = useState(false);
-    const columns = [
-        {
-            name: "ID",
-            sortable: true,
-            maxWidth: "100px",
-            selector: (row) => row.statusId,
-        },
-        {
-            name: "Last Updated",
-            sortable: true,
-            minWidth: "225px",
-            selector: (row) => row.createdOn,
-        },
-        {
-            name: "Weight",
-            sortable: true,
-            minWidth: "50px",
-            selector: (row) => row.statusBody.weight,
-        },
-        {
-            name: "Temperature",
-            sortable: true,
-            minWidth: "50px",
-            selector: (row) => row.statusBody.temperature,
-        },
-        {
-            name: "Symptoms",
-            sortable: true,
-            minWidth: "450px",
-            selector: (row) => row.statusBody.otherSymptoms,
-        },
-        {
-            name: "Actions",
-            allowOverflow: true,
-            cell: (index) => {
-                return (
-                    <div className="d-flex">
-                        <UncontrolledDropdown>
-                            <DropdownToggle href={"/statuses/" + index.statusId} className="pe-1" tag="a">
-                                <Eye size={18} />
-                            </DropdownToggle>
-                        </UncontrolledDropdown>
-                    </div>
-                );
-            },
-        },
-    ];
+    const [patient, setPatient] = useState(null);
 
     useEffect(() => {
         async function f() {
-            const statusReports = await getStatusReports(userId, token);
+            const patient = await getUser(token, patientId);
+            setPatient(patient);
+            const statusReports = await getStatusReports(patientId, token);
             setStatusReports(statusReports);
-            setDataLoaded(true);
         }
         f();
-    }, [token, userId]);
-    if (!isDataLoaded) {
-        return <div></div>;
-    }
+    }, [token, patientId]);
+
     return (
         <div>
-            <BreadCrumbsPage
-                breadCrumbTitle="Status Reports"
-                breadCrumbParent={role.replace(/\b(\w)/g, (s) => s.toUpperCase())}
-                breadCrumbActive="Status Reports"
-            />
+            {patient &&
+                (role === "PATIENT" ? (
+                    <BreadCrumbsPage
+                        breadCrumbTitle="Status Reports"
+                        breadCrumbParent="Patient"
+                        breadCrumbActive="Status Reports"
+                    />
+                ) : (
+                    <BreadCrumbsPage
+                        breadCrumbTitle={`${patient.firstName} ${patient.lastName}'s Status Reports`}
+                        breadCrumbParent="Patient"
+                        breadCrumbParent2="Patient List"
+                        breadCrumbActive="Status Reports"
+                    />
+                ))}
             <Card className="overflow-hidden">
                 <div className="react-dataTable">
                     <DataTable
                         noHeader
                         pagination
-                        data={statusReports}
+                        data={statusReports || []}
                         columns={columns}
                         className="react-dataTable"
                         sortIcon={<ChevronDown size={10} />}
