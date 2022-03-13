@@ -6,22 +6,12 @@ import { NavItem, NavLink } from "reactstrap";
 import { handleLogout } from "@store/authentication";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { handleProfile } from "@store/authentication";
 import * as Icon from "react-feather";
+import { getProfile } from "../services/api";
 
 const selectUser = (state) => state.auth.userData.user;
 const selectToken = (state) => state.auth.userData.token;
-
-async function getProfile(token) {
-    const res = await axios.get("http://localhost:8080/users/me", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return res.data;
-}
 
 export const CustomNavbar = (props) => {
     const { setMenuVisibility } = props;
