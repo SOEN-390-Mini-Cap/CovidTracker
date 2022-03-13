@@ -10,7 +10,7 @@ import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { submitTestResult } from "../../../services/api";
 
 function ReportTestResult() {
@@ -123,7 +123,7 @@ function ReportTestResult() {
             <BreadCrumbsPage
                 breadCrumbTitle={`Add Test Result for ${patientId}`}
                 breadCrumbParent="Patient"
-                breadCrumbParent2="Patient List"
+                breadCrumbParent2={<Link to="/patients">Patient List</Link>}
                 breadCrumbActive="Add Test Result"
             />
             <Card className="basic-card small-margin-card mx-auto">

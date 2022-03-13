@@ -1,25 +1,24 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
-import { Card } from "reactstrap";
+import {Badge, Card} from "reactstrap";
 import { ChevronDown, Eye } from "react-feather";
 import DataTable from "react-data-table-component";
 import { Link, useParams } from "react-router-dom";
-import { getStatusReports, getUser } from "../../../services/api";
+import {getStatusReports, getTestResults, getUser} from "../../../services/api";
 
 const columns = [
     {
         name: "#",
         sortable: true,
         width: "80px",
-        selector: (row) => row.statusId,
+        selector: (row) => row.testId,
     },
     {
-        name: "Last Updated",
+        name: "Date",
         sortable: true,
-        width: "200px",
         selector: (row) =>
-            new Date(row.createdOn).toLocaleString("en-US", {
+            new Date(row.testDate).toLocaleString("en-US", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
@@ -28,23 +27,35 @@ const columns = [
             }),
     },
     {
-        name: "Weight",
+        name: "Type",
         sortable: true,
-        width: "120px",
-        selector: (row) => `${row.statusBody.weight} lbs`,
+        selector: (row) => (
+            <Badge pill color={row.testType === "ANTIGEN" ? "light-primary" : "light-warning"}>
+                {row.testType}
+            </Badge>
+        ),
     },
     {
-        name: "Temperature",
+        name: "Result",
         sortable: true,
-        width: "140px",
-        selector: (row) => <Fragment>{row.statusBody.temperature} &deg;C</Fragment>,
+        selector: (row) => (
+            <Badge pill color={row.result === "POSITIVE" ? "light-success" : "light-danger"}>
+                {row.result}
+            </Badge>
+        ),
     },
     {
-        name: "Symptoms",
+        name: "Address",
         sortable: true,
-        wrap: true,
-        minWidth: "300px",
-        selector: (row) => row.statusBody.otherSymptoms,
+        selector: (row) => (
+            <Fragment>
+                {row.address.streetAddress}
+                <br />
+                {row.address.city}, {row.address.province} {row.address.postalCode}
+                <br />
+                {row.address.country}
+            </Fragment>
+        ),
     },
     {
         name: "Actions",
@@ -52,7 +63,7 @@ const columns = [
         width: "80px",
         cell: (row) => {
             return (
-                <Link to={`/statuses/${row.statusId}`} className="m-auto">
+                <Link to={`/tests/${row.testId}`} className="m-auto">
                     <div>
                         <Eye color="#5E5873" size={20} />
                     </div>
@@ -65,19 +76,19 @@ const columns = [
 const selectToken = (state) => state.auth.userData.token;
 const selectUserRole = (state) => state.auth.userData.user.role;
 
-function StatusReports() {
+function TestResults() {
     const { patientId } = useParams();
     const token = useSelector(selectToken);
     const role = useSelector(selectUserRole);
-    const [statusReports, setStatusReports] = useState(null);
+    const [testResults, setTestResults] = useState([]);
     const [patient, setPatient] = useState(null);
 
     useEffect(() => {
         async function f() {
             const patient = await getUser(token, patientId);
             setPatient(patient);
-            const statusReports = await getStatusReports(patientId, token);
-            setStatusReports(statusReports);
+            const testResults = await getTestResults(patientId, token);
+            setTestResults(testResults);
         }
         f();
     }, [token, patientId]);
@@ -87,16 +98,16 @@ function StatusReports() {
             {patient &&
                 (role === "PATIENT" ? (
                     <BreadCrumbsPage
-                        breadCrumbTitle="Status Reports"
+                        breadCrumbTitle="Test Results"
                         breadCrumbParent="Patient"
-                        breadCrumbActive="Status Reports"
+                        breadCrumbActive="Test Results"
                     />
                 ) : (
                     <BreadCrumbsPage
-                        breadCrumbTitle={`${patient.firstName} ${patient.lastName}'s Status Reports`}
+                        breadCrumbTitle={`${patient.firstName} ${patient.lastName}'s Test Results`}
                         breadCrumbParent="Patient"
                         breadCrumbParent2={<Link to="/patients">Patient List</Link>}
-                        breadCrumbActive="Status Reports"
+                        breadCrumbActive="Test Results"
                     />
                 ))}
             <Card className="overflow-hidden">
@@ -104,7 +115,7 @@ function StatusReports() {
                     <DataTable
                         noHeader
                         pagination
-                        data={statusReports || []}
+                        data={testResults}
                         columns={columns}
                         className="react-dataTable"
                         sortIcon={<ChevronDown size={10} />}
@@ -116,4 +127,4 @@ function StatusReports() {
     );
 }
 
-export default StatusReports;
+export default TestResults;

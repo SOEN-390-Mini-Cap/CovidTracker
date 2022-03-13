@@ -52,7 +52,7 @@ function TestResult() {
                 <BreadCrumbsPage
                     breadCrumbTitle={`#${testId} Test Result Details`}
                     breadCrumbParent="Patient"
-                    breadCrumbParent2="Patient List"
+                    breadCrumbParent2={<Link to="/patients">Patient List</Link>}
                     breadCrumbParent3={<Link to={`/tests/patients/${patient?.account?.userId}`}>Test Results</Link>}
                     breadCrumbActive="Test Result Details"
                 />
