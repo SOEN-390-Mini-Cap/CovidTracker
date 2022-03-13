@@ -225,3 +225,13 @@ export async function getStatusReports(patientId, token) {
 
     return res.data;
 }
+
+export async function getTestResults(patientId, token) {
+    const res = await axios.get(`http://localhost:8080/tests/patients/${patientId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}

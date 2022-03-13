@@ -95,7 +95,7 @@ function StatusReports() {
                     <BreadCrumbsPage
                         breadCrumbTitle={`${patient.firstName} ${patient.lastName}'s Status Reports`}
                         breadCrumbParent="Patient"
-                        breadCrumbParent2="Patient List"
+                        breadCrumbParent2={<Link to="/patients">Patient List</Link>}
                         breadCrumbActive="Status Reports"
                     />
                 ))}

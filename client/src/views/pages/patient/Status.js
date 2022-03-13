@@ -99,7 +99,7 @@ function Status() {
                 <BreadCrumbsPage
                     breadCrumbTitle={`#${statusId} Status Report Details`}
                     breadCrumbParent="Patient"
-                    breadCrumbParent2="Patient List"
+                    breadCrumbParent2={<Link to="/patients">Patient List</Link>}
                     breadCrumbParent3={
                         <Link to={`/statuses/patients/${patient?.account?.userId}`}>Status Reports</Link>
                     }
