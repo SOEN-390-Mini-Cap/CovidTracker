@@ -215,3 +215,13 @@ export async function signUp(data) {
 
     return res.data;
 }
+
+export async function getStatusReports(patientId, token) {
+    const res = await axios.get(`http://localhost:8080/statuses/patients/${patientId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}
