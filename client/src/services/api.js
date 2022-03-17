@@ -217,7 +217,7 @@ export async function signUp(data) {
 }
 
 export async function getStatusReports(patientId, token) {
-    const res = await axios.get(`http://localhost:8080/statuses/patients/${patientId}`, {
+    const res = await axios.get(`${baseUrl}/statuses/patients/${patientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -227,7 +227,7 @@ export async function getStatusReports(patientId, token) {
 }
 
 export async function getTestResults(patientId, token) {
-    const res = await axios.get(`http://localhost:8080/tests/patients/${patientId}`, {
+    const res = await axios.get(`${baseUrl}/tests/patients/${patientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
