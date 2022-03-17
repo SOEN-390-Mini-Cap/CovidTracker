@@ -80,7 +80,7 @@ function TestResults() {
     const { patientId } = useParams();
     const token = useSelector(selectToken);
     const role = useSelector(selectUserRole);
-    const [testResults, setTestResults] = useState([]);
+    const [testResults, setTestResults] = useState(null);
     const [patient, setPatient] = useState(null);
 
     useEffect(() => {
@@ -115,7 +115,7 @@ function TestResults() {
                     <DataTable
                         noHeader
                         pagination
-                        data={testResults}
+                        data={testResults || []}
                         columns={columns}
                         className="react-dataTable"
                         sortIcon={<ChevronDown size={10} />}
