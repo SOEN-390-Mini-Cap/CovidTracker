@@ -26,6 +26,7 @@ import { TestController } from "./controllers/test_controller";
 import { TestService } from "./services/test_service";
 import { TestRepository } from "./repositories/test_repository";
 import * as twilio from "twilio";
+import {SMSGateway} from "./gateways/SMSGateway";
 
 const container = new Container();
 
@@ -54,8 +55,8 @@ container.bind<StatusService>("Service").to(StatusService).inSingletonScope().wh
 container.bind<TestService>("Service").to(TestService).inSingletonScope().whenTargetNamed("TestService");
 
 // Twilio
-const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, "[AuthToken]");
-container.bind<twilio.Twilio>("twilioClient").toConstantValue(twilioClient);
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+container.bind<twilio.Twilio>("TwilioClient").toConstantValue(twilioClient);
 
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
@@ -89,6 +90,9 @@ container.bind<TestRepository>("Repository").to(TestRepository).inSingletonScope
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
+
+// Gateway
+container.bind<SMSGateway>("Gateway").to(SMSGateway).inSingletonScope().whenTargetNamed("SMSGateway");
 
 // Middleware
 container.bind<RequestHandler>("injectAuthDataMiddleware").toConstantValue(injectAuthDataMiddleware(container));

@@ -4,6 +4,7 @@ import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils"
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { StatusService } from "../services/status_service";
+import {SMSGateway} from "../gateways/SMSGateway";
 
 @Controller("/statuses")
 @injectable()
@@ -12,11 +13,18 @@ export class StatusController implements interfaces.Controller {
         @inject("Service")
         @named("StatusService")
         private readonly statusService: StatusService,
+        @inject("Gateway")
+        @named("SMSGateway")
+        private readonly smsGateway: SMSGateway,
     ) {}
 
     @Get("/", "injectAuthDataMiddleware")
     private async getStatuses(req: Request, res: Response): Promise<void> {
         try {
+            this.smsGateway.sendSMS({
+                body: "test message",
+                to: null,
+            });
             const statuses = await this.statusService.getStatusesStrategy(req["token"])();
 
             res.json(200, statuses);
