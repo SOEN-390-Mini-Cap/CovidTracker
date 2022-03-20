@@ -20,7 +20,7 @@ export class NotificationService {
         // const { phoneNumber } = await this.userRepository.findUserByUserId(userId);
 
         this.smsGateway.sendSMS({
-            to: null,
+            to: process.env.TWILIO_DEFAULT_TO,
             body,
         });
     }
@@ -32,7 +32,7 @@ export class NotificationService {
             from: process.env.NODEMAILER_USERNAME,
             to: user.account.email,
             subject,
-            body,
+            text: body,
         });
     }
 }

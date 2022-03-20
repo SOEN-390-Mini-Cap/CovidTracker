@@ -17,13 +17,12 @@ export class NotificationGateway {
     async sendSMS(smsMessage: SMSMessage): Promise<void> {
         await this.twilioClient.messages.create({
             body: smsMessage.body,
+            to: smsMessage.to,
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
-            to: smsMessage.to || process.env.TWILIO_DEFAULT_TO,
         });
     }
 
     async sendEmail(emailMessage: EmailMessage): Promise<void> {
-        console.log(emailMessage);
         await this.nodemailerTransporter.sendMail(emailMessage);
     }
 }
