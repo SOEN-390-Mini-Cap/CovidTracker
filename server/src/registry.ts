@@ -26,7 +26,9 @@ import { TestController } from "./controllers/test_controller";
 import { TestService } from "./services/test_service";
 import { TestRepository } from "./repositories/test_repository";
 import * as twilio from "twilio";
-import {SMSGateway} from "./gateways/SMSGateway";
+import { SMSGateway } from "./gateways/SMSGateway";
+import { NotificationController } from "./controllers/notification_controller";
+import { NotificationService } from "./services/notification_service";
 
 const container = new Container();
 
@@ -41,6 +43,10 @@ container.bind<interfaces.Controller>(TYPE.Controller).to(PatientController).whe
 container.bind<interfaces.Controller>(TYPE.Controller).to(DoctorController).whenTargetNamed("DoctorController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(StatusController).whenTargetNamed("StatusController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(TestController).whenTargetNamed("TestController");
+container
+    .bind<interfaces.Controller>(TYPE.Controller)
+    .to(NotificationController)
+    .whenTargetNamed("NotificationController");
 
 // Services
 container
@@ -53,6 +59,11 @@ container.bind<PatientService>("Service").to(PatientService).inSingletonScope().
 container.bind<DoctorService>("Service").to(DoctorService).inSingletonScope().whenTargetNamed("DoctorService");
 container.bind<StatusService>("Service").to(StatusService).inSingletonScope().whenTargetNamed("StatusService");
 container.bind<TestService>("Service").to(TestService).inSingletonScope().whenTargetNamed("TestService");
+container
+    .bind<NotificationService>("Service")
+    .to(NotificationService)
+    .inSingletonScope()
+    .whenTargetNamed("NotificationService");
 
 // Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
