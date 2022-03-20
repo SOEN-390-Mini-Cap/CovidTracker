@@ -66,7 +66,7 @@ container
     .whenTargetNamed("NotificationService");
 
 // Twilio
-const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID || "", process.env.TWILIO_AUTH_TOKEN || "");
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 container.bind<twilio.Twilio>("TwilioClient").toConstantValue(twilioClient);
 
 // Repositories
