@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject, injectable, named } from "inversify";
-import { SMSGateway } from "../gateways/SMSGateway";
+import { NotificationGateway } from "../gateways/notification_gateway";
 import { UserRepository } from "../repositories/user_repository";
 
 @injectable()
@@ -8,7 +8,7 @@ export class NotificationService {
     constructor(
         @inject("Gateway")
         @named("SMSGateway")
-        private readonly smsGateway: SMSGateway,
+        private readonly smsGateway: NotificationGateway,
         @inject("Repository")
         @named("UserRepository")
         private readonly userRepository: UserRepository,

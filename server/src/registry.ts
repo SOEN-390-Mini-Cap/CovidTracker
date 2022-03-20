@@ -26,9 +26,12 @@ import { TestController } from "./controllers/test_controller";
 import { TestService } from "./services/test_service";
 import { TestRepository } from "./repositories/test_repository";
 import * as twilio from "twilio";
-import { SMSGateway } from "./gateways/SMSGateway";
+import { NotificationGateway } from "./gateways/notification_gateway";
 import { NotificationController } from "./controllers/notification_controller";
 import { NotificationService } from "./services/notification_service";
+import * as nodemailer from "nodemailer";
+import { Transporter } from "nodemailer";
+import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const container = new Container();
 
@@ -69,6 +72,17 @@ container
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 container.bind<twilio.Twilio>("TwilioClient").toConstantValue(twilioClient);
 
+// Nodemailer
+const transporter = nodemailer.createTransport({
+    host: process.env.NODEMAILER_HOST,
+    port: +process.env.NODEMAILER_PORT,
+    auth: {
+        user: process.env.NODEMAILER_USERNAME,
+        pass: process.env.NODEMAILER_PASSWORD,
+    },
+});
+container.bind<Transporter<SMTPTransport.SentMessageInfo>>("NodemailerTransporter").toConstantValue(transporter);
+
 // Repositories
 container.bind<UserRepository>("Repository").to(UserRepository).inSingletonScope().whenTargetNamed("UserRepository");
 container
@@ -103,7 +117,7 @@ container.bind<TestRepository>("Repository").to(TestRepository).inSingletonScope
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
 
 // Gateway
-container.bind<SMSGateway>("Gateway").to(SMSGateway).inSingletonScope().whenTargetNamed("SMSGateway");
+container.bind<NotificationGateway>("Gateway").to(NotificationGateway).inSingletonScope().whenTargetNamed("SMSGateway");
 
 // Middleware
 container.bind<RequestHandler>("injectAuthDataMiddleware").toConstantValue(injectAuthDataMiddleware(container));

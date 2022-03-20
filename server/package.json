@@ -16,9 +16,7 @@
         "lint:fix": "eslint '*/**/*.{js,ts}' --fix",
         "db:init": "DOTENV_CONFIG_PATH=.env.dev ts-node db/init_db.ts -r dotenv/config",
         "db:seed": "DOTENV_CONFIG_PATH=.env.dev ts-node db/seed_db_script.ts -r dotenv/config",
-        "db:restore": "DOTENV_CONFIG_PATH=.env.dev ts-node db/restore_db_script.ts -r dotenv/config",
-        "db:remote:init": "DOTENV_CONFIG_PATH=.env.deploy ts-node db/init_db.ts -r dotenv/config",
-        "db:remote:seed": "DOTENV_CONFIG_PATH=.env.deploy ts-node db/seed_db_script.ts -r dotenv/config"
+        "db:restore": "DOTENV_CONFIG_PATH=.env.dev ts-node db/restore_db_script.ts -r dotenv/config"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",

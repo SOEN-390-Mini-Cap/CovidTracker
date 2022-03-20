@@ -4,7 +4,7 @@ import * as twilio from "twilio";
 import { SMSMessage } from "../entities/SMSMessage";
 
 @injectable()
-export class SMSGateway {
+export class NotificationGateway {
     constructor(@inject("TwilioClient") private readonly twilioClient: twilio.Twilio) {}
 
     async sendSMS(smsMessage: SMSMessage): Promise<void> {
