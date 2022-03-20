@@ -33,9 +33,35 @@ export class NotificationController implements interfaces.Controller {
             res.json(error.statusCode || 500, { error: error.message });
         }
     }
+
+    @Post("/email", "injectAuthDataMiddleware")
+    private async postEmail(req: Request, res: Response): Promise<void> {
+        try {
+            const { value, error } = postEmailSchema.validate({
+                ...req.body,
+            });
+
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            await this.notificationService.sendEmail(value.userId, value.subject, value.body);
+
+            res.json(201);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
 }
 
 const postSMSSchema = Joi.object({
     userId: Joi.number().required(),
+    body: Joi.string().required(),
+}).required();
+
+const postEmailSchema = Joi.object({
+    userId: Joi.number().required(),
+    subject: Joi.string().required(),
     body: Joi.string().required(),
 }).required();

@@ -24,4 +24,15 @@ export class NotificationService {
             body,
         });
     }
+
+    async sendEmail(userId: number, subject: string, body: string): Promise<void> {
+        const user = await this.userRepository.findUserByUserId(userId);
+
+        this.smsGateway.sendEmail({
+            from: process.env.NODEMAILER_USERNAME,
+            to: user.account.email,
+            subject,
+            body,
+        });
+    }
 }
