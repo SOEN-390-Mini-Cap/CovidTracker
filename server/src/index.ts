@@ -6,7 +6,7 @@ import { container } from "./registry";
 import * as corsMiddleware from "restify-cors-middleware2";
 import * as WebSocket from "ws";
 import { MessagingService } from "./services/messaging_service";
-import { MessageEvent } from "./entities/message_event";
+import { MessageEvent } from "./entities/message";
 
 const server = new InversifyRestifyServer(container);
 
