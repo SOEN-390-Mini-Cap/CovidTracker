@@ -32,7 +32,7 @@ import { NotificationService } from "./services/notification_service";
 import * as nodemailer from "nodemailer";
 import { Transporter } from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
-import {MessagingService} from "./services/messaging_service";
+import { MessagingService } from "./services/messaging_service";
 
 const container = new Container();
 

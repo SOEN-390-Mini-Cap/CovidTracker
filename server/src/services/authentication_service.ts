@@ -8,6 +8,8 @@ import { RequestUser } from "../entities/request/RequestUser";
 import { RequestAddress } from "../entities/request/RequestAddress";
 import { AuthenticationError } from "../entities/errors/authentication_error";
 import { PatientRepository } from "../repositories/patient_repository";
+import { User } from "../entities/user";
+import { AuthorizationError } from "../entities/errors/authorization_error";
 
 @injectable()
 export class AuthenticationService {
@@ -64,6 +66,15 @@ export class AuthenticationService {
         }
 
         return this.signToken(user.account.userId);
+    }
+
+    async whoami(token: Token): Promise<User> {
+        try {
+            const payload = jwt.verify(token, process.env.JWT_SECRET);
+            return this.userRepository.findUserByUserId(+payload["userId"]);
+        } catch (error) {
+            throw new AuthorizationError();
+        }
     }
 
     private async signToken(userId: number): Promise<Token> {
