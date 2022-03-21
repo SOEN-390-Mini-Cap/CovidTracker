@@ -33,7 +33,7 @@ import * as nodemailer from "nodemailer";
 import { Transporter } from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 import { MessageService } from "./services/message_service";
-import {MessageRepository} from "./repositories/message_repository";
+import { MessageRepository } from "./repositories/message_repository";
 
 const container = new Container();
 
@@ -115,7 +115,11 @@ container
     .inSingletonScope()
     .whenTargetNamed("StatusRepository");
 container.bind<TestRepository>("Repository").to(TestRepository).inSingletonScope().whenTargetNamed("TestRepository");
-container.bind<MessageRepository>("Repository").to(MessageRepository).inSingletonScope().whenTargetNamed("MessageRepository");
+container
+    .bind<MessageRepository>("Repository")
+    .to(MessageRepository)
+    .inSingletonScope()
+    .whenTargetNamed("MessageRepository");
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
