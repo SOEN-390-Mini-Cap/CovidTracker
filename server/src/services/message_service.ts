@@ -3,7 +3,7 @@ import { inject, injectable, named } from "inversify";
 import { Token } from "../entities/token";
 import { WebSocket } from "ws";
 import { IncomingMessage } from "http";
-import { ActiveClients, Message, MessageEvent } from "../entities/message";
+import { ActiveClients, Message, MessageEvent, UserMessages } from "../entities/message";
 import { AuthenticationService } from "./authentication_service";
 import { MessageRepository } from "../repositories/message_repository";
 
@@ -30,7 +30,7 @@ export class MessageService {
             this.clients.set(userId, ws);
 
             // send new connection all their past messages
-            const messages = await this.messageRepository.findMessages(userId);
+            const messages = await this.buildUserMessages(userId);
             ws.send(JSON.stringify(messages));
 
             ws.on(MessageEvent.MESSAGE, (message: string) => this.message(ws, message, userId));
@@ -53,7 +53,9 @@ export class MessageService {
         this.messageRepository.insertMessage(message);
 
         const client = this.clients.get(message.to);
-        client.send(message.body);
+        if (client) {
+            client.send(message.body);
+        }
     }
 
     /**
@@ -75,6 +77,20 @@ export class MessageService {
             body,
             createdOn: new Date(),
         };
+    }
+
+    private async buildUserMessages(userId: number): Promise<UserMessages> {
+        const messages = await this.messageRepository.findMessages(userId);
+
+        // group the messages by the id of the user who isn't the client id
+        return messages.reduce((messages, message) => {
+            const isMessageFromMe = message.from === userId;
+            const groupUserId = isMessageFromMe ? message.to : message.from;
+            return {
+                ...messages,
+                [groupUserId]: [...(messages[groupUserId] || []), message],
+            };
+        }, {});
     }
 
     private parseConnectionJWT(req: IncomingMessage): Token {

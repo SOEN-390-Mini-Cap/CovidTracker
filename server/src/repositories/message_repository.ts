@@ -18,11 +18,7 @@ export class MessageRepository {
                 m.message_body,
                 m.created_on
             FROM messages AS m
-            WHERE
-                m.from_user_id = $1
-            OR
-                m.to_user_id = $1
-            ORDER BY m.created_on DESC;
+            WHERE m.from_user_id = $1 OR m.to_user_id = $1;
         `;
         const res = await client.query(sql, [userId]).finally(() => client.release());
         return this.buildMessages(res);
@@ -55,9 +51,9 @@ export class MessageRepository {
         }
 
         return {
-            messageId: row.message_id,
-            from: row.from_user_id,
-            to: row.to_user_id,
+            messageId: +row.message_id,
+            from: +row.from_user_id,
+            to: +row.to_user_id,
             body: row.message_body,
             createdOn: new Date(row.created_on),
         };

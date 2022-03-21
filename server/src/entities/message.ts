@@ -8,6 +8,10 @@ export type Message = {
     createdOn: Date;
 };
 
+export type UserMessages = {
+    [userId: number]: Message[];
+};
+
 export type ActiveClients = Map<number, WebSocket>;
 
 export enum MessageEvent {
