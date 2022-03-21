@@ -5,15 +5,19 @@ import { WebSocket } from "ws";
 import { IncomingMessage } from "http";
 import { ActiveClients, Message, MessageEvent } from "../entities/message";
 import { AuthenticationService } from "./authentication_service";
+import { MessageRepository } from "../repositories/message_repository";
 
 @injectable()
-export class MessagingService {
+export class MessageService {
     private readonly clients: ActiveClients = new Map();
 
     constructor(
         @inject("Service")
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
+        @inject("Repository")
+        @named("MessageRepository")
+        private readonly messageRepository: MessageRepository,
     ) {}
 
     async connection(ws: WebSocket, req: IncomingMessage): Promise<void> {
@@ -27,7 +31,7 @@ export class MessagingService {
             // send new connection all their past messages
             console.log(user.account.userId, "joined");
 
-            ws.on(MessageEvent.MESSAGE, (message: string) => this.message(ws, message));
+            ws.on(MessageEvent.MESSAGE, (message: string) => this.message(ws, message, user.account.userId));
             ws.on(MessageEvent.CLOSE, () => this.close(user.account.userId));
         } catch (error) {
             ws.close();
@@ -39,10 +43,12 @@ export class MessagingService {
      * message to the database
      * @param ws
      * @param rawMessage
+     * @param userId
      * @private
      */
-    private message(ws: WebSocket, rawMessage: string): void {
-        const message = JSON.parse(rawMessage) as Message;
+    private async message(ws: WebSocket, rawMessage: string, userId: number): Promise<void> {
+        const message = this.buildMessage(rawMessage, userId);
+        this.messageRepository.insertMessage(message);
 
         const client = this.clients.get(message.to);
         client.send(message.body);
@@ -56,6 +62,16 @@ export class MessagingService {
      */
     private close(userId: number): void {
         this.clients.delete(userId);
+    }
+
+    private buildMessage(rawMessage: string, userId: number): Message {
+        const { to, body } = JSON.parse(rawMessage);
+        return {
+            from: userId,
+            to,
+            body,
+            createdOn: new Date(),
+        };
     }
 
     private parseConnectionJWT(req: IncomingMessage): Token {
