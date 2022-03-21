@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import * as twilio from "twilio";
-import { SMSMessage } from "../entities/sms_message";
-import { EmailMessage } from "../entities/email_message";
+import { SMS } from "../entities/sms";
+import { Email } from "../entities/email";
 import { Transporter } from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 
@@ -14,15 +14,15 @@ export class NotificationGateway {
         private readonly nodemailerTransporter: Transporter<SMTPTransport.SentMessageInfo>,
     ) {}
 
-    async sendSMS(smsMessage: SMSMessage): Promise<void> {
+    async sendSMS(sms: SMS): Promise<void> {
         await this.twilioClient.messages.create({
-            body: smsMessage.body,
-            to: smsMessage.to,
+            body: sms.body,
+            to: sms.to,
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
         });
     }
 
-    async sendEmail(emailMessage: EmailMessage): Promise<void> {
-        await this.nodemailerTransporter.sendMail(emailMessage);
+    async sendEmail(email: Email): Promise<void> {
+        await this.nodemailerTransporter.sendMail(email);
     }
 }
