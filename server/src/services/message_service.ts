@@ -24,15 +24,17 @@ export class MessageService {
         try {
             const token = this.parseConnectionJWT(req);
             const user = await this.authenticationService.whoami(token);
+            const userId = user.account.userId;
 
             // add new client websocket connection to active clients map
-            this.clients.set(user.account.userId, ws);
+            this.clients.set(userId, ws);
 
             // send new connection all their past messages
-            console.log(user.account.userId, "joined");
+            const messages = await this.messageRepository.findMessages(userId);
+            ws.send(JSON.stringify(messages));
 
-            ws.on(MessageEvent.MESSAGE, (message: string) => this.message(ws, message, user.account.userId));
-            ws.on(MessageEvent.CLOSE, () => this.close(user.account.userId));
+            ws.on(MessageEvent.MESSAGE, (message: string) => this.message(ws, message, userId));
+            ws.on(MessageEvent.CLOSE, () => this.close(userId));
         } catch (error) {
             ws.close();
         }
@@ -66,6 +68,7 @@ export class MessageService {
 
     private buildMessage(rawMessage: string, userId: number): Message {
         const { to, body } = JSON.parse(rawMessage);
+
         return {
             from: userId,
             to,
