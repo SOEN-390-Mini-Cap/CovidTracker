@@ -125,7 +125,7 @@ function CreateAppointment() {
                 <CardFooter>
                     <Form>
                         <Row>
-                            <Col d="6" className="mb-1 mx-0 pr-0">
+                            <Col className="mb-1 mx-0 pr-0">
                                 <Label className="form-label" for="startDate">
                                     Start Time
                                 </Label>
@@ -145,7 +145,9 @@ function CreateAppointment() {
                                 />
                                 {errors.startDate && <FormFeedback>{errors.startDate.message}</FormFeedback>}
                             </Col>
-                            <Col d="6" className="mb-1 pl-0">
+                        </Row>
+                        <Row>
+                            <Col className="mb-1 pl-0">
                                 <Label className="form-label" for="endDate">
                                     End Time
                                 </Label>
