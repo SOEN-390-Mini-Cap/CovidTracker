@@ -1,4 +1,4 @@
-export const schemas = [
+export const SCHEMAS = [
     "roles",
     "addresses",
     "users",
@@ -9,4 +9,5 @@ export const schemas = [
     "immigration_officers",
     "statuses",
     "test_results",
+    "messages",
 ];
