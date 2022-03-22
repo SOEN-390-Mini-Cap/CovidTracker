@@ -3,7 +3,7 @@ import { Controller, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
 import * as Joi from "joi";
-import {AppointmentService} from "../services/appointment_service";
+import { AppointmentService } from "../services/appointment_service";
 
 @Controller("/appointments")
 @injectable()

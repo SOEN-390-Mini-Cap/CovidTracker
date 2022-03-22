@@ -1,10 +1,10 @@
-import {inject, injectable, named} from "inversify";
-import {AuthenticationService} from "./authentication_service";
-import {AuthorizationError} from "../entities/errors/authorization_error";
-import {UserRepository} from "../repositories/user_repository";
-import {AppointmentRepository} from "../repositories/appointment_repository";
-import {Appointment} from "../entities/appointment";
-import {ReqUser} from "../entities/req_user";
+import { inject, injectable, named } from "inversify";
+import { AuthenticationService } from "./authentication_service";
+import { AuthorizationError } from "../entities/errors/authorization_error";
+import { UserRepository } from "../repositories/user_repository";
+import { AppointmentRepository } from "../repositories/appointment_repository";
+import { Appointment } from "../entities/appointment";
+import { ReqUser } from "../entities/req_user";
 
 @injectable()
 export class AppointmentService {

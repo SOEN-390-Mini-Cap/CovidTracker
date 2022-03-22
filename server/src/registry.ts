@@ -34,9 +34,9 @@ import { Transporter } from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 import { MessageService } from "./services/message_service";
 import { MessageRepository } from "./repositories/message_repository";
-import {AppointmentController} from "./controllers/appointment_controller";
-import {AppointmentService} from "./services/appointment_service";
-import {AppointmentRepository} from "./repositories/appointment_repository";
+import { AppointmentController } from "./controllers/appointment_controller";
+import { AppointmentService } from "./services/appointment_service";
+import { AppointmentRepository } from "./repositories/appointment_repository";
 
 const container = new Container();
 
@@ -77,7 +77,11 @@ container
     .inSingletonScope()
     .whenTargetNamed("NotificationService");
 container.bind<MessageService>("Service").to(MessageService).inSingletonScope().whenTargetNamed("MessageService");
-container.bind<AppointmentService>("Service").to(AppointmentService).inSingletonScope().whenTargetNamed("AppointmentService");
+container
+    .bind<AppointmentService>("Service")
+    .to(AppointmentService)
+    .inSingletonScope()
+    .whenTargetNamed("AppointmentService");
 
 // Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
