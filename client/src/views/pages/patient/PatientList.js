@@ -89,6 +89,9 @@ const columns = (setPatients) => [
                             <DropdownItem tag={Link} to={`/statuses/patients/${row.account.userId}`} className="w-100">
                                 Status Reports
                             </DropdownItem>
+                            <DropdownItem tag={Link} to={`/create_appointment/${row.account.userId}`} className="w-100">
+                                Book Appointment
+                            </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </div>

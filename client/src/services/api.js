@@ -235,3 +235,24 @@ export async function getTestResults(patientId, token) {
 
     return res.data;
 }
+
+export async function postAppointment(token, data) {
+    await axios.post(
+        `${baseUrl}/appointments`,
+        {
+            patientId: data.patientId,
+            startDate: data.startDate.toISOString(),
+            endDate: data.endDate.toISOString(),
+            streetAddress: data.address,
+            streetAddressLineTwo: data.addressLine2,
+            city: data.city,
+            postalCode: data.postalCode,
+            province: data.province.value,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+}
