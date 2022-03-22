@@ -86,6 +86,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/create_appointment/:patientId",
+        component: lazy(() => import("../../views/pages/patient/CreateAppointment")),
+        meta: {
+            accessibleBy: ["DOCTOR"],
+        },
+    },
+    {
         path: "/sign_in",
         component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",
