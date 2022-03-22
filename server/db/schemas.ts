@@ -10,4 +10,5 @@ export const SCHEMAS = [
     "statuses",
     "test_results",
     "messages",
+    "appointments",
 ];
