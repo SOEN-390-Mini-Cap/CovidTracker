@@ -1,4 +1,4 @@
-export type SMSMessage = {
+export type SMS = {
     to: string;
     body: string;
 };

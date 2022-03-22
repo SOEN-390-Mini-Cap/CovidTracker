@@ -32,6 +32,8 @@ import { NotificationService } from "./services/notification_service";
 import * as nodemailer from "nodemailer";
 import { Transporter } from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
+import { MessageService } from "./services/message_service";
+import { MessageRepository } from "./repositories/message_repository";
 
 const container = new Container();
 
@@ -67,6 +69,7 @@ container
     .to(NotificationService)
     .inSingletonScope()
     .whenTargetNamed("NotificationService");
+container.bind<MessageService>("Service").to(MessageService).inSingletonScope().whenTargetNamed("MessageService");
 
 // Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -112,6 +115,11 @@ container
     .inSingletonScope()
     .whenTargetNamed("StatusRepository");
 container.bind<TestRepository>("Repository").to(TestRepository).inSingletonScope().whenTargetNamed("TestRepository");
+container
+    .bind<MessageRepository>("Repository")
+    .to(MessageRepository)
+    .inSingletonScope()
+    .whenTargetNamed("MessageRepository");
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
