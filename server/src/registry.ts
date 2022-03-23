@@ -37,6 +37,9 @@ import { MessageRepository } from "./repositories/message_repository";
 import { AppointmentController } from "./controllers/appointment_controller";
 import { AppointmentService } from "./services/appointment_service";
 import { AppointmentRepository } from "./repositories/appointment_repository";
+import { LocationReportController } from "./controllers/location_report_controller";
+import { LocationReportService } from "./services/location_report_service";
+import { LocationReportRepository } from "./repositories/location_report_repository";
 
 const container = new Container();
 
@@ -59,6 +62,10 @@ container
     .bind<interfaces.Controller>(TYPE.Controller)
     .to(AppointmentController)
     .whenTargetNamed("AppointmentController");
+container
+    .bind<interfaces.Controller>(TYPE.Controller)
+    .to(LocationReportController)
+    .whenTargetNamed("LocationReportController");
 
 // Services
 container
@@ -82,6 +89,11 @@ container
     .to(AppointmentService)
     .inSingletonScope()
     .whenTargetNamed("AppointmentService");
+container
+    .bind<LocationReportService>("Service")
+    .to(LocationReportService)
+    .inSingletonScope()
+    .whenTargetNamed("LocationReportService");
 
 // Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -137,6 +149,11 @@ container
     .to(AppointmentRepository)
     .inSingletonScope()
     .whenTargetNamed("AppointmentRepository");
+container
+    .bind<LocationReportRepository>("Repository")
+    .to(LocationReportRepository)
+    .inSingletonScope()
+    .whenTargetNamed("LocationReportRepository");
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
@@ -149,5 +166,8 @@ container.bind<RequestHandler>("injectAuthDataMiddleware").toConstantValue(injec
 container.bind<RequestHandler>("isValidAdminMiddleware").toConstantValue(isValidRoleMiddleware([Role.ADMIN]));
 container.bind<RequestHandler>("isValidDoctorMiddleware").toConstantValue(isValidRoleMiddleware([Role.DOCTOR]));
 container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isValidRoleMiddleware([Role.PATIENT]));
+container
+    .bind<RequestHandler>("isValidPatientOrUserMiddleware")
+    .toConstantValue(isValidRoleMiddleware([Role.PATIENT, Role.USER]));
 
 export { container };
