@@ -96,7 +96,7 @@ function AddLocationReport() {
                         <Row>
                             <Col className="mb-2">
                                 <Label className="form-label" for="createdOn">
-                                    Date of Test
+                                    Date
                                 </Label>
                                 <Controller
                                     id="createdOn"
