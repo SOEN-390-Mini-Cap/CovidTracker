@@ -256,3 +256,23 @@ export async function postAppointment(token, data) {
         },
     );
 }
+
+export async function postLocationReport(token, data) {
+    console.log(data);
+    await axios.post(
+        `${baseUrl}/location_reports`,
+        {
+            createdOn: data.createdOn.toISOString(),
+            streetAddress: data.address,
+            streetAddressLineTwo: data.addressLine2,
+            city: data.city,
+            postalCode: data.postalCode,
+            province: data.province.value,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+}

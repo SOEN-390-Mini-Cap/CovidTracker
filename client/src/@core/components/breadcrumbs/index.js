@@ -32,9 +32,13 @@ const BreadCrumbs = props => {
                     <Home size={14} />
                   </Link>
                 </BreadcrumbItem>
-                <BreadcrumbItem tag='li' className='text-primary'>
-                  {breadCrumbParent}
-                </BreadcrumbItem>
+                {breadCrumbParent ? (
+                    <BreadcrumbItem tag='li' className='text-primary'>
+                      {breadCrumbParent}
+                    </BreadcrumbItem>
+                ) : (
+                    ''
+                )}
                 {breadCrumbParent2 ? (
                   <BreadcrumbItem tag='li' className='text-primary'>
                     {breadCrumbParent2}

@@ -10,58 +10,56 @@ import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { getUser, postAppointment } from "../../../services/api";
-import { useEffect, useState } from "react";
+import {Link, useParams} from "react-router-dom";
+import {postLocationReport, submitTestResult} from "../../../services/api";
 
-function CreateAppointment() {
-    const selectToken = (state) => state.auth.userData.token;
-    const token = useSelector(selectToken);
+const provinceOptions = [
+    { value: "Alberta", label: "Alberta" },
+    { value: "British Columbia", label: "British Columbia" },
+    { value: "Manitoba", label: "Manitoba" },
+    { value: "New Brunswick", label: "New Brunswick" },
+    { value: "Newfoundland and Labrador", label: "Newfoundland and Labrador" },
+    { value: "Northwest Territories", label: "Northwest Territories" },
+    { value: "Nova Scotia", label: "Nova Scotia" },
+    { value: "Nunavut", label: "Nunavut" },
+    { value: "Ontario", label: "Ontario" },
+    { value: "Prince Edward Island", label: "Prince Edward Island" },
+    { value: "Quebec", label: "Quebec" },
+    { value: "Saskatshewan", label: "Saskatshewan" },
+    { value: "Yukon", label: "Yukon" },
+];
 
-    const { patientId } = useParams();
-    const [patient, setPatient] = useState(null);
+const defaultValues = {
+    createdOn: "",
+    address: "",
+    addressLine2: "",
+    city: "",
+    postalCode: "",
+    province: "",
+};
 
-    useEffect(() => {
-        async function f() {
-            const patient = await getUser(token, patientId);
-            setPatient(patient);
-        }
-        f();
-    }, [patientId, token]);
+const locationReportSchema = yup
+    .object()
+    .shape({
+        createdOn: yup.date().required("Enter a date.").typeError("Enter a date."),
+        address: yup
+            .string()
+            .required("Enter an address.")
+            .max(100, "Address must be 100 characters long or less."),
+        addressLine2: yup.string().max(100, "Address must be 100 characters long or less."),
+        postalCode: yup.string().required("Enter a valid postal code."),
+        province: yup
+            .object({
+                label: yup.string().required("Select a province."),
+                value: yup.string().required("Select a province."),
+            })
+            .nullable("Select a province.")
+            .required("Select a province."),
+    })
+    .required();
 
-    const defaultValues = {
-        startDate: "",
-        endDate: "",
-        address: "",
-        addressLine2: "",
-        city: "",
-        postalCode: "",
-        province: "",
-    };
-
-    const CreateAppointmentSchema = yup
-        .object()
-        .shape({
-            startDate: yup.date().required("Enter a start time.").typeError("Enter a start time."),
-            endDate: yup.date().required("Enter an end time.").typeError("Enter an end time."),
-            address: yup
-                .string()
-                .required("Enter an address.")
-                .max(100, "Address must be 100 characters long or less."),
-            addressLine2: yup.string().max(100, "Address must be 100 characters long or less."),
-            city: yup.string().required("Enter a valid city."),
-            postalCode: yup.string().required("Enter a valid postal code."),
-            province: yup
-                .object({
-                    label: yup.string().required("Select a province."),
-                    value: yup.string().required("Select a province."),
-                })
-                .nullable("Select a province.")
-                .required("Select a province."),
-        })
-        .required();
-
-    // ** Hooks
+function AddLocationReport() {
+    const token = useSelector((state) => state.auth.userData.token);
     const {
         control,
         handleSubmit,
@@ -69,103 +67,55 @@ function CreateAppointment() {
         formState: { errors },
     } = useForm({
         defaultValues,
-        resolver: yupResolver(CreateAppointmentSchema),
+        resolver: yupResolver(locationReportSchema),
     });
-
-    const provinceOptions = [
-        { value: "Alberta", label: "Alberta" },
-        { value: "British Columbia", label: "British Columbia" },
-        { value: "Manitoba", label: "Manitoba" },
-        { value: "New Brunswick", label: "New Brunswick" },
-        { value: "Newfoundland and Labrador", label: "Newfoundland and Labrador" },
-        { value: "Northwest Territories", label: "Northwest Territories" },
-        { value: "Nova Scotia", label: "Nova Scotia" },
-        { value: "Nunavut", label: "Nunavut" },
-        { value: "Ontario", label: "Ontario" },
-        { value: "Prince Edward Island", label: "Prince Edward Island" },
-        { value: "Quebec", label: "Quebec" },
-        { value: "Saskatchewan", label: "Saskatchewan" },
-        { value: "Yukon", label: "Yukon" },
-    ];
 
     const onSubmit = async (data) => {
         try {
-            await postAppointment(token, {
-                ...data,
-                patientId,
-            });
-            toast.success("Appointment booked", {
+            await postLocationReport(token, data);
+            toast.success("Location added", {
                 position: "top-right",
                 autoClose: 5000,
             });
+            reset();
         } catch (error) {
-            toast.error("Appointment could not be booked", {
+            console.log(error);
+            toast.error("Location could not be added", {
                 position: "top-right",
                 autoClose: 5000,
             });
         }
-
-        reset();
     };
 
     return (
         <div>
-            {patient && (
-                <BreadCrumbsPage
-                    breadCrumbTitle={`Book Appointment for ${patient.firstName} ${patient.lastName}`}
-                    breadCrumbParent="Patient"
-                    breadCrumbParent2={<Link to="/patients">Patient List</Link>}
-                    breadCrumbActive="Book Appointment"
-                />
-            )}
+            <BreadCrumbsPage breadCrumbTitle="Add Location" breadCrumbActive="Add Location" />
             <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
-                    <CardTitle className="mb-0">Book an Appointment</CardTitle>
+                    <CardTitle className="mb-0">Add Location</CardTitle>
                 </CardBody>
                 <CardFooter>
                     <Form>
                         <Row>
-                            <Col className="mb-1 mx-0 pr-0">
-                                <Label className="form-label" for="startDate">
-                                    Start Time
+                            <Col className="mb-2">
+                                <Label className="form-label" for="createdOn">
+                                    Date of Test
                                 </Label>
                                 <Controller
-                                    id="startDate"
-                                    name="startDate"
+                                    id="createdOn"
+                                    name="createdOn"
                                     control={control}
                                     render={({ field }) => (
                                         <Flatpickr
-                                            {...field}
-                                            data-enable-time
+                                            placeholder="MM/DD/YYYY"
                                             className={classnames("flatpickr form-control", {
-                                                "is-invalid": errors.startDate,
+                                                "is-invalid": errors.createdOn,
                                             })}
+                                            {...field}
                                         />
                                     )}
                                 />
-                                {errors.startDate && <FormFeedback>{errors.startDate.message}</FormFeedback>}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className="mb-1 pl-0">
-                                <Label className="form-label" for="endDate">
-                                    End Time
-                                </Label>
-                                <Controller
-                                    id="endDate"
-                                    name="endDate"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Flatpickr
-                                            {...field}
-                                            data-enable-time
-                                            className={classnames("flatpickr form-control", {
-                                                "is-invalid": errors.endDate,
-                                            })}
-                                        />
-                                    )}
-                                />
-                                {errors.endDate && <FormFeedback>{errors.endDate.message}</FormFeedback>}
+                                {errors.createdOn && <FormFeedback>{errors.createdOn.message}</FormFeedback>}
                             </Col>
                         </Row>
                         <hr />
@@ -200,7 +150,7 @@ function CreateAppointment() {
                             {errors.addressLine2 ? <FormFeedback>{errors.addressLine2.message}</FormFeedback> : null}
                         </Col>
                         <Row>
-                            <Col className="mb-1">
+                            <Col md={7} className="mb-1">
                                 <Label className="form-label" for="city">
                                     City
                                 </Label>
@@ -212,7 +162,7 @@ function CreateAppointment() {
                                 />
                                 {errors.city ? <FormFeedback>{errors.city.message}</FormFeedback> : null}
                             </Col>
-                            <Col className="mb-1">
+                            <Col md={5} className="mb-1">
                                 <Label className="form-label" for="postalCode">
                                     Postal Code
                                 </Label>
@@ -260,7 +210,7 @@ function CreateAppointment() {
                                 color="primary"
                                 className="btn-next d-block w-100"
                             >
-                                Book Appointment
+                                Add Location
                             </Button>
                         </div>
                     </Form>
@@ -270,4 +220,4 @@ function CreateAppointment() {
     );
 }
 
-export default CreateAppointment;
+export default AddLocationReport;
