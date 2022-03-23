@@ -15,6 +15,7 @@ import { sampleSymptoms } from "./seed_data/sample_symptoms";
 import { TestRepository } from "../src/repositories/test_repository";
 import { TestType } from "../src/entities/test_type";
 import { TestResultType } from "../src/entities/test_result_type";
+import {LocationReportRepository} from "../src/repositories/location_report_repository";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();
@@ -26,11 +27,12 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
     const healthOfficialRepository = new HealthOfficialRepository(pool, userRepository);
     const immigrationOfficerRepository = new ImmigrationOfficerRepository(pool, userRepository);
     const testRepository = new TestRepository(pool);
+    const locationReportRepository = new LocationReportRepository(pool);
 
     faker.seed(1);
     faker.setLocale("en_CA");
 
-    // insert addresses
+    // insert addresses for users
     const numAddresses = [1, sizeSeed + 1];
     for (let i = numAddresses[0]; i < numAddresses[1]; i++) {
         const isEveryFifth = i % 5 === 0;
@@ -188,6 +190,44 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             country: "Canada",
         },
     });
+
+    // generate location report addresses
+    const numLocationReportAddresses = [1, numPatients[1] * 2 + 1];
+    const locationReportAddresses: Address[] = [];
+    for (let i = numLocationReportAddresses[0]; i < numLocationReportAddresses[1]; i++) {
+        const address: Address = {
+            addressId: null,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        };
+
+        const addressId = await userRepository.addAddress(address);
+        locationReportAddresses.push({
+            ...address,
+            addressId,
+        });
+    }
+
+    // generate location reports
+    for (let i = numPatients[0]; i < numPatients[1]; i++) {
+        // data is generated over a 3 month or 90-day period
+        // this will produce on average 2 location reports per day
+        const numLocationReports = 2 * 90;
+        for (let j = 0; j < numLocationReports; j++) {
+            // pick a random address from location report address list
+            const address =
+                locationReportAddresses[faker.datatype.number({ min: 0, max: locationReportAddresses.length - 1 })];
+            await locationReportRepository.insertLocationReport({
+                patientId: i,
+                address,
+                createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+            });
+        }
+    }
 
     await pool.end();
 }
