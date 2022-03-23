@@ -27,7 +27,7 @@ export class LocationReportController implements interfaces.Controller {
             }
 
             await this.locationReportService.postLocationReport({
-                patientId: req["token"].userId,
+                userId: req["token"].userId,
                 createdOn: value.createdOn,
                 address: {
                     streetAddress: value.streetAddress,

@@ -9,6 +9,13 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/location_report",
+        component: lazy(() => import("../../views/pages/location_report/AddLocationReport")),
+        meta: {
+            accessibleBy: ["USER", "PATIENT"],
+        },
+    },
+    {
         path: "/patients_assigned",
         component: lazy(() => import("../../views/pages/doctor/PatientsAssigned")),
         meta: {

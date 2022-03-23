@@ -222,7 +222,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             const address =
                 locationReportAddresses[faker.datatype.number({ min: 0, max: locationReportAddresses.length - 1 })];
             await locationReportRepository.insertLocationReport({
-                patientId: i,
+                userId: i,
                 address,
                 createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
             });
