@@ -11,14 +11,14 @@ export class LocationReportRepository {
 
         const queryString = `
             INSERT INTO location_reports (
-                patient_id,
+                user_id,
                 address_id,
                 created_on
             ) VALUES ($1, $2, $3)`;
 
         client
             .query(queryString, [
-                locationReport.patientId,
+                locationReport.userId,
                 locationReport.address.addressId,
                 locationReport.createdOn.toISOString(),
             ])
