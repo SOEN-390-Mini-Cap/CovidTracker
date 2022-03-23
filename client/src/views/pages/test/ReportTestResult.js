@@ -10,7 +10,7 @@ import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { submitTestResult } from "../../../services/api";
 
 function ReportTestResult() {

@@ -10,8 +10,8 @@ import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {Link, useParams} from "react-router-dom";
-import {postLocationReport, submitTestResult} from "../../../services/api";
+import { Link, useParams } from "react-router-dom";
+import { postLocationReport, submitTestResult } from "../../../services/api";
 
 const provinceOptions = [
     { value: "Alberta", label: "Alberta" },
@@ -42,10 +42,7 @@ const locationReportSchema = yup
     .object()
     .shape({
         createdOn: yup.date().required("Enter a date.").typeError("Enter a date."),
-        address: yup
-            .string()
-            .required("Enter an address.")
-            .max(100, "Address must be 100 characters long or less."),
+        address: yup.string().required("Enter an address.").max(100, "Address must be 100 characters long or less."),
         addressLine2: yup.string().max(100, "Address must be 100 characters long or less."),
         postalCode: yup.string().required("Enter a valid postal code."),
         province: yup

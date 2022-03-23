@@ -1,11 +1,11 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
-import {Badge, Card} from "reactstrap";
+import { Badge, Card } from "reactstrap";
 import { ChevronDown, Eye } from "react-feather";
 import DataTable from "react-data-table-component";
 import { Link, useParams } from "react-router-dom";
-import {getStatusReports, getTestResults, getUser} from "../../../services/api";
+import { getStatusReports, getTestResults, getUser } from "../../../services/api";
 
 const columns = [
     {
