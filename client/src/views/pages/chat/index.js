@@ -4,7 +4,6 @@ import { Fragment, useState, useEffect } from "react";
 // ** Chat App Component Imports
 import Chat from "./Chat";
 import Sidebar from "./SidebarLeft";
-import UserProfileSidebar from "./UserProfileSidebar";
 
 // ** Third Party Components
 import classnames from "classnames";
@@ -63,17 +62,12 @@ const AppChat = () => {
                                 show: userSidebarRight === true || sidebar === true || userSidebarLeft === true,
                             })}
                             onClick={handleOverlayClick}
-                        ></div>
+                        />
                         <Chat
                             store={store}
                             handleUser={handleUser}
                             handleSidebar={handleSidebar}
                             userSidebarLeft={userSidebarLeft}
-                            handleUserSidebarRight={handleUserSidebarRight}
-                        />
-                        <UserProfileSidebar
-                            user={user}
-                            userSidebarRight={userSidebarRight}
                             handleUserSidebarRight={handleUserSidebarRight}
                         />
                     </div>

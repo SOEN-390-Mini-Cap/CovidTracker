@@ -30,7 +30,7 @@ import {
 
 const ChatLog = (props) => {
     // ** Props & Store
-    const { handleUser, handleUserSidebarRight, handleSidebar, store, userSidebarLeft } = props;
+    const { handleSidebar, store, userSidebarLeft } = props;
     const { userProfile, selectedUser } = store;
 
     // ** Refs & Dispatch
@@ -123,12 +123,6 @@ const ChatLog = (props) => {
         });
     };
 
-    // ** Opens right sidebar & handles its data
-    const handleAvatarClick = (obj) => {
-        handleUserSidebarRight();
-        handleUser(obj);
-    };
-
     // ** On mobile screen open left sidebar on Start Conversation Click
     const handleStartConversation = () => {
         if (!Object.keys(selectedUser).length && !userSidebarLeft && window.innerWidth < 992) {
@@ -172,7 +166,6 @@ const ChatLog = (props) => {
                                     img={selectedUser.contact.avatar}
                                     status={selectedUser.contact.status}
                                     className="avatar-border user-profile-toggle m-0 me-1"
-                                    onClick={() => handleAvatarClick(selectedUser.contact)}
                                 />
                                 <h6 className="mb-0">{selectedUser.contact.fullName}</h6>
                             </div>
