@@ -8,7 +8,6 @@ export const getChatContacts = createAsyncThunk("appChat/getChatContacts", async
         },
     });
 
-    console.log("getchatcontacts", JSON.stringify(response.data));
     return response.data;
 });
 
@@ -19,13 +18,12 @@ export const selectChat = createAsyncThunk("appChat/selectChat", async ({ token,
         },
     });
 
-    console.log("selectChat", JSON.stringify(response.data));
     await dispatch(getChatContacts({ token }));
     return response.data;
 });
 
 export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, body }, { dispatch }) => {
-    const response = await axios.post(
+    await axios.post(
         "http://localhost:8080/messages",
         {
             to,
@@ -37,8 +35,6 @@ export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, b
             },
         },
     );
-
-    console.log("send message", JSON.stringify(response.data));
     await dispatch(selectChat({ token, id: to }));
 });
 

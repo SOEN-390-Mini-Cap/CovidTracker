@@ -9,17 +9,14 @@ import "@styles/base/pages/app-chat.scss";
 import "@styles/base/pages/app-chat-list.scss";
 
 const AppChat = () => {
-    // ** Store Vars
     const dispatch = useDispatch();
     const store = useSelector((state) => state.chat);
     const token = useSelector((state) => state.auth.userData.token);
 
-    // ** States
     const [sidebar, setSidebar] = useState(false);
     const [userSidebarRight, setUserSidebarRight] = useState(false);
     const [userSidebarLeft, setUserSidebarLeft] = useState(false);
 
-    // ** Sidebar & overlay toggle functions
     const handleSidebar = () => setSidebar(!sidebar);
     const handleUserSidebarLeft = () => setUserSidebarLeft(!userSidebarLeft);
     const handleUserSidebarRight = () => setUserSidebarRight(!userSidebarRight);
@@ -29,7 +26,6 @@ const AppChat = () => {
         setUserSidebarLeft(false);
     };
 
-    // ** Get data on Mount
     useEffect(() => {
         dispatch(getChatContacts({ token }));
     }, [dispatch, token]);

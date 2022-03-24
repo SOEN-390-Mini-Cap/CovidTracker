@@ -75,7 +75,6 @@ export class MessageService {
                 const chatId = +userId;
                 const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
                 const lastMessageIndex = messages[userId].length - 1;
-                console.log(lastMessageIndex, messages[userId]);
 
                 return {
                     id: chatId,
