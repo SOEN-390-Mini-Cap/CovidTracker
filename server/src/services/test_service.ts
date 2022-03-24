@@ -27,6 +27,7 @@ export class TestService {
         const testData = await this.testRepository.findTestByTestId(testId);
         const userAccess =
             userRole === Role.HEALTH_OFFICIAL ||
+            userRole === Role.IMMIGRATION_OFFICER ||
             (userRole === Role.PATIENT && testData.patientId === userId) ||
             (userRole === Role.DOCTOR &&
                 (await this.authenticationService.isUserPatientOfDoctor(testData.patientId, userId)));
@@ -41,6 +42,7 @@ export class TestService {
     async getPatientTests(patientId: number, userId: number, userRole: Role): Promise<TestResult[]> {
         const userAccess =
             userRole === Role.HEALTH_OFFICIAL ||
+            userRole === Role.IMMIGRATION_OFFICER ||
             (userRole === Role.PATIENT && patientId === userId) ||
             (userRole === Role.DOCTOR && (await this.authenticationService.isUserPatientOfDoctor(patientId, userId)));
 

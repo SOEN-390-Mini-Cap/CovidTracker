@@ -51,7 +51,8 @@ export class UserService {
         const canUserAccess =
             (await this.authenticationService.isUserPatientOfDoctor(userId, reqUserId)) ||
             reqUserId === userId ||
-            reqUserRole === Role.HEALTH_OFFICIAL;
+            reqUserRole === Role.HEALTH_OFFICIAL ||
+            reqUserRole === Role.IMMIGRATION_OFFICER;
         if (!canUserAccess) {
             throw new AuthorizationError();
         }
