@@ -5,7 +5,7 @@ export type Message = {
     from: number;
     to: number;
     body: string;
-    createdOn: Date;
+    createdOn?: Date;
 };
 
 export type UserMessages = {

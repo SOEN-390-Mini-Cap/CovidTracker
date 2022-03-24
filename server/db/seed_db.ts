@@ -16,6 +16,7 @@ import { TestRepository } from "../src/repositories/test_repository";
 import { TestType } from "../src/entities/test_type";
 import { TestResultType } from "../src/entities/test_result_type";
 import { LocationReportRepository } from "../src/repositories/location_report_repository";
+import { MessageRepository } from "../src/repositories/message_repository";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();
@@ -28,6 +29,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
     const immigrationOfficerRepository = new ImmigrationOfficerRepository(pool, userRepository);
     const testRepository = new TestRepository(pool);
     const locationReportRepository = new LocationReportRepository(pool);
+    const messageRepository = new MessageRepository(pool);
 
     faker.seed(1);
     faker.setLocale("en_CA");
@@ -125,6 +127,12 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
     for (let i = numPatients[0]; i < numPatients[1] - 1; i++) {
         const doctorId = faker.datatype.number({ min: numDoctors[0], max: numDoctors[1] - 1 });
         await patientRepository.updateAssignedDoctor(i, doctorId);
+        await messageRepository.insertMessage({
+            from: doctorId,
+            to: i,
+            body: "",
+            createdOn: new Date("1900-01-01T00:00:00.000Z"),
+        });
     }
 
     // assign status fields

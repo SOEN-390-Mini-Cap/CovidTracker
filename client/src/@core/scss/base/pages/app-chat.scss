@@ -169,13 +169,21 @@ $chat-profile-sidebar-head-height: 200px;
         .chat-info {
           margin-top: 0.3rem;
           width: calc(100% - 46px - 46px); // ? avatar size with 2px border = 42+2+2 =46px & date area width = 46px
-          padding: 0 0.75rem;
+          padding: 0 0.75rem 0 0;
           .card-text,
           p {
             color: $text-muted;
           }
         }
+        .chat-meta {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
 
+          .bg-danger {
+            width: 20px;
+          }
+        }
         .chat-time {
           color: $text-muted;
         }
@@ -210,7 +218,6 @@ $chat-profile-sidebar-head-height: 200px;
     // Before starting chat
     .start-chat-area,
     .user-chats {
-      background-image: url($chat-bg-light);
       background-color: $chat-image-back-color;
       background-repeat: repeat;
       background-size: 210px;

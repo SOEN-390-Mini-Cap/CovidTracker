@@ -9,6 +9,12 @@ const PagesRoutes = [
         },
     },
     {
+        path: "/chat",
+        appLayout: true,
+        className: "chat-application",
+        component: lazy(() => import("../../views/pages/chat")),
+    },
+    {
         path: "/location_report",
         component: lazy(() => import("../../views/pages/location_report/AddLocationReport")),
         meta: {

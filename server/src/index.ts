@@ -19,6 +19,7 @@ const cors = corsMiddleware({
 const app = server.build();
 app.pre(cors.preflight);
 app.use(plugins.bodyParser());
+app.use(plugins.queryParser());
 app.use(cors.actual);
 
 const wss = new WebSocket.Server({ server: app });
