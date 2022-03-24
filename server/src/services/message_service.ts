@@ -6,6 +6,8 @@ import { IncomingMessage } from "http";
 import { ActiveClients, Message, MessageEvent, UserMessages } from "../entities/message";
 import { AuthenticationService } from "./authentication_service";
 import { MessageRepository } from "../repositories/message_repository";
+import { ReqUser } from "../entities/req_user";
+import { UserChat, ChatContacts } from "../entities/chat";
 
 @injectable()
 export class MessageService {
@@ -19,6 +21,18 @@ export class MessageService {
         @named("MessageRepository")
         private readonly messageRepository: MessageRepository,
     ) {}
+
+    async getMessages(reqUser: ReqUser, userId: number): Promise<UserChat> {
+        return JSON.parse(
+            '{"chat":{"id":1,"userId":1,"unseenMsgs":0,"chat":[{"message":"Hi","time":"Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)","senderId":11},{"message":"Hello. How can I help You?","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"Can I get details of my last transaction I made last month?","time":"Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)","senderId":11},{"message":"We need to check if we can provide you such information.","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"I will inform you as I get update on this.","time":"Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)","senderId":2},{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}]},"contact":{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":0,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}}}',
+        );
+    }
+
+    async getChats(reqUser: ReqUser): Promise<ChatContacts> {
+        return JSON.parse(
+            '{"chats":[{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":0,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}},{"id":2,"fullName":"Adalberto Granzin","role":"UI/UX Designer","about":"Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.","avatar":"/static/media/avatar-s-1.d383013d.jpg","status":"busy","chat":{"id":2,"unseenMsgs":1,"lastMessage":{"message":"I will purchase it for sure. 👍","time":"2022-03-23T00:12:52.007Z","senderId":1}}}]}',
+        );
+    }
 
     async connection(ws: WebSocket, req: IncomingMessage): Promise<void> {
         try {
