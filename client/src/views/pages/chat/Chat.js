@@ -1,32 +1,12 @@
-// ** React Imports
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
-
-// ** Custom Components
 import Avatar from "@components/avatar";
-
-// ** Store & Actions
 import { sendMsg } from "./store";
 import { useDispatch } from "react-redux";
-
-// ** Third Party Components
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, PhoneCall, Video, Search, MoreVertical, Mic, Image, Send } from "react-feather";
-
-// ** Reactstrap Imports
-import {
-    Form,
-    Label,
-    Input,
-    Button,
-    InputGroup,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    InputGroupText,
-    UncontrolledDropdown,
-} from "reactstrap";
+import { MessageSquare, Menu, Mic, Image, Send } from "react-feather";
+import { Form, Label, Input, Button, InputGroup, InputGroupText } from "reactstrap";
 
 const ChatLog = (props) => {
     // ** Props & Store
@@ -160,41 +140,7 @@ const ChatLog = (props) => {
                                 <div className="sidebar-toggle d-block d-lg-none me-1" onClick={handleSidebar}>
                                     <Menu size={21} />
                                 </div>
-                                <Avatar
-                                    imgHeight="36"
-                                    imgWidth="36"
-                                    img={selectedUser.contact.avatar}
-                                    status={selectedUser.contact.status}
-                                    className="avatar-border user-profile-toggle m-0 me-1"
-                                />
                                 <h6 className="mb-0">{selectedUser.contact.fullName}</h6>
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <PhoneCall size={18} className="cursor-pointer d-sm-block d-none me-1" />
-                                <Video size={18} className="cursor-pointer d-sm-block d-none me-1" />
-                                <Search size={18} className="cursor-pointer d-sm-block d-none" />
-                                <UncontrolledDropdown className="more-options-dropdown">
-                                    <DropdownToggle className="btn-icon" color="transparent" size="sm">
-                                        <MoreVertical size="18" />
-                                    </DropdownToggle>
-                                    <DropdownMenu end>
-                                        <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                                            View Contact
-                                        </DropdownItem>
-                                        <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                                            Mute Notifications
-                                        </DropdownItem>
-                                        <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                                            Block Contact
-                                        </DropdownItem>
-                                        <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                                            Clear Chat
-                                        </DropdownItem>
-                                        <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                                            Report
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
                             </div>
                         </header>
                     </div>

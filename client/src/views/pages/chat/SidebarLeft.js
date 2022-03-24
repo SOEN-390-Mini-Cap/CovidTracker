@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Avatar from "@components/avatar";
 import { selectChat } from "./store";
 import { useDispatch } from "react-redux";
 import { formatDateToMonthShort, isObjEmpty } from "@utils";
@@ -65,7 +64,6 @@ const SidebarLeft = (props) => {
                                 active: active === item.id,
                             })}
                         >
-                            <Avatar img={item.avatar} imgHeight="42" imgWidth="42" status={item.status} />
                             <div className="chat-info flex-grow-1">
                                 <h5 className="mb-0">{item.fullName}</h5>
                                 <CardText className="text-truncate">
