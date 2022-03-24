@@ -33,7 +33,9 @@ export class MessageService {
     }
 
     async getChatsAdapter(reqUser: ReqUser): Promise<ChatContacts> {
+        console.log("shouod be 6", reqUser.userId);
         const messages = await this.buildUserMessages(reqUser.userId);
+        console.log(messages);
 
         const chatContacts: ChatContact[] = [];
         for (const userId in messages) {
@@ -124,6 +126,7 @@ export class MessageService {
 
     private async buildUserMessages(userId: number): Promise<UserMessages> {
         const messages = await this.messageRepository.findMessages(userId);
+        console.log(messages);
 
         // group the messages by the id of the user who isn't the client id
         return messages.reduce((messages, message) => {

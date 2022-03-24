@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { selectChat } from "./store";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { formatDateToMonthShort, isObjEmpty } from "@utils";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -15,6 +15,8 @@ const SidebarLeft = (props) => {
     // ** Dispatch
     const dispatch = useDispatch();
 
+    const token = useSelector((state) => state.auth.userData.token);
+
     // ** State
     const [query, setQuery] = useState("");
     const [active, setActive] = useState(0);
@@ -22,7 +24,7 @@ const SidebarLeft = (props) => {
 
     // ** Handles User Chat Click
     const handleUserClick = (id) => {
-        dispatch(selectChat(id));
+        dispatch(selectChat({ token, id }));
         setActive(id);
         if (sidebar === true) {
             handleSidebar();

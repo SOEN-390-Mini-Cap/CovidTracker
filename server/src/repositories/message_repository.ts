@@ -10,6 +10,8 @@ export class MessageRepository {
     async findMessages(userId: number): Promise<Message[]> {
         const client = await this.pool.connect();
 
+        console.log(userId);
+
         const sql = `
             SELECT
                 m.message_id,
@@ -43,6 +45,7 @@ export class MessageRepository {
     }
 
     private buildMessages({ rows }: QueryResult): Message[] {
+        console.log(rows);
         return rows.map(this.buildMessage);
     }
 

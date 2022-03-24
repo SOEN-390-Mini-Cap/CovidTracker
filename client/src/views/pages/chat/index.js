@@ -12,6 +12,7 @@ const AppChat = () => {
     // ** Store Vars
     const dispatch = useDispatch();
     const store = useSelector((state) => state.chat);
+    const token = useSelector((state) => state.auth.userData.token);
 
     // ** States
     const [sidebar, setSidebar] = useState(false);
@@ -30,8 +31,8 @@ const AppChat = () => {
 
     // ** Get data on Mount
     useEffect(() => {
-        dispatch(getChatContacts());
-    }, [dispatch]);
+        dispatch(getChatContacts({ token }));
+    }, [dispatch, token]);
 
     return (
         <Fragment>
