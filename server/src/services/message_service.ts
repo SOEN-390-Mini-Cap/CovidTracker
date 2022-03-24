@@ -33,19 +33,20 @@ export class MessageService {
 
     async getMessagesAdapter(reqUser: ReqUser, userId: number): Promise<UserChat> {
         const messages = await this.buildUserMessages(reqUser.userId);
+        const lastMessageIndex = messages[userId].length - 1;
 
         const chatId = userId;
         const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
         const contact = {
             id: chatId,
-            fullName: firstName + lastName,
+            fullName: `${firstName} ${lastName}`,
             chat: {
                 id: chatId,
                 unseenMsg: 0,
                 lastMessage: {
-                    senderId: messages[userId][0].from,
-                    message: messages[userId][0].body,
-                    time: messages[userId][0].createdOn,
+                    senderId: messages[userId][lastMessageIndex].from,
+                    message: messages[userId][lastMessageIndex].body,
+                    time: messages[userId][lastMessageIndex].createdOn,
                 },
             },
         } as ChatContact;
@@ -73,16 +74,19 @@ export class MessageService {
             Object.keys(messages).map(async (userId) => {
                 const chatId = +userId;
                 const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
+                const lastMessageIndex = messages[userId].length - 1;
+                console.log(lastMessageIndex, messages[userId]);
+
                 return {
                     id: chatId,
-                    fullName: firstName + lastName,
+                    fullName: `${firstName} ${lastName}`,
                     chat: {
                         id: chatId,
                         unseenMsg: 0,
                         lastMessage: {
-                            senderId: messages[userId][0].from,
-                            message: messages[userId][0].body,
-                            time: messages[userId][0].createdOn,
+                            senderId: messages[userId][lastMessageIndex].from,
+                            message: messages[userId][lastMessageIndex].body,
+                            time: messages[userId][lastMessageIndex].createdOn,
                         },
                     },
                 } as ChatContact;

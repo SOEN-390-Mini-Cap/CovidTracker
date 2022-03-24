@@ -19,7 +19,7 @@ export class MessageRepository {
                 m.created_on
             FROM messages AS m
             WHERE m.from_user_id = $1 OR m.to_user_id = $1
-            ORDER BY m.created_on DESC;
+            ORDER BY m.created_on ASC;
         `;
         const res = await client.query(sql, [userId]).finally(() => client.release());
         return this.buildMessages(res);
