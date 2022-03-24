@@ -1,16 +1,9 @@
-// ** React Imports
 import { Fragment, useState, useEffect } from "react";
-
-// ** Chat App Component Imports
 import Chat from "./Chat";
 import Sidebar from "./SidebarLeft";
-
-// ** Third Party Components
 import classnames from "classnames";
-
-// ** Store & Actions
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile, getChatContacts } from "./store";
+import { getChatContacts } from "./store";
 
 import "@styles/base/pages/app-chat.scss";
 import "@styles/base/pages/app-chat-list.scss";
@@ -21,7 +14,6 @@ const AppChat = () => {
     const store = useSelector((state) => state.chat);
 
     // ** States
-    const [user, setUser] = useState({});
     const [sidebar, setSidebar] = useState(false);
     const [userSidebarRight, setUserSidebarRight] = useState(false);
     const [userSidebarLeft, setUserSidebarLeft] = useState(false);
@@ -36,13 +28,9 @@ const AppChat = () => {
         setUserSidebarLeft(false);
     };
 
-    // ** Set user function for Right Sidebar
-    const handleUser = (obj) => setUser(obj);
-
     // ** Get data on Mount
     useEffect(() => {
         dispatch(getChatContacts());
-        dispatch(getUserProfile());
     }, [dispatch]);
 
     return (
@@ -65,7 +53,6 @@ const AppChat = () => {
                         />
                         <Chat
                             store={store}
-                            handleUser={handleUser}
                             handleSidebar={handleSidebar}
                             userSidebarLeft={userSidebarLeft}
                             handleUserSidebarRight={handleUserSidebarRight}

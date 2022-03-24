@@ -1,17 +1,16 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
-import Avatar from "@components/avatar";
 import { sendMsg } from "./store";
 import { useDispatch } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, Mic, Image, Send } from "react-feather";
+import { MessageSquare, Menu, Image, Send } from "react-feather";
 import { Form, Label, Input, Button, InputGroup, InputGroupText } from "reactstrap";
 
 const ChatLog = (props) => {
     // ** Props & Store
     const { handleSidebar, store, userSidebarLeft } = props;
-    const { userProfile, selectedUser } = store;
+    const { selectedUser } = store;
 
     // ** Refs & Dispatch
     const chatArea = useRef(null);
