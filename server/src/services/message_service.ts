@@ -7,7 +7,7 @@ import { ActiveClients, Message, MessageEvent, UserMessages } from "../entities/
 import { AuthenticationService } from "./authentication_service";
 import { MessageRepository } from "../repositories/message_repository";
 import { ReqUser } from "../entities/req_user";
-import {UserChat, ChatContacts, ChatContact} from "../entities/chat";
+import { UserChat, ChatContacts, ChatContact, Chat } from "../entities/chat";
 import { UserRepository } from "../repositories/user_repository";
 
 @injectable()
@@ -26,17 +26,51 @@ export class MessageService {
         private readonly userRepository: UserRepository,
     ) {}
 
-    async getMessages(reqUser: ReqUser, userId: number): Promise<UserChat> {
-        return JSON.parse(
-            '{"chat":{"id":1,"userId":1,"unseenMsgs":0,"chat":[{"message":"Hi","time":"Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)","senderId":11},{"message":"Hello. How can I help You?","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"Can I get details of my last transaction I made last month?","time":"Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)","senderId":11},{"message":"We need to check if we can provide you such information.","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"I will inform you as I get update on this.","time":"Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)","senderId":2},{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}]},"contact":{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":0,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}}}',
-        );
+    async getMessagesAdapter(reqUser: ReqUser, userId: number): Promise<UserChat> {
+        const messages = await this.buildUserMessages(reqUser.userId);
+
+        const chatId = userId;
+        const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
+        const contact = {
+            id: chatId,
+            fullName: firstName + lastName,
+            chat: {
+                id: chatId,
+                unseenMsg: 0,
+                lastMessage: {
+                    senderId: messages[userId][0].from,
+                    message: messages[userId][0].body,
+                    time: messages[userId][0].createdOn,
+                },
+            },
+        } as ChatContact;
+
+        const chat: Chat = {
+            id: chatId,
+            userId,
+            unseenMsg: 0,
+            chat: messages[userId].map((message) => ({
+                senderId: message.from,
+                message: message.body,
+                time: message.createdOn,
+            })),
+        };
+
+        return {
+            chat,
+            contact,
+        };
+
+        // return JSON.parse(
+        //     '{"chat":{"id":1,"userId":1,"unseenMsgs":0,"chat":[{"message":"Hi","time":"Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)","senderId":11},{"message":"Hello. How can I help You?","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"Can I get details of my last transaction I made last month?","time":"Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)","senderId":11},{"message":"We need to check if we can provide you such information.","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"I will inform you as I get update on this.","time":"Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)","senderId":2},{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}]},"contact":{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":0,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}}}',
+        // );
     }
 
     async getChatsAdapter(reqUser: ReqUser): Promise<ChatContacts> {
         const messages = await this.buildUserMessages(reqUser.userId);
         const chatContacts = await Promise.all(
             Object.keys(messages).map(async (userId) => {
-                const chatId = +`${reqUser.userId}${userId}`;
+                const chatId = +userId;
                 const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
                 return {
                     id: chatId,

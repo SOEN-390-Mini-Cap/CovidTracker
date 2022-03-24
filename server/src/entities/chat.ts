@@ -3,7 +3,7 @@ export type UserChat = {
     contact: ChatContact;
 };
 
-type Chat = {
+export type Chat = {
     id: number; // chatId
     userId: number;
     unseenMsg: number;

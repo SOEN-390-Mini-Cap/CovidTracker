@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import { sendMsg } from "./store";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { MessageSquare, Menu, Image, Send } from "react-feather";
@@ -15,6 +15,7 @@ const ChatLog = (props) => {
     // ** Refs & Dispatch
     const chatArea = useRef(null);
     const dispatch = useDispatch();
+    const userId = useSelector((state) => state.auth.userData.user.account.userId);
 
     // ** State
     const [msg, setMsg] = useState("");
@@ -78,7 +79,7 @@ const ChatLog = (props) => {
                 <div
                     key={index}
                     className={classnames("chat", {
-                        "chat-left": item.senderId !== 11,
+                        "chat-left": item.senderId !== userId,
                     })}
                 >
                     <div className="chat-body">

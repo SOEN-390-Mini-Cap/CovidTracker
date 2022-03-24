@@ -26,7 +26,7 @@ export class MessageController implements interfaces.Controller {
                 return;
             }
 
-            const chat = await this.messageService.getMessages(req["token"], value.userId);
+            const chat = await this.messageService.getMessagesAdapter(req["token"], value.userId);
 
             res.json(200, chat);
         } catch (error) {
