@@ -1,4 +1,4 @@
-import { Activity, Circle, Compass, Heart, Home, User } from "react-feather";
+import { Activity, Circle, Compass, Heart, Home, MessageCircle, User } from "react-feather";
 
 export default (userId) => [
     {
@@ -7,6 +7,13 @@ export default (userId) => [
         icon: <Home />,
         navLink: "/home",
         accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
+    },
+    {
+        id: "chat",
+        title: "Chat",
+        icon: <MessageCircle />,
+        navLink: "/chat",
+        accessibleBy: ["PATIENT", "DOCTOR"],
     },
     {
         id: "addLocation",
