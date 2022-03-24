@@ -10,7 +10,6 @@ import { HealthOfficialRepository } from "../repositories/health_official_reposi
 import { ImmigrationOfficerRepository } from "../repositories/immigration_officer_repository";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { AuthenticationService } from "./authentication_service";
-import { MessageRepository } from "../repositories/message_repository";
 
 @injectable()
 export class UserService {
@@ -36,9 +35,6 @@ export class UserService {
         @inject("Service")
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
-        @inject("Repository")
-        @named("MessageRepository")
-        private readonly messageRepository: MessageRepository,
     ) {}
 
     async findMe(userId: number): Promise<User> {

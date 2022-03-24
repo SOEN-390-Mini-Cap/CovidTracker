@@ -8,22 +8,18 @@ import { X, Search } from "react-feather";
 import { CardText, InputGroup, InputGroupText, Badge, Input } from "reactstrap";
 
 const SidebarLeft = (props) => {
-    // ** Props & Store
     const { store, sidebar, handleSidebar } = props;
     const { chats } = store;
 
-    // ** Dispatch
     const dispatch = useDispatch();
 
     const token = useSelector((state) => state.auth.userData.token);
     const role = useSelector((state) => state.auth.userData.user?.role);
 
-    // ** State
     const [query, setQuery] = useState("");
     const [active, setActive] = useState(0);
     const [filteredChat, setFilteredChat] = useState([]);
 
-    // ** Handles User Chat Click
     const handleUserClick = (id) => {
         dispatch(selectChat({ token, id }));
         setActive(id);
@@ -42,7 +38,6 @@ const SidebarLeft = (props) => {
         }
     }, []);
 
-    // ** Renders Chat
     const renderChats = () => {
         if (chats && chats.length) {
             if (query.length && !filteredChat.length) {
