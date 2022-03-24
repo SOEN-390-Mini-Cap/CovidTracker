@@ -124,6 +124,15 @@ function PatientList() {
                                 <DropdownItem tag={Link} to={`/tests/patients/${row.account.userId}`} className="w-100">
                                     Test Results
                                 </DropdownItem>
+                                {role === "DOCTOR" && (
+                                    <DropdownItem
+                                        tag={Link}
+                                        to={`/statuses/define/${row.account.userId}`}
+                                        className="w-100"
+                                    >
+                                        Define Status Report
+                                    </DropdownItem>
+                                )}
                                 {(role === "DOCTOR" || role === "HEALTH_OFFICIAL") && (
                                     <DropdownItem
                                         tag={Link}

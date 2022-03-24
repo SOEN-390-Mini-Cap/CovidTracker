@@ -5,100 +5,108 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { defineStatusReport } from "../../../services/api";
+import {defineStatusReport, getUser} from "../../../services/api";
+import {Link, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-const selectToken = (state) => state.auth.userData.token;
+const defaultValues = {
+    temperature: true,
+    weight: true,
+    fever: false,
+    cough: false,
+    shortnessOfBreath: false,
+    lossOfTasteAndSmell: false,
+    nausea: false,
+    stomachAches: false,
+    vomiting: false,
+    headache: false,
+    musclePain: false,
+    soreThroat: false,
+    otherSymptoms: true,
+};
+
+const defineStatusReportSchema = yup.object().shape({
+    patientId: yup.number("Enter a patient ID.").typeError("Enter a patient ID.").required("Enter a patient ID."),
+});
+
+const primarySymptoms = [
+    {
+        name: "Fever",
+        id: "fever",
+        disabled: false,
+    },
+    {
+        name: "Cough",
+        id: "cough",
+        disabled: false,
+    },
+    {
+        name: "Shortness of Breath",
+        id: "shortnessOfBreath",
+        disabled: false,
+    },
+    {
+        name: "Loss of Taste and Smell",
+        id: "lossOfTasteAndSmell",
+        disabled: false,
+    },
+];
+
+const secondarySymptoms = [
+    {
+        name: "Nausea",
+        id: "nausea",
+        disabled: false,
+    },
+    {
+        name: "Stomach Aches",
+        id: "stomachAches",
+        disabled: false,
+    },
+    {
+        name: "Vomiting",
+        id: "vomiting",
+        disabled: false,
+    },
+    {
+        name: "Headache",
+        id: "headache",
+        disabled: false,
+    },
+    {
+        name: "Muscle Pain",
+        id: "musclePain",
+        disabled: false,
+    },
+    {
+        name: "Sore Throat",
+        id: "soreThroat",
+        disabled: false,
+    },
+    {
+        name: "Other Symptoms",
+        id: "otherSymptoms",
+        disabled: true,
+    },
+];
 
 function DefineStatusReport() {
-    const defaultValues = {
-        patientId: "",
-        temperature: true,
-        weight: true,
-        fever: false,
-        cough: false,
-        shortnessOfBreath: false,
-        lossOfTasteAndSmell: false,
-        nausea: false,
-        stomachAches: false,
-        vomiting: false,
-        headache: false,
-        musclePain: false,
-        soreThroat: false,
-        otherSymptoms: true,
-    };
-
-    const defineStatusReportSchema = yup.object().shape({
-        patientId: yup.number("Enter a patient ID.").typeError("Enter a patient ID.").required("Enter a patient ID."),
+    const { patientId } = useParams();
+    const token = useSelector((state) => state.auth.userData.token);
+    const { control, handleSubmit, reset } = useForm({
+        defaultValues: { ...defaultValues, patientId },
+        resolver: yupResolver(defineStatusReportSchema),
     });
 
-    const primarySymptoms = [
-        {
-            name: "Fever",
-            id: "fever",
-            disabled: false,
-        },
-        {
-            name: "Cough",
-            id: "cough",
-            disabled: false,
-        },
-        {
-            name: "Shortness of Breath",
-            id: "shortnessOfBreath",
-            disabled: false,
-        },
-        {
-            name: "Loss of Taste and Smell",
-            id: "lossOfTasteAndSmell",
-            disabled: false,
-        },
-    ];
-    const secondarySymptoms = [
-        {
-            name: "Nausea",
-            id: "nausea",
-            disabled: false,
-        },
-        {
-            name: "Stomach Aches",
-            id: "stomachAches",
-            disabled: false,
-        },
-        {
-            name: "Vomiting",
-            id: "vomiting",
-            disabled: false,
-        },
-        {
-            name: "Headache",
-            id: "headache",
-            disabled: false,
-        },
-        {
-            name: "Muscle Pain",
-            id: "musclePain",
-            disabled: false,
-        },
-        {
-            name: "Sore Throat",
-            id: "soreThroat",
-            disabled: false,
-        },
-        {
-            name: "Other Symptoms",
-            id: "otherSymptoms",
-            disabled: true,
-        },
-    ];
+    const [patient, setPatient] = useState(null);
 
-    const {
-        control,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm({ defaultValues, resolver: yupResolver(defineStatusReportSchema) });
-
-    const token = useSelector(selectToken);
+    useEffect(() => {
+        async function f() {
+            const patient = await getUser(token, patientId);
+            setPatient(patient);
+        }
+        f();
+    }, [patientId, token]);
 
     const onSubmit = async (data) => {
         try {
@@ -119,33 +127,20 @@ function DefineStatusReport() {
 
     return (
         <div>
-            <BreadCrumbsPage
-                breadCrumbTitle="Define Status Report"
-                breadCrumbParent="Patient"
-                breadCrumbActive="Define Status Report"
-            />
+            {patient && (
+                <BreadCrumbsPage
+                    breadCrumbTitle={`Define Status Report for ${patient.firstName} ${patient.lastName}`}
+                    breadCrumbParent="Patient"
+                    breadCrumbParent2={<Link to="/patients">Patient List</Link>}
+                    breadCrumbActive="Define Status Report"
+                />
+            )}
             <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
-                    <CardTitle className="mb-0">Define Status Report for a Patient</CardTitle>
+                    <CardTitle className="mb-0">Define Status Report</CardTitle>
                 </CardBody>
                 <CardFooter>
                     <Form>
-                        <div className="mb-1">
-                            <Label className="form-label" for="patientId">
-                                Patient ID
-                            </Label>
-                            <Controller
-                                id="patientId"
-                                name="patientId"
-                                control={control}
-                                render={({ field }) => (
-                                    <Input autoFocus type="number" invalid={!!errors.patientId} {...field} />
-                                )}
-                            />
-                            {errors.patientId && (
-                                <FormFeedback className="d-block">{errors.patientId.message}</FormFeedback>
-                            )}
-                        </div>
                         <div className="mb-1">
                             <Label className="form-label">General</Label>
                             <div className="d-flex">

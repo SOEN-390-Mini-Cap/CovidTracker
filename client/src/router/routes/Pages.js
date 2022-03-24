@@ -36,7 +36,7 @@ const PagesRoutes = [
         },
     },
     {
-        path: "/define_status_report",
+        path: "/statuses/define/:patientId",
         component: lazy(() => import("../../views/pages/patient/DefineStatusReport")),
         meta: {
             accessibleBy: ["DOCTOR"],
@@ -50,7 +50,7 @@ const PagesRoutes = [
         },
     },
     {
-        path: "/status_report",
+        path: "/statuses/submit",
         component: lazy(() => import("../../views/pages/patient/StatusReport")),
         meta: {
             accessibleBy: ["PATIENT"],
