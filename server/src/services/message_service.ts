@@ -26,6 +26,11 @@ export class MessageService {
         private readonly userRepository: UserRepository,
     ) {}
 
+    async postMessage(message: Message): Promise<void> {
+        message.createdOn = new Date();
+        await this.messageRepository.insertMessage(message);
+    }
+
     async getMessagesAdapter(reqUser: ReqUser, userId: number): Promise<UserChat> {
         const messages = await this.buildUserMessages(reqUser.userId);
 
@@ -60,10 +65,6 @@ export class MessageService {
             chat,
             contact,
         };
-
-        // return JSON.parse(
-        //     '{"chat":{"id":1,"userId":1,"unseenMsgs":0,"chat":[{"message":"Hi","time":"Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)","senderId":11},{"message":"Hello. How can I help You?","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"Can I get details of my last transaction I made last month?","time":"Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)","senderId":11},{"message":"We need to check if we can provide you such information.","time":"Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)","senderId":2},{"message":"I will inform you as I get update on this.","time":"Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)","senderId":2},{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}]},"contact":{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":0,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}}}',
-        // );
     }
 
     async getChatsAdapter(reqUser: ReqUser): Promise<ChatContacts> {

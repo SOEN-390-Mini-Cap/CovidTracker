@@ -16,6 +16,7 @@ const ChatLog = (props) => {
     const chatArea = useRef(null);
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.auth.userData.user.account.userId);
+    const token = useSelector((state) => state.auth.userData.token);
 
     // ** State
     const [msg, setMsg] = useState("");
@@ -105,7 +106,7 @@ const ChatLog = (props) => {
     const handleSendMsg = (e) => {
         e.preventDefault();
         if (msg.length) {
-            dispatch(sendMsg({ ...selectedUser, message: msg }));
+            dispatch(sendMsg({ token, to: selectedUser.contact.id, body: msg }));
             setMsg("");
         }
     };

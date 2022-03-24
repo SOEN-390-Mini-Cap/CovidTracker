@@ -24,11 +24,22 @@ export const selectChat = createAsyncThunk("appChat/selectChat", async ({ token,
     return response.data;
 });
 
-export const sendMsg = createAsyncThunk("appChat/sendMsg", async (obj, { dispatch }) => {
-    const response = await axios.post("/apps/chat/send-msg", { obj });
+export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, body }, { dispatch }) => {
+    const response = await axios.post(
+        "http://localhost:8080/messages",
+        {
+            to,
+            body,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+
     console.log("send message", JSON.stringify(response.data));
-    await dispatch(selectChat("", obj.contact.id));
-    return response.data;
+    await dispatch(selectChat({ token, id: to }));
 });
 
 export const appChatSlice = createSlice({
