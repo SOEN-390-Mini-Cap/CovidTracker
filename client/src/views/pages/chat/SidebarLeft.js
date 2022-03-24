@@ -183,8 +183,6 @@ const SidebarLeft = (props) => {
                     >
                         <h4 className="chat-list-title">Chats</h4>
                         <ul className="chat-users-list chat-list media-list">{renderChats()}</ul>
-                        <h4 className="chat-list-title">Contacts</h4>
-                        <ul className="chat-users-list contact-list media-list">{renderContacts()}</ul>
                     </PerfectScrollbar>
                 </div>
             </div>
