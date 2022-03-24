@@ -73,13 +73,6 @@ export default (userId) => [
                 accessibleBy: ["DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
             },
             {
-                id: "defineStatusReport",
-                title: "Define Status Report",
-                icon: <Circle />,
-                navLink: "/define_status_report",
-                accessibleBy: ["DOCTOR"],
-            },
-            {
                 id: "statusReportInbox",
                 title: "Status Report Inbox",
                 icon: <Circle />,
@@ -90,7 +83,7 @@ export default (userId) => [
                 id: "statusReport",
                 title: "Status Report",
                 icon: <Circle />,
-                navLink: "/status_report",
+                navLink: "/statuses/submit",
                 accessibleBy: ["PATIENT"],
             },
             {

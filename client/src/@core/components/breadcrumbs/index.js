@@ -21,7 +21,7 @@ const BreadCrumbs = props => {
 
   return (
     <div className='content-header row'>
-      <div className='content-header-left col-md-9 col-12 mb-2'>
+      <div className='content-header-left col-12 mb-2'>
         <div className='row breadcrumbs-top'>
           <div className='col-12'>
             {breadCrumbTitle ? <h2 className='content-header-title float-start mb-0'>{breadCrumbTitle}</h2> : ''}
