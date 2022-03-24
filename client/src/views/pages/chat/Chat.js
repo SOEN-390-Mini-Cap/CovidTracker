@@ -146,7 +146,7 @@ const ChatLog = (props) => {
                             <Input
                                 value={msg}
                                 onChange={(e) => setMsg(e.target.value)}
-                                placeholder="Type your message or use speech to text"
+                                placeholder="Type a message..."
                             />
                             <InputGroupText>
                                 <Label className="attachment-icon mb-0" for="attach-doc">

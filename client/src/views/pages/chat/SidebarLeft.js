@@ -16,6 +16,7 @@ const SidebarLeft = (props) => {
     const dispatch = useDispatch();
 
     const token = useSelector((state) => state.auth.userData.token);
+    const role = useSelector((state) => state.auth.userData.user?.role);
 
     // ** State
     const [query, setQuery] = useState("");
@@ -47,7 +48,7 @@ const SidebarLeft = (props) => {
             if (query.length && !filteredChat.length) {
                 return (
                     <li className="no-results show">
-                        <h6 className="mb-0">No Chats Found</h6>
+                        <h6 className="mb-0">No Patients Found</h6>
                     </li>
                 );
             } else {
@@ -118,7 +119,7 @@ const SidebarLeft = (props) => {
                                 <Input
                                     value={query}
                                     className="round"
-                                    placeholder="Search or start a new chat"
+                                    placeholder={role === "DOCTOR" ? "Search patient" : "Search doctor"}
                                     onChange={handleFilter}
                                 />
                             </InputGroup>
@@ -128,7 +129,7 @@ const SidebarLeft = (props) => {
                         className="chat-user-list-wrapper list-group"
                         options={{ wheelPropagation: false }}
                     >
-                        <h4 className="chat-list-title">Chats</h4>
+                        <h4 className="chat-list-title">{role === "DOCTOR" ? "Patients" : "Doctor"}</h4>
                         <ul className="chat-users-list chat-list media-list">{renderChats()}</ul>
                     </PerfectScrollbar>
                 </div>
