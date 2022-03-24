@@ -1,13 +1,13 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import { Button, Card, CardBody, CardFooter, CardTitle, Form, FormFeedback, Input, Label } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardTitle, Form, Input, Label } from "reactstrap";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {defineStatusReport, getUser} from "../../../services/api";
-import {Link, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { defineStatusReport, getUser } from "../../../services/api";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const defaultValues = {
     temperature: true,
