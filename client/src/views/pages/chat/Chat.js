@@ -82,15 +82,6 @@ const ChatLog = (props) => {
                         "chat-left": item.senderId !== 11,
                     })}
                 >
-                    <div className="chat-avatar">
-                        <Avatar
-                            imgWidth={36}
-                            imgHeight={36}
-                            className="box-shadow-1 cursor-pointer"
-                            img={item.senderId === 11 ? userProfile.avatar : selectedUser.contact.avatar}
-                        />
-                    </div>
-
                     <div className="chat-body">
                         {item.messages.map((chat) => (
                             <div key={chat.msg} className="chat-content">
@@ -151,9 +142,6 @@ const ChatLog = (props) => {
 
                     <Form className="chat-app-form" onSubmit={(e) => handleSendMsg(e)}>
                         <InputGroup className="input-group-merge me-1 form-send-message">
-                            <InputGroupText>
-                                <Mic className="cursor-pointer" size={14} />
-                            </InputGroupText>
                             <Input
                                 value={msg}
                                 onChange={(e) => setMsg(e.target.value)}
