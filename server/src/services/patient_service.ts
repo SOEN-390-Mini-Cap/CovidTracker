@@ -44,6 +44,9 @@ export class PatientService {
         if (reqUser.role === Role.HEALTH_OFFICIAL) {
             return this.patientRepository.findPatients.bind(this.patientRepository);
         }
+        if (reqUser.role === Role.IMMIGRATION_OFFICER) {
+            return this.patientRepository.findPatients.bind(this.patientRepository);
+        }
 
         throw new AuthorizationError();
     }

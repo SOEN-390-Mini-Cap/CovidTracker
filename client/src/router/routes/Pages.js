@@ -88,14 +88,14 @@ const PagesRoutes = [
         path: "/tests/patients/:patientId",
         component: lazy(() => import("../../views/pages/test/TestResults")),
         meta: {
-            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
+            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
         },
     },
     {
         path: "/tests/:testId",
         component: lazy(() => import("../../views/pages/test/TestResult")),
         meta: {
-            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL"],
+            accessibleBy: ["PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
         },
     },
     {
