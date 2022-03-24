@@ -6,6 +6,7 @@ import { User } from "../entities/user";
 import { Role } from "../entities/role";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { AuthenticationService } from "./authentication_service";
+import { MessageRepository } from "../repositories/message_repository";
 
 @injectable()
 export class PatientService {
@@ -16,6 +17,9 @@ export class PatientService {
         @inject("Service")
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
+        @inject("Repository")
+        @named("MessageRepository")
+        private readonly messageRepository: MessageRepository,
     ) {}
 
     async assignDoctor(patientId: number, doctorId: number): Promise<void> {
@@ -25,6 +29,12 @@ export class PatientService {
         }
 
         await this.patientRepository.updateAssignedDoctor(patientId, doctorId);
+        await this.messageRepository.insertMessage({
+            from: doctorId,
+            to: patientId,
+            body: "hello?",
+            createdOn: new Date(),
+        });
     }
 
     getPatientsStrategy(reqUser: ReqUser): () => Promise<User[]> {

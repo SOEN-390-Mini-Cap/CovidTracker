@@ -148,12 +148,6 @@ const ChatLog = (props) => {
                                 onChange={(e) => setMsg(e.target.value)}
                                 placeholder="Type a message..."
                             />
-                            <InputGroupText>
-                                <Label className="attachment-icon mb-0" for="attach-doc">
-                                    <Image className="cursor-pointer text-secondary" size={14} />
-                                    <input type="file" id="attach-doc" hidden />
-                                </Label>
-                            </InputGroupText>
                         </InputGroup>
                         <Button className="send" color="primary">
                             <Send size={14} className="d-lg-none" />

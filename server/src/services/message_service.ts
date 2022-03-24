@@ -51,11 +51,12 @@ export class MessageService {
             },
         } as ChatContact;
 
+        const cleanedMessages = messages[userId].length === 1 ? [] : messages[userId].slice(1);
         const chat: Chat = {
             id: chatId,
             userId,
             unseenMsg: 0,
-            chat: messages[userId].map((message) => ({
+            chat: cleanedMessages.map((message) => ({
                 senderId: message.from,
                 message: message.body,
                 time: message.createdOn,
