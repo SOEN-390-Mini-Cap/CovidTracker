@@ -4,7 +4,7 @@ export type UserChat = {
 };
 
 type Chat = {
-    id: number;
+    id: number; // chatId
     userId: number;
     unseenMsg: number;
     chat: ChatMessage[];
@@ -16,16 +16,18 @@ type ChatMessage = {
     time: Date;
 };
 
-export type ChatContacts = ChatContact[];
+export type ChatContacts = {
+    chats: ChatContact[];
+};
 
-type ChatContact = {
-    id: number;
-    fullName: string;
+export type ChatContact = {
+    id: number; // chatId
+    fullName: string; // otherPerson
     chat: PartialChat;
 };
 
 type PartialChat = {
-    id: number;
+    id: number; // chatId
     lastMessage: ChatMessage;
     unseenMsg: number;
 };

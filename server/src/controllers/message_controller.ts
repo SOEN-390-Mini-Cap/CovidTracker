@@ -37,7 +37,7 @@ export class MessageController implements interfaces.Controller {
     @Get("/chats", "injectAuthDataMiddleware")
     private async getChats(req: Request, res: Response): Promise<void> {
         try {
-            const chatContacts = await this.messageService.getChats(req["token"]);
+            const chatContacts = await this.messageService.getChatsAdapter(req["token"]);
 
             res.json(200, chatContacts);
         } catch (error) {
