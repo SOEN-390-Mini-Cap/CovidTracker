@@ -33,36 +33,30 @@ export class MessageService {
     }
 
     async getChatsAdapter(reqUser: ReqUser): Promise<ChatContacts> {
-        console.log("shouod be 6", reqUser.userId);
         const messages = await this.buildUserMessages(reqUser.userId);
-        console.log(messages);
-
-        const chatContacts: ChatContact[] = [];
-        for (const userId in messages) {
-            const chatId = +`${reqUser.userId}${userId}`;
-            const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
-
-            chatContacts.push({
-                id: chatId,
-                fullName: firstName + lastName,
-                chat: {
+        const chatContacts = await Promise.all(
+            Object.keys(messages).map(async (userId) => {
+                const chatId = +`${reqUser.userId}${userId}`;
+                const { firstName, lastName } = await this.userRepository.findUserByUserId(+userId);
+                return {
                     id: chatId,
-                    unseenMsg: 0,
-                    lastMessage: {
-                        senderId: messages[userId][0].from,
-                        message: messages[userId][0].body,
-                        time: messages[userId][0].createdOn,
+                    fullName: firstName + lastName,
+                    chat: {
+                        id: chatId,
+                        unseenMsg: 0,
+                        lastMessage: {
+                            senderId: messages[userId][0].from,
+                            message: messages[userId][0].body,
+                            time: messages[userId][0].createdOn,
+                        },
                     },
-                },
-            });
-        }
+                } as ChatContact;
+            }),
+        );
 
         return {
             chats: chatContacts,
         };
-        // return JSON.parse(
-        //     '{"chats":[{"id":1,"fullName":"Felecia Rower","role":"Frontend Developer","about":"Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing","avatar":"/static/media/avatar-s-2.d21f2121.jpg","status":"offline","chat":{"id":1,"unseenMsgs":3,"lastMessage":{"message":"If it takes long you can mail me at my mail address.","time":"2022-03-22T00:12:52.007Z","senderId":11}}},{"id":2,"fullName":"Adalberto Granzin","role":"UI/UX Designer","about":"Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.","avatar":"/static/media/avatar-s-1.d383013d.jpg","status":"busy","chat":{"id":2,"unseenMsgs":1,"lastMessage":{"message":"I will purchase it for sure. 👍","time":"2022-03-23T00:12:52.007Z","senderId":1}}}]}',
-        // );
     }
 
     async connection(ws: WebSocket, req: IncomingMessage): Promise<void> {
@@ -126,7 +120,6 @@ export class MessageService {
 
     private async buildUserMessages(userId: number): Promise<UserMessages> {
         const messages = await this.messageRepository.findMessages(userId);
-        console.log(messages);
 
         // group the messages by the id of the user who isn't the client id
         return messages.reduce((messages, message) => {
