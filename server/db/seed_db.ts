@@ -16,7 +16,7 @@ import { TestRepository } from "../src/repositories/test_repository";
 import { TestType } from "../src/entities/test_type";
 import { TestResultType } from "../src/entities/test_result_type";
 import { LocationReportRepository } from "../src/repositories/location_report_repository";
-import {MessageRepository} from "../src/repositories/message_repository";
+import { MessageRepository } from "../src/repositories/message_repository";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();

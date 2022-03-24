@@ -44,7 +44,7 @@ const AppChat = () => {
                     <div className="content-body">
                         <div
                             className={classnames("body-content-overlay", {
-                                show: userSidebarRight === true || sidebar === true || userSidebarLeft === true,
+                                show: userSidebarRight || sidebar || userSidebarLeft,
                             })}
                             onClick={handleOverlayClick}
                         />

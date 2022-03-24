@@ -1,33 +1,29 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import { sendMsg } from "./store";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, Image, Send } from "react-feather";
-import { Form, Label, Input, Button, InputGroup, InputGroupText } from "reactstrap";
+import { MessageSquare, Menu, Send } from "react-feather";
+import { Form, Input, Button, InputGroup} from "reactstrap";
 
 const ChatLog = (props) => {
-    // ** Props & Store
     const { handleSidebar, store, userSidebarLeft } = props;
     const { selectedUser } = store;
 
-    // ** Refs & Dispatch
     const chatArea = useRef(null);
     const dispatch = useDispatch();
+
     const userId = useSelector((state) => state.auth.userData.user.account.userId);
     const token = useSelector((state) => state.auth.userData.token);
 
-    // ** State
     const [msg, setMsg] = useState("");
 
-    // ** Scroll to chat bottom
     const scrollToBottom = () => {
         const chatContainer = ReactDOM.findDOMNode(chatArea.current);
         chatContainer.scrollTop = Number.MAX_SAFE_INTEGER;
     };
 
-    // ** If user chat is not empty scrollToBottom
     useEffect(() => {
         const selectedUserLen = Object.keys(selectedUser).length;
 
@@ -36,7 +32,6 @@ const ChatLog = (props) => {
         }
     }, [selectedUser]);
 
-    // ** Formats chat data based on sender
     const formattedChatData = () => {
         let chatLog = [];
         if (selectedUser.chat) {
@@ -73,7 +68,6 @@ const ChatLog = (props) => {
         return formattedChatLog;
     };
 
-    // ** Renders user chat
     const renderChats = () => {
         return formattedChatData().map((item, index) => {
             return (
@@ -95,14 +89,12 @@ const ChatLog = (props) => {
         });
     };
 
-    // ** On mobile screen open left sidebar on Start Conversation Click
     const handleStartConversation = () => {
         if (!Object.keys(selectedUser).length && !userSidebarLeft && window.innerWidth < 992) {
             handleSidebar();
         }
     };
 
-    // ** Sends New Msg
     const handleSendMsg = (e) => {
         e.preventDefault();
         if (msg.length) {
@@ -111,7 +103,6 @@ const ChatLog = (props) => {
         }
     };
 
-    // ** ChatWrapper tag based on chat's length
     const ChatWrapper = Object.keys(selectedUser).length && selectedUser.chat ? PerfectScrollbar : "div";
 
     return (

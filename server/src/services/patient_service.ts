@@ -32,7 +32,7 @@ export class PatientService {
         await this.messageRepository.insertMessage({
             from: doctorId,
             to: patientId,
-            body: "hello?",
+            body: "",
             createdOn: new Date(),
         });
     }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { selectChat } from "./store";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDateToMonthShort, isObjEmpty } from "@utils";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";

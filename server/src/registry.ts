@@ -40,7 +40,7 @@ import { AppointmentRepository } from "./repositories/appointment_repository";
 import { LocationReportController } from "./controllers/location_report_controller";
 import { LocationReportService } from "./services/location_report_service";
 import { LocationReportRepository } from "./repositories/location_report_repository";
-import {MessageController} from "./controllers/message_controller";
+import { MessageController } from "./controllers/message_controller";
 
 const container = new Container();
 
@@ -67,10 +67,7 @@ container
     .bind<interfaces.Controller>(TYPE.Controller)
     .to(LocationReportController)
     .whenTargetNamed("LocationReportController");
-container
-    .bind<interfaces.Controller>(TYPE.Controller)
-    .to(MessageController)
-    .whenTargetNamed("MessageController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(MessageController).whenTargetNamed("MessageController");
 
 // Services
 container
