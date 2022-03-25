@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Controller, Get, interfaces, Post} from "inversify-restify-utils";
+import { Controller, Get, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
 import * as Joi from "joi";
