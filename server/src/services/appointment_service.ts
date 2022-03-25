@@ -47,4 +47,8 @@ export class AppointmentService {
             notificationBody,
         );
     }
+
+    async getAppointments(reqUser: ReqUser): Promise<Appointment[]> {
+        return this.appointmentRepository.findAppointments(reqUser.userId);
+    }
 }
