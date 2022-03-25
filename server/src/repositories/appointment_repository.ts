@@ -46,10 +46,19 @@ export class AppointmentRepository {
                 ad.city,
                 ad.province,
                 ad.postal_code,
-                ad.country
+                ad.country,
+                du.first_name AS doctor_first_name,
+                du.last_name AS doctor_last_name,
+                du.email AS doctor_email,
+                pu.first_name AS patient_first_name,
+                pu.last_name AS patient_last_name,
+                pu.email AS patient_email
             FROM appointments AS a
             JOIN addresses ad on ad.address_id = a.address_id
-            WHERE a.patient_id = $1 OR a.doctor_id = $1`;
+            JOIN users AS du ON du.user_id = a.doctor_id
+            JOIN users AS pu ON pu.user_id = a.patient_id
+            WHERE a.patient_id = $1 OR a.doctor_id = $1
+        `;
 
         const res = await client.query(queryString, [userId]).finally(() => client.release());
         return this.buildAppointments(res);
@@ -67,7 +76,15 @@ export class AppointmentRepository {
         return {
             appointmentId: row.appointment_id,
             patientId: row.patient_id,
+            patientDetails: {
+                name: `${row.patient_first_name} ${row.patient_last_name}`,
+                email: row.patient_email,
+            },
             doctorId: row.doctor_id,
+            doctorDetails: {
+                name: `${row.doctor_first_name} ${row.doctor_last_name}`,
+                email: row.doctor_email,
+            },
             startDate: new Date(row.start_date),
             endDate: new Date(row.end_date),
             address: {

@@ -66,18 +66,25 @@ export default (userId) => [
                 accessibleBy: ["ADMIN"],
             },
             {
-                id: "patientList",
-                title: "Patient List",
-                icon: <Circle />,
-                navLink: "/patients",
-                accessibleBy: ["DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
-            },
-            {
                 id: "statusReportInbox",
                 title: "Status Report Inbox",
                 icon: <Circle />,
                 navLink: "/statuses/inbox",
                 accessibleBy: ["DOCTOR"],
+            },
+            {
+                id: "appointments",
+                title: "Appointments",
+                icon: <Circle />,
+                navLink: "/appointments",
+                accessibleBy: ["DOCTOR", "PATIENT"],
+            },
+            {
+                id: "patientList",
+                title: "Patient List",
+                icon: <Circle />,
+                navLink: "/patients",
+                accessibleBy: ["DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER"],
             },
             {
                 id: "statusReport",
