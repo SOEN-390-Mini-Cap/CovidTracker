@@ -276,3 +276,13 @@ export async function postLocationReport(token, data) {
         },
     );
 }
+
+export async function getAppointments(token) {
+    const res = await axios.get(`${baseUrl}/appointments`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data;
+}

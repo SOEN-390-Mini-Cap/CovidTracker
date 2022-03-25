@@ -1,121 +1,145 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
-import { Badge, Card } from "reactstrap";
-import { ChevronDown, Eye } from "react-feather";
+import {Card, CardBody, CardText, Col, Row} from "reactstrap";
+import {Activity, ChevronDown, Heart} from "react-feather";
 import DataTable from "react-data-table-component";
-import { Link, useParams } from "react-router-dom";
-import { getStatusReports, getTestResults, getUser } from "../../../services/api";
-
-const columns = [
-    {
-        name: "#",
-        sortable: true,
-        width: "80px",
-        selector: (row) => row.testId,
-    },
-    {
-        name: "Date",
-        sortable: true,
-        selector: (row) =>
-            new Date(row.testDate).toLocaleString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-            }),
-    },
-    {
-        name: "Type",
-        sortable: true,
-        selector: (row) => (
-            <Badge pill color={row.testType === "ANTIGEN" ? "light-primary" : "light-warning"}>
-                {row.testType}
-            </Badge>
-        ),
-    },
-    {
-        name: "Result",
-        sortable: true,
-        selector: (row) => (
-            <Badge pill color={row.result === "POSITIVE" ? "light-success" : "light-danger"}>
-                {row.result}
-            </Badge>
-        ),
-    },
-    {
-        name: "Address",
-        sortable: true,
-        selector: (row) => (
-            <Fragment>
-                {row.address.streetAddress}
-                <br />
-                {row.address.city}, {row.address.province} {row.address.postalCode}
-                <br />
-                {row.address.country}
-            </Fragment>
-        ),
-    },
-    {
-        name: "Actions",
-        allowOverflow: true,
-        width: "80px",
-        cell: (row) => {
-            return (
-                <Link to={`/tests/${row.testId}`} className="m-auto">
-                    <div>
-                        <Eye color="#5E5873" size={20} />
-                    </div>
-                </Link>
-            );
-        },
-    },
-];
+import { getAppointments } from "../../../services/api";
+import Avatar from "../../../@core/components/avatar";
 
 const selectToken = (state) => state.auth.userData.token;
 const selectUserRole = (state) => state.auth.userData.user.role;
 
 function Appointments() {
-    const { patientId } = useParams();
     const token = useSelector(selectToken);
     const role = useSelector(selectUserRole);
-    const [testResults, setTestResults] = useState(null);
-    const [patient, setPatient] = useState(null);
-
+    const [appointments, setAppointments] = useState([]);
     useEffect(() => {
         async function f() {
-            const patient = await getUser(token, patientId);
-            setPatient(patient);
-            const testResults = await getTestResults(patientId, token);
-            setTestResults(testResults);
+            const appointments = await getAppointments(token);
+            setAppointments(appointments);
         }
         f();
-    }, [token, patientId]);
+    }, [token]);
+
+    const columns = [
+        {
+            name: "Start date",
+            sortable: true,
+            selector: (row) =>
+                new Date(row.startDate).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                }),
+        },
+        {
+            name: "End date",
+            sortable: true,
+            selector: (row) =>
+                new Date(row.endDate).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                }),
+        },
+        {
+            name: role === "DOCTOR" ? "Patient" : "Doctor",
+            sortable: true,
+            minWidth: "280px",
+            selector: (row) => {
+                const userDetails = role === "DOCTOR" ? row.patientDetails : row.doctorDetails;
+                return (
+                    <Fragment>
+                        <span className="fw-bold">{userDetails.name}</span>
+                        <br />
+                        {userDetails.email}
+                    </Fragment>
+                );
+            },
+        },
+        {
+            name: "Address",
+            sortable: true,
+            selector: (row) => (
+                <Fragment>
+                    {row.address.streetAddress}
+                    <br />
+                    {row.address.city}, {row.address.province} {row.address.postalCode}
+                    <br />
+                    {row.address.country}
+                </Fragment>
+            ),
+        },
+    ];
+
+    const TotalAppointmentsCard = (
+        <Card className="card-statistics">
+            <CardBody className="statistics-body">
+                <div className="d-flex align-items-center">
+                    <div className="my-auto">
+                        <h3 className="fw-bolder">{appointments.length}</h3>
+                        <CardText>Total Appointments</CardText>
+                    </div>
+                    <Avatar color="light-danger" icon={<Heart size={24} />} className="ms-auto" />
+                </div>
+            </CardBody>
+        </Card>
+    );
+
+    const TodayAppointments = (
+        <Card className="card-statistics">
+            <CardBody className="statistics-body">
+                <div className="d-flex align-items-center">
+                    <div className="my-auto">
+                        <h3 className="fw-bolder">
+                            {
+                                appointments.filter((a) => {
+                                    const today = new Date();
+                                    const appointmentDate = new Date(a?.startDate);
+                                    return (
+                                        appointmentDate.getFullYear() === today.getFullYear() &&
+                                        appointmentDate.getMonth() === today.getMonth() &&
+                                        appointmentDate.getDate() === today.getDate()
+                                    );
+                                }).length
+                            }
+                        </h3>
+                        <CardText>Appointments Today</CardText>
+                    </div>
+                    <Avatar color="light-primary" icon={<Activity size={24} />} className="ms-auto" />
+                </div>
+            </CardBody>
+        </Card>
+    );
 
     return (
         <div>
-            {patient &&
-                (role === "PATIENT" ? (
-                    <BreadCrumbsPage
-                        breadCrumbTitle="Test Results"
-                        breadCrumbParent="Patient"
-                        breadCrumbActive="Test Results"
-                    />
-                ) : (
-                    <BreadCrumbsPage
-                        breadCrumbTitle={`${patient.firstName} ${patient.lastName}'s Test Results`}
-                        breadCrumbParent="Patient"
-                        breadCrumbParent2={<Link to="/patients">Patient List</Link>}
-                        breadCrumbActive="Test Results"
-                    />
-                ))}
+            <BreadCrumbsPage
+                breadCrumbTitle="Appointments"
+                breadCrumbParent="Patient"
+                breadCrumbActive="Appointments"
+            />
+            {role === "DOCTOR" && (
+                <Row className="match-height">
+                    <Col md="4" xs="12">
+                        {TotalAppointmentsCard}
+                    </Col>
+                    <Col md="4" xs="12">
+                        {TodayAppointments}
+                    </Col>
+                </Row>
+            )}
             <Card className="overflow-hidden">
                 <div className="react-dataTable">
                     <DataTable
                         noHeader
                         pagination
-                        data={testResults || []}
+                        data={appointments}
                         columns={columns}
                         className="react-dataTable"
                         sortIcon={<ChevronDown size={10} />}
