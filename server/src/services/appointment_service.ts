@@ -5,6 +5,7 @@ import { UserRepository } from "../repositories/user_repository";
 import { AppointmentRepository } from "../repositories/appointment_repository";
 import { Appointment } from "../entities/appointment";
 import { ReqUser } from "../entities/req_user";
+import { NotificationService } from "./notification_service";
 
 @injectable()
 export class AppointmentService {
@@ -18,6 +19,9 @@ export class AppointmentService {
         @inject("Service")
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
+        @inject("Service")
+        @named("NotificationService")
+        private readonly notificationService: NotificationService,
     ) {}
 
     async postAppointment(reqUser: ReqUser, appointment: Appointment): Promise<void> {
@@ -31,5 +35,16 @@ export class AppointmentService {
 
         appointment.address.addressId = await this.userRepository.addAddress(appointment.address);
         await this.appointmentRepository.insertAppointment(appointment);
+
+        // notify patient of new appointment
+        const doctor = await this.userRepository.findUserByUserId(appointment.doctorId);
+        // eslint-disable-next-line
+        const notificationBody = `Your doctor ${doctor.firstName} ${doctor.lastName} has booked an appointment from ${appointment.startDate.toISOString()} to ${appointment.endDate.toISOString()}. You can view more details about this appointment through the CovidTracker application.`;
+        this.notificationService.sendSMS(appointment.patientId, notificationBody);
+        this.notificationService.sendEmail(
+            appointment.patientId,
+            "Your doctor has booked a new appointment",
+            notificationBody,
+        );
     }
 }
