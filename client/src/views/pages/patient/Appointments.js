@@ -1,8 +1,8 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
-import {Card, CardBody, CardText, Col, Row} from "reactstrap";
-import {Activity, ChevronDown, Heart} from "react-feather";
+import { Card, CardBody, CardText, Col, Row } from "reactstrap";
+import { Activity, ChevronDown, Heart } from "react-feather";
 import DataTable from "react-data-table-component";
 import { getAppointments } from "../../../services/api";
 import Avatar from "../../../@core/components/avatar";
