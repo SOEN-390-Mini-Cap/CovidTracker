@@ -7,6 +7,9 @@ import { Status, StatusBody } from "../entities/status";
 import { Role } from "../entities/role";
 import { AuthenticationService } from "./authentication_service";
 import { ReqUser } from "../entities/req_user";
+import { NotificationService } from "./notification_service";
+import { PatientRepository } from "../repositories/patient_repository";
+import { UserRepository } from "../repositories/user_repository";
 
 @injectable()
 export class StatusService {
@@ -17,6 +20,15 @@ export class StatusService {
         @inject("Service")
         @named("AuthenticationService")
         private readonly authenticationService: AuthenticationService,
+        @inject("Service")
+        @named("NotificationService")
+        private readonly notificationService: NotificationService,
+        @inject("Repository")
+        @named("PatientRepository")
+        private readonly patientRepository: PatientRepository,
+        @inject("Repository")
+        @named("UserRepository")
+        private readonly userRepository: UserRepository,
     ) {}
 
     getStatusesStrategy(reqUser: ReqUser): () => Promise<Status[]> {
@@ -28,7 +40,15 @@ export class StatusService {
     }
 
     async postStatus(reqUserId: number, patientId: number, statusBody: StatusBody): Promise<void> {
-        if (!(reqUserId === patientId)) {
+        const status = {
+            statusId: null,
+            patientId,
+            isReviewed: false,
+            createdOn: new Date(),
+            statusBody,
+        };
+
+        if (reqUserId !== patientId) {
             throw new AuthorizationError();
         }
 
@@ -42,13 +62,24 @@ export class StatusService {
             throw new Error("Status is malformed");
         }
 
-        await this.statusRepository.insertStatus({
-            statusId: null,
-            patientId,
-            isReviewed: false,
-            createdOn: new Date(),
-            statusBody,
-        });
+        // send the patients doctor a notification if they update their status
+        // i.e. they create more than one status in a single calendar day
+        const latestStatus = await this.statusRepository.findLatestStatus(patientId);
+        const isStatusUpdate =
+            latestStatus?.createdOn.getFullYear() === status.createdOn.getFullYear() &&
+            latestStatus?.createdOn.getMonth() === status.createdOn.getMonth() &&
+            latestStatus?.createdOn.getDate() === status.createdOn.getDate();
+        if (isStatusUpdate) {
+            const assignedDoctorId = await this.patientRepository.findAssignedDoctorId(patientId);
+            const patient = await this.userRepository.findUserByUserId(reqUserId);
+
+            // eslint-disable-next-line
+            const notificationBody = `Your patient ${patient.firstName} ${patient.lastName} has updated their latest status report at ${status.createdOn.toISOString()}. You can view this update in your status report inbox.`;
+            this.notificationService.sendSMS(assignedDoctorId, notificationBody);
+            this.notificationService.sendEmail(assignedDoctorId, "Patient status report update", notificationBody);
+        }
+
+        await this.statusRepository.insertStatus(status);
     }
 
     async getStatus(statusId: number, reqUserId: number, role: Role): Promise<Status> {
