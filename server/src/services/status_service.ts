@@ -69,17 +69,20 @@ export class StatusService {
             latestStatus?.createdOn.getFullYear() === status.createdOn.getFullYear() &&
             latestStatus?.createdOn.getMonth() === status.createdOn.getMonth() &&
             latestStatus?.createdOn.getDate() === status.createdOn.getDate();
+
+        await this.statusRepository.insertStatus(status);
+
         if (isStatusUpdate) {
-            const assignedDoctorId = await this.patientRepository.findAssignedDoctorId(patientId);
-            const patient = await this.userRepository.findUserByUserId(reqUserId);
+            const [assignedDoctorId, patient] = await Promise.all([
+                this.patientRepository.findAssignedDoctorId(patientId),
+                this.userRepository.findUserByUserId(reqUserId),
+            ]);
 
             // eslint-disable-next-line
-            const notificationBody = `Your patient ${patient.firstName} ${patient.lastName} has updated their latest status report at ${status.createdOn.toISOString()}. You can view this update in your status report inbox.`;
+            const notificationBody = `Your patient ${patient.firstName} ${patient.lastName} has updated their latest status report at ${status.createdOn.toISOString()}. You can view this update in your CovidTracker status report inbox.`;
             this.notificationService.sendSMS(assignedDoctorId, notificationBody);
             this.notificationService.sendEmail(assignedDoctorId, "Patient status report update", notificationBody);
         }
-
-        await this.statusRepository.insertStatus(status);
     }
 
     async getStatus(statusId: number, reqUserId: number, role: Role): Promise<Status> {
