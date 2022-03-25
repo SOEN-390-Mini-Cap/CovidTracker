@@ -15,14 +15,16 @@ export class NotificationGateway {
     ) {}
 
     async sendSMS(sms: SMS): Promise<void> {
-        await this.twilioClient.messages.create({
-            body: sms.body,
-            to: sms.to,
-            messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
-        });
+        await this.twilioClient.messages
+            .create({
+                body: sms.body,
+                to: sms.to,
+                messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
+            })
+            .catch((e) => console.log(e));
     }
 
     async sendEmail(email: Email): Promise<void> {
-        await this.nodemailerTransporter.sendMail(email);
+        await this.nodemailerTransporter.sendMail(email).catch((e) => console.log(e));
     }
 }
