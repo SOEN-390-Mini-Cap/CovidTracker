@@ -4,7 +4,6 @@ import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils"
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
-import { PatientFilters } from "../entities/patient_filters";
 import { TestResultTypes } from "../entities/test_result_type";
 
 @Controller("/patients")
@@ -92,7 +91,7 @@ const putPatientPrioritizedSchema = Joi.object({
 }).required();
 
 const patientFilterSchema = Joi.object({
-    result: Joi.string().valid(...TestResultTypes),
+    status: Joi.string().valid(...TestResultTypes),
     testDateFrom: Joi.date().iso(),
     testDateTo: Joi.date().iso(),
 }).required();
