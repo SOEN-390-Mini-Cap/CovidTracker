@@ -78,5 +78,5 @@ const getMessagesSchema = Joi.object({
 const postMessageSchema = Joi.object({
     to: Joi.number().required(),
     body: Joi.string().required(),
-    isPriority: Joi.string().required(),
+    isPriority: Joi.bool().required(),
 }).required();
