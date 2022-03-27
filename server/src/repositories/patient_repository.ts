@@ -139,13 +139,21 @@ export class PatientRepository {
                 a.postal_code,
                 a.country
             FROM users AS u
-            JOIN patients AS p ON u.user_id = p.patient_id
-            JOIN roles AS r ON u.role_id = r.role_id
-            JOIN addresses AS a ON u.address_id = a.address_id
-            Join test_results As tr On tr.patient_id = p.patient_id
+                     JOIN patients AS p ON u.user_id = p.patient_id
+                     JOIN roles AS r ON u.role_id = r.role_id
+                     JOIN addresses AS a ON u.address_id = a.address_id
+                     Join (SELECT DISTINCT ON (tr.patient_id)
+                tr.test_id,
+                tr.patient_id,
+                tr.result,
+                tr.test_type,
+                tr.test_date,
+                tr.address_id
+                FROM test_results as tr
+                order by patient_id, test_date desc) As tr On tr.patient_id = p.patient_id
             WHERE tr.result = $1 AND
-                  tr.testDate >= $2 AND
-                  tr.testDate <= $3
+                tr.test_date >= $2 AND
+                tr.test_date <= $3
             ORDER BY u.is_prioritized DESC;
         `;
 
@@ -217,13 +225,22 @@ export class PatientRepository {
                 a.postal_code,
                 a.country
             FROM users AS u
-            JOIN patients AS p ON u.user_id = p.patient_id
-            JOIN roles AS r ON u.role_id = r.role_id
-            JOIN addresses AS a ON u.address_id = a.address_id
-            WHERE p.assigned_doctor_id = $1
-                  tr.result = $2 AND
-                  tr.testDate >= $3 AND
-                  tr.testDate <= $4
+                     JOIN patients AS p ON u.user_id = p.patient_id
+                     JOIN roles AS r ON u.role_id = r.role_id
+                     JOIN addresses AS a ON u.address_id = a.address_id
+                     Join (SELECT DISTINCT ON (tr.patient_id)
+                tr.test_id,
+                tr.patient_id,
+                tr.result,
+                tr.test_type,
+                tr.test_date,
+                tr.address_id
+                FROM test_results as tr
+                order by patient_id, test_date desc) As tr On tr.patient_id = p.patient_id
+            WHERE p.assigned_doctor_id = $1 AND
+                tr.result = $2 AND
+                tr.test_date >= $3 AND
+                tr.test_date <= $4
             ORDER BY u.is_prioritized DESC;
         `;
 
