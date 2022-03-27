@@ -33,9 +33,10 @@ export class MessageRepository {
                 from_user_id,
                 to_user_id,
                 message_body,
-                created_on
+                created_on,
+                is_priority
             )
-            VALUES ($1, $2, $3, $4);
+            VALUES ($1, $2, $3, $4, false);
         `;
         await client
             .query(sql, [message.from, message.to, message.body, message.createdOn])
