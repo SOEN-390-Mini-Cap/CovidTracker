@@ -4,7 +4,7 @@ import { sendMsg } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, Send, Flag, Image } from "react-feather";
+import { MessageSquare, Menu, Send, Flag } from "react-feather";
 import { Form, Input, Button, InputGroup, InputGroupText, Label } from "reactstrap";
 
 const ChatLog = (props) => {

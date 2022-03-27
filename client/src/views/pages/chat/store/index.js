@@ -1,41 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getChats, getMessages, postMessage } from "../../../../services/api";
 
 export const getChatContacts = createAsyncThunk("appChat/getChatContacts", async ({ token }) => {
-    const response = await axios.get(`http://localhost:8080/messages/chats`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return response.data;
+    return await getChats(token);
 });
 
 export const selectChat = createAsyncThunk("appChat/selectChat", async ({ token, id }, { dispatch }) => {
-    const response = await axios.get(`http://localhost:8080/messages?userId=${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    const response = await getMessages(token, id);
 
     await dispatch(getChatContacts({ token }));
-    return response.data;
+    return response;
 });
 
 export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, body, isPriority }, { dispatch }) => {
-    await axios.post(
-        "http://localhost:8080/messages",
-        {
-            to,
-            body,
-            isPriority,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+    await postMessage(token, {
+        to,
+        body,
+        isPriority,
+    });
     await dispatch(selectChat({ token, id: to }));
 });
 

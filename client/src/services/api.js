@@ -258,7 +258,6 @@ export async function postAppointment(token, data) {
 }
 
 export async function postLocationReport(token, data) {
-    console.log(data);
     await axios.post(
         `${baseUrl}/location_reports`,
         {
@@ -285,4 +284,32 @@ export async function getAppointments(token) {
     });
 
     return res.data;
+}
+
+export async function getChats(token) {
+    const response = await axios.get(`${baseUrl}/messages/chats`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response.data;
+}
+
+export async function getMessages(token, userId) {
+    const response = await axios.get(`${baseUrl}/messages?userId=${userId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response.data;
+}
+
+export async function postMessage(token, data) {
+    await axios.post(`${baseUrl}/messages`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
 }
