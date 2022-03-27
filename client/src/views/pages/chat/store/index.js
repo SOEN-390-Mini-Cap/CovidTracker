@@ -22,13 +22,13 @@ export const selectChat = createAsyncThunk("appChat/selectChat", async ({ token,
     return response.data;
 });
 
-export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, body }, { dispatch }) => {
+export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, body, isPriority }, { dispatch }) => {
     await axios.post(
         "http://localhost:8080/messages",
         {
             to,
             body,
-            isPriority: false,
+            isPriority,
         },
         {
             headers: {

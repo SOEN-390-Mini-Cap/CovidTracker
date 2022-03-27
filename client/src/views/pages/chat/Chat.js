@@ -4,8 +4,8 @@ import { sendMsg } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, Send } from "react-feather";
-import { Form, Input, Button, InputGroup} from "reactstrap";
+import { MessageSquare, Menu, Send, Flag, Image } from "react-feather";
+import { Form, Input, Button, InputGroup, InputGroupText, Label } from "reactstrap";
 
 const ChatLog = (props) => {
     const { handleSidebar, store, userSidebarLeft } = props;
@@ -16,8 +16,10 @@ const ChatLog = (props) => {
 
     const userId = useSelector((state) => state.auth.userData.user.account.userId);
     const token = useSelector((state) => state.auth.userData.token);
+    const role = useSelector((state) => state.auth.userData.user.role);
 
     const [msg, setMsg] = useState("");
+    const [isPriority, setIsPriority] = useState(false);
 
     const scrollToBottom = () => {
         const chatContainer = ReactDOM.findDOMNode(chatArea.current);
@@ -49,6 +51,7 @@ const ChatLog = (props) => {
                 msgGroup.messages.push({
                     msg: msg.message,
                     time: msg.time,
+                    isPriority: msg.isPriority,
                 });
             } else {
                 chatMessageSenderId = msg.senderId;
@@ -59,6 +62,7 @@ const ChatLog = (props) => {
                         {
                             msg: msg.message,
                             time: msg.time,
+                            isPriority: msg.isPriority,
                         },
                     ],
                 };
@@ -79,7 +83,25 @@ const ChatLog = (props) => {
                 >
                     <div className="chat-body">
                         {item.messages.map((chat) => (
-                            <div key={chat.msg} className="chat-content">
+                            <div
+                                key={chat.msg}
+                                className="chat-content"
+                                style={
+                                    item.senderId === userId
+                                        ? {
+                                              backgroundImage: chat.isPriority
+                                                  ? "linear-gradient(80deg, #EA5455, #EA5455)"
+                                                  : "linear-gradient(80deg, #259EF0, #259EF0)",
+                                              color: chat.isPriority ? "#FFFFFF" : "",
+                                          }
+                                        : {
+                                              backgroundImage: chat.isPriority
+                                                  ? "linear-gradient(80deg, #EA5455, #EA5455)"
+                                                  : "",
+                                              color: chat.isPriority ? "#FFFFFF" : "",
+                                          }
+                                }
+                            >
                                 <p>{chat.msg}</p>
                             </div>
                         ))}
@@ -98,7 +120,8 @@ const ChatLog = (props) => {
     const handleSendMsg = (e) => {
         e.preventDefault();
         if (msg.length) {
-            dispatch(sendMsg({ token, to: selectedUser.contact.id, body: msg }));
+            const message = { token, to: selectedUser.contact.id, body: msg, isPriority };
+            dispatch(sendMsg(message));
             setMsg("");
         }
     };
@@ -139,6 +162,17 @@ const ChatLog = (props) => {
                                 onChange={(e) => setMsg(e.target.value)}
                                 placeholder="Type a message..."
                             />
+                            {role === "PATIENT" && (
+                                <InputGroupText>
+                                    <Label className="mb-0">
+                                        <Flag
+                                            color={isPriority ? "#EA5455" : "#5E5873"}
+                                            size={20}
+                                            onClick={() => setIsPriority(!isPriority)}
+                                        />
+                                    </Label>
+                                </InputGroupText>
+                            )}
                         </InputGroup>
                         <Button className="send" color="primary">
                             <Send size={14} className="d-lg-none" />
