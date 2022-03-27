@@ -5,6 +5,7 @@ import { Role } from "../entities/role";
 import { UserRepository } from "./user_repository";
 import { PatientCount } from "../entities/patient_counts";
 import { User } from "../entities/user";
+import { TestResultType } from "../entities/test_result_type";
 
 @injectable()
 export class PatientRepository {
@@ -114,6 +115,44 @@ export class PatientRepository {
         return this.userRepository.buildUsers(res);
     }
 
+    async findPatientsFiltered(testResult: TestResultType, testDateFrom: Date, testDateTo: Date): Promise<User[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                u.user_id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.phone_number,
+                u.gender,
+                u.date_of_birth,
+                u.created_on,
+                u.is_prioritized,
+                r.role_name,
+                a.address_id,
+                a.street_address,
+                a.street_address_line_two,
+                a.city,
+                a.province,
+                a.postal_code,
+                a.country
+            FROM users AS u
+            JOIN patients AS p ON u.user_id = p.patient_id
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id
+            Join test_results As tr On tr.patient_id = p.patient_id
+            WHERE tr.result = $1 AND
+                  tr.testDate >= $2 AND
+                  tr.testDate <= $3
+            ORDER BY u.is_prioritized DESC;
+        `;
+
+        const res = await client.query(sql, [testResult, testDateFrom, testDateTo]).finally(() => client.release());
+        return this.userRepository.buildUsers(res);
+    }
+
     async findPatientsAssignedToDoctor(doctorId: number): Promise<User[]> {
         const client = await this.pool.connect();
 
@@ -146,6 +185,51 @@ export class PatientRepository {
         `;
 
         const res = await client.query(sql, [doctorId]).finally(() => client.release());
+        return this.userRepository.buildUsers(res);
+    }
+
+    async findPatientsAssignedToDoctorFiltered(
+        doctorId: number,
+        testResult: TestResultType,
+        testDateFrom: Date,
+        testDateTo: Date,
+    ): Promise<User[]> {
+        const client = await this.pool.connect();
+
+        const sql = `
+            SELECT
+                u.user_id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.phone_number,
+                u.gender,
+                u.date_of_birth,
+                u.created_on,
+                u.is_prioritized,
+                r.role_name,
+                a.address_id,
+                a.street_address,
+                a.street_address_line_two,
+                a.city,
+                a.province,
+                a.postal_code,
+                a.country
+            FROM users AS u
+            JOIN patients AS p ON u.user_id = p.patient_id
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id
+            WHERE p.assigned_doctor_id = $1
+                  tr.result = $2 AND
+                  tr.testDate >= $3 AND
+                  tr.testDate <= $4
+            ORDER BY u.is_prioritized DESC;
+        `;
+
+        const res = await client
+            .query(sql, [doctorId, testResult, testDateFrom, testDateTo])
+            .finally(() => client.release());
         return this.userRepository.buildUsers(res);
     }
 

@@ -7,6 +7,7 @@ import { Role } from "../entities/role";
 import { AuthorizationError } from "../entities/errors/authorization_error";
 import { AuthenticationService } from "./authentication_service";
 import { MessageRepository } from "../repositories/message_repository";
+import { PatientFilters } from "../entities/patient_filters";
 
 @injectable()
 export class PatientService {
@@ -37,15 +38,45 @@ export class PatientService {
         });
     }
 
-    getPatientsStrategy(reqUser: ReqUser): () => Promise<User[]> {
+    getPatientsStrategy(reqUser: ReqUser, filters: PatientFilters): () => Promise<User[]> {
+        const isFiltered: boolean = !!filters.testDateTo && !!filters.testDateFrom && !!filters.status;
+
         if (reqUser.role === Role.DOCTOR) {
-            return this.patientRepository.findPatientsAssignedToDoctor.bind(this.patientRepository, reqUser.userId);
+            if (isFiltered) {
+                return this.patientRepository.findPatientsAssignedToDoctorFiltered.bind(
+                    this.patientRepository,
+                    reqUser.userId,
+                    filters.status,
+                    filters.testDateFrom,
+                    filters.testDateTo,
+                );
+            } else {
+                return this.patientRepository.findPatientsAssignedToDoctor.bind(this.patientRepository, reqUser.userId);
+            }
         }
         if (reqUser.role === Role.HEALTH_OFFICIAL) {
-            return this.patientRepository.findPatients.bind(this.patientRepository);
+            if (isFiltered) {
+                return this.patientRepository.findPatientsFiltered.bind(
+                    this.patientRepository,
+                    filters.status,
+                    filters.testDateFrom,
+                    filters.testDateTo,
+                );
+            } else {
+                return this.patientRepository.findPatients.bind(this.patientRepository);
+            }
         }
         if (reqUser.role === Role.IMMIGRATION_OFFICER) {
-            return this.patientRepository.findPatients.bind(this.patientRepository);
+            if (isFiltered) {
+                return this.patientRepository.findPatientsFiltered.bind(
+                    this.patientRepository,
+                    filters.status,
+                    filters.testDateFrom,
+                    filters.testDateTo,
+                );
+            } else {
+                return this.patientRepository.findPatients.bind(this.patientRepository);
+            }
         }
 
         throw new AuthorizationError();

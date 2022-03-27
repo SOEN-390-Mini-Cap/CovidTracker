@@ -4,6 +4,7 @@ import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils"
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
+import { PatientFilters } from "../entities/patient_filters";
 
 @Controller("/patients")
 @injectable()
@@ -59,7 +60,13 @@ export class PatientController implements interfaces.Controller {
     @Get("/", "injectAuthDataMiddleware")
     async getPatients(req: Request, res: Response): Promise<void> {
         try {
-            const patients = await this.patientService.getPatientsStrategy(req["token"])();
+            const filters: PatientFilters = {
+                status: req.query.status?.toUpperCase(),
+                testDateFrom: req.query.testDateFrom?.toISOString(),
+                testDateTo: req.query.testDateTo?.toLocaleString(),
+            };
+
+            const patients = await this.patientService.getPatientsStrategy(req["token"], filters)();
 
             res.json(200, patients);
         } catch (error) {
