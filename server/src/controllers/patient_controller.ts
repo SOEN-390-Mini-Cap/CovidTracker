@@ -5,6 +5,7 @@ import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
 import { PatientFilters } from "../entities/patient_filters";
+import { TestResultTypes } from "../entities/test_result_type";
 
 @Controller("/patients")
 @injectable()
@@ -60,13 +61,18 @@ export class PatientController implements interfaces.Controller {
     @Get("/", "injectAuthDataMiddleware")
     async getPatients(req: Request, res: Response): Promise<void> {
         try {
-            const filters: PatientFilters = {
+            const { value, error } = patientFilterSchema.validate({
                 status: req.query.status?.toUpperCase(),
                 testDateFrom: req.query.testDateFrom?.toISOString(),
-                testDateTo: req.query.testDateTo?.toLocaleString(),
-            };
+                testDateTo: req.query.testDateTo?.toISOString(),
+            });
 
-            const patients = await this.patientService.getPatientsStrategy(req["token"], filters)();
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const patients = await this.patientService.getPatientsStrategy(req["token"], value)();
 
             res.json(200, patients);
         } catch (error) {
@@ -83,4 +89,10 @@ const doctorSchema = Joi.object({
 const putPatientPrioritizedSchema = Joi.object({
     patientId: Joi.number().required(),
     isPrioritized: Joi.bool().required(),
+}).required();
+
+const patientFilterSchema = Joi.object({
+    result: Joi.string().valid(...TestResultTypes),
+    testDateFrom: Joi.date().iso(),
+    testDateTo: Joi.date().iso(),
 }).required();
