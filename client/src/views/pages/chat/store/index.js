@@ -18,6 +18,7 @@ export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, b
         body,
         isPriority,
     });
+
     await dispatch(selectChat({ token, id: to }));
 });
 
