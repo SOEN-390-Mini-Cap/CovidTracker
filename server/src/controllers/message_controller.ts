@@ -30,6 +30,7 @@ export class MessageController implements interfaces.Controller {
                 from: req["token"].userId,
                 to: value.to,
                 body: value.body,
+                isPriority: value.isPriority,
             });
 
             res.json(201);
@@ -77,4 +78,5 @@ const getMessagesSchema = Joi.object({
 const postMessageSchema = Joi.object({
     to: Joi.number().required(),
     body: Joi.string().required(),
+    isPriority: Joi.string().required(),
 }).required();

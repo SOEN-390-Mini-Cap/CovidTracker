@@ -36,10 +36,10 @@ export class MessageRepository {
                 created_on,
                 is_priority
             )
-            VALUES ($1, $2, $3, $4, false);
+            VALUES ($1, $2, $3, $4, $5);
         `;
         await client
-            .query(sql, [message.from, message.to, message.body, message.createdOn])
+            .query(sql, [message.from, message.to, message.body, message.createdOn, message.isPriority])
             .finally(() => client.release());
     }
 
