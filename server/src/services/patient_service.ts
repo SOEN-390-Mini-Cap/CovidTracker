@@ -34,6 +34,7 @@ export class PatientService {
             to: patientId,
             body: "",
             createdOn: new Date(),
+            isPriority: false,
         });
     }
 

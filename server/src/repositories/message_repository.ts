@@ -16,7 +16,8 @@ export class MessageRepository {
                 m.from_user_id,
                 m.to_user_id,
                 m.message_body,
-                m.created_on
+                m.created_on,
+                m.is_priority
             FROM messages AS m
             WHERE m.from_user_id = $1 OR m.to_user_id = $1
             ORDER BY m.created_on ASC;
@@ -36,10 +37,10 @@ export class MessageRepository {
                 created_on,
                 is_priority
             )
-            VALUES ($1, $2, $3, $4, false);
+            VALUES ($1, $2, $3, $4, $5);
         `;
         await client
-            .query(sql, [message.from, message.to, message.body, message.createdOn])
+            .query(sql, [message.from, message.to, message.body, message.createdOn, message.isPriority])
             .finally(() => client.release());
     }
 
@@ -58,6 +59,7 @@ export class MessageRepository {
             to: +row.to_user_id,
             body: row.message_body,
             createdOn: new Date(row.created_on),
+            isPriority: row.is_priority,
         };
     }
 }

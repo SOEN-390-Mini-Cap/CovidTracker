@@ -28,6 +28,7 @@ export const sendMsg = createAsyncThunk("appChat/sendMsg", async ({ token, to, b
         {
             to,
             body,
+            isPriority: false,
         },
         {
             headers: {

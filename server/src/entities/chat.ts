@@ -14,6 +14,7 @@ type ChatMessage = {
     senderId: number;
     message: string;
     time: Date;
+    isPriority: boolean;
 };
 
 export type ChatContacts = {
