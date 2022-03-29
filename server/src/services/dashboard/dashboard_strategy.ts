@@ -1,9 +1,9 @@
-import {inject, injectable, named} from "inversify";
-import {ReqUser} from "../../entities/req_user";
-import {Dashboard} from "../../entities/dashboard";
-import {Role} from "../../entities/role";
-import {AuthorizationError} from "../../entities/errors/authorization_error";
-import {DashboardBuilder} from "./dashboard_builder";
+import { inject, injectable, named } from "inversify";
+import { ReqUser } from "../../entities/req_user";
+import { Dashboard } from "../../entities/dashboard";
+import { Role } from "../../entities/role";
+import { AuthorizationError } from "../../entities/errors/authorization_error";
+import { DashboardBuilder } from "./dashboard_builder";
 
 @injectable()
 export class DashboardStrategy {
@@ -37,7 +37,7 @@ export class DashboardStrategy {
     }
 
     private async userDashboardStrategy(): Promise<Dashboard> {
-        return this.dashboardBuilder
+        return this.dashboardBuilder //
             .setCasesSummaryWidget()
             .setCasesChartWidget()
             .setCasesByAgeChartWidget()
@@ -45,22 +45,49 @@ export class DashboardStrategy {
     }
 
     private async patientDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder
+            .setCasesSummaryWidget()
+            .setPatientTasksSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .build();
     }
 
     private async doctorDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder
+            .setCasesSummaryWidget()
+            .setDoctorPatientSummaryWidget()
+            .setDoctorTasksSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .setSymptomsChartWidget()
+            .build();
     }
 
     private async adminDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder
+            .setCasesSummaryWidget()
+            .setAdminPatientSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .build();
     }
 
     private async healthOfficialDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder
+            .setCasesSummaryWidget()
+            .setHealthOfficialPatientSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .setSymptomsChartWidget()
+            .build();
     }
 
     private async immigrationOfficerDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder //
+            .setCasesSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .build();
     }
 }

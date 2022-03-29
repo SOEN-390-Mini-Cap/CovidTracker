@@ -1,8 +1,5 @@
-import {inject, injectable, named} from "inversify";
-import {ReqUser} from "../../entities/req_user";
-import {Dashboard} from "../../entities/dashboard";
-import {Role} from "../../entities/role";
-import {AuthorizationError} from "../../entities/errors/authorization_error";
+import { injectable } from "inversify";
+import { Dashboard } from "../../entities/dashboard";
 
 @injectable()
 export class DashboardBuilder {
@@ -17,12 +14,47 @@ export class DashboardBuilder {
         return this;
     }
 
+    setAdminPatientSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setDoctorPatientSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setHealthOfficialPatientSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setImmigrationOfficerPatientSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setDoctorTasksSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setPatientTasksSummaryWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
     setCasesChartWidget(): DashboardBuilder {
         this.dashboard.push(null);
         return this;
     }
 
     setCasesByAgeChartWidget(): DashboardBuilder {
+        this.dashboard.push(null);
+        return this;
+    }
+
+    setSymptomsChartWidget(): DashboardBuilder {
         this.dashboard.push(null);
         return this;
     }

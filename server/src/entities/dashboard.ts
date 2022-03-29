@@ -1,11 +1,11 @@
 export type Dashboard = Widget[];
 
 export interface Widget {
-    widgetType: WidgetType;
+    widgetComponentType: WidgetComponentType;
     title: string;
 }
 
-enum WidgetType {
+enum WidgetComponentType {
     AREA_CHART = "AREA_CHART",
     BAR_CHART = "BAR_CHART",
     POLAR_AREA_CHART = "POLAR_AREA_CHART",
