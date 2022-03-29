@@ -5,7 +5,7 @@ export interface Widget {
     title: string;
 }
 
-enum WidgetComponentType {
+export enum WidgetComponentType {
     AREA_CHART = "AREA_CHART",
     BAR_CHART = "BAR_CHART",
     POLAR_AREA_CHART = "POLAR_AREA_CHART",

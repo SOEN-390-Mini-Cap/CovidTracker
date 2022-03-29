@@ -1,16 +1,49 @@
-import { injectable } from "inversify";
-import { Dashboard } from "../../entities/dashboard";
+import {inject, injectable, named} from "inversify";
+import {Dashboard, SummaryWidget, WidgetComponentType} from "../../entities/dashboard";
+import {DashboardRepository} from "../../repositories/dashboard_repository";
 
 @injectable()
 export class DashboardBuilder {
     private dashboard: Dashboard;
 
-    constructor() {
+    constructor(
+        @inject("Service")
+        @named("DashboardRepository")
+        private readonly dashboardRepository: DashboardRepository,
+    ) {
         this.reset();
     }
 
-    setCasesSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+    async setCasesSummaryWidget(): Promise<DashboardBuilder> {
+        const [totalCases, currentCases, newCasesToday] = await Promise.all([
+            this.dashboardRepository.findTotalCases(),
+            this.dashboardRepository.findCurrentCases(),
+            this.dashboardRepository.findNewCasesToday(),
+        ]);
+
+        const widget = {
+            widgetComponentType: WidgetComponentType.SUMMARY,
+            title: "COVID-19 Summary",
+            summaries: [
+                {
+                    description: "Total Cases",
+                    value: totalCases,
+                    icon: "ArrowUp",
+                },
+                {
+                    description: "Current Cases",
+                    value: currentCases,
+                    icon: "Notes",
+                },
+                {
+                    description: "New Cases Today",
+                    value: newCasesToday,
+                    icon: "NotesPlus",
+                },
+            ],
+        } as SummaryWidget;
+
+        this.dashboard.push(widget);
         return this;
     }
 
