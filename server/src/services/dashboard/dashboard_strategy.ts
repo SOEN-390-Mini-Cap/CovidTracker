@@ -37,7 +37,11 @@ export class DashboardStrategy {
     }
 
     private async userDashboardStrategy(): Promise<Dashboard> {
-        return null;
+        return this.dashboardBuilder
+            .setCasesSummaryWidget()
+            .setCasesChartWidget()
+            .setCasesByAgeChartWidget()
+            .build();
     }
 
     private async patientDashboardStrategy(): Promise<Dashboard> {

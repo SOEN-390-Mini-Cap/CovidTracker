@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Controller, Get, interfaces } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
-import {DashboardStrategy} from "../services/dashboard/dashboard_strategy";
+import { DashboardStrategy } from "../services/dashboard/dashboard_strategy";
 
 @Controller("/dashboards")
 @injectable()
