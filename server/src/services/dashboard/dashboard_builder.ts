@@ -1,10 +1,10 @@
 import {inject, injectable, named} from "inversify";
-import {Dashboard, SummaryWidget, WidgetComponentType} from "../../entities/dashboard";
+import {Dashboard, SummaryWidget, Widget, WidgetComponentType} from "../../entities/dashboard";
 import {DashboardRepository} from "../../repositories/dashboard_repository";
 
 @injectable()
 export class DashboardBuilder {
-    private dashboard: Dashboard;
+    private dashboard: Promise<Widget>[];
 
     constructor(
         @inject("Service")
@@ -14,34 +14,38 @@ export class DashboardBuilder {
         this.reset();
     }
 
-    async setCasesSummaryWidget(): Promise<DashboardBuilder> {
-        const [totalCases, currentCases, newCasesToday] = await Promise.all([
-            this.dashboardRepository.findTotalCases(),
-            this.dashboardRepository.findCurrentCases(),
-            this.dashboardRepository.findNewCasesToday(),
-        ]);
+    setCasesSummaryWidget(): DashboardBuilder {
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [totalCases, currentCases, newCasesToday] = await Promise.all([
+                this.dashboardRepository.findTotalCases(),
+                this.dashboardRepository.findCurrentCases(),
+                this.dashboardRepository.findNewCasesToday(),
+            ]);
 
-        const widget = {
-            widgetComponentType: WidgetComponentType.SUMMARY,
-            title: "COVID-19 Summary",
-            summaries: [
-                {
-                    description: "Total Cases",
-                    value: totalCases,
-                    icon: "ArrowUp",
-                },
-                {
-                    description: "Current Cases",
-                    value: currentCases,
-                    icon: "Notes",
-                },
-                {
-                    description: "New Cases Today",
-                    value: newCasesToday,
-                    icon: "NotesPlus",
-                },
-            ],
-        } as SummaryWidget;
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "COVID-19 Summary",
+                summaries: [
+                    {
+                        description: "Total Cases",
+                        value: totalCases,
+                        icon: "ArrowUp",
+                    },
+                    {
+                        description: "Current Cases",
+                        value: currentCases,
+                        icon: "Notes",
+                    },
+                    {
+                        description: "New Cases Today",
+                        value: newCasesToday,
+                        icon: "NotesPlus",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
 
         this.dashboard.push(widget);
         return this;
