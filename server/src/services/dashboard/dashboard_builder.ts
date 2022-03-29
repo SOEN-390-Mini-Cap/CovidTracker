@@ -1,6 +1,6 @@
-import {inject, injectable, named} from "inversify";
-import {Dashboard, SummaryWidget, Widget, WidgetComponentType} from "../../entities/dashboard";
-import {DashboardRepository} from "../../repositories/dashboard_repository";
+import { inject, injectable, named } from "inversify";
+import { Dashboard, SummaryWidget, Widget, WidgetComponentType } from "../../entities/dashboard";
+import { DashboardRepository } from "../../repositories/dashboard_repository";
 
 @injectable()
 export class DashboardBuilder {
@@ -100,9 +100,9 @@ export class DashboardBuilder {
         this.dashboard = [];
     }
 
-    build(): Dashboard {
+    async build(): Promise<Dashboard> {
         const dashboard = [...this.dashboard];
         this.reset();
-        return dashboard;
+        return Promise.all(dashboard);
     }
 }
