@@ -1,22 +1,22 @@
 import "dotenv/config";
-import {Pool} from "pg";
+import { Pool } from "pg";
 import * as bcrypt from "bcrypt";
-import {UserRepository} from "../src/repositories/user_repository";
-import {DoctorRepository} from "../src/repositories/doctor_repository";
-import {PatientRepository} from "../src/repositories/patient_repository";
-import {AdminRepository} from "../src/repositories/admin_repository";
-import {StatusRepository} from "../src/repositories/status_repository";
-import {HealthOfficialRepository} from "../src/repositories/health_official_repository";
+import { UserRepository } from "../src/repositories/user_repository";
+import { DoctorRepository } from "../src/repositories/doctor_repository";
+import { PatientRepository } from "../src/repositories/patient_repository";
+import { AdminRepository } from "../src/repositories/admin_repository";
+import { StatusRepository } from "../src/repositories/status_repository";
+import { HealthOfficialRepository } from "../src/repositories/health_official_repository";
 import faker from "@faker-js/faker";
-import {Address} from "../src/entities/address";
-import {Gender} from "../src/entities/gender";
-import {ImmigrationOfficerRepository} from "../src/repositories/immigration_officer_repository";
-import {sampleSymptoms} from "./seed_data/sample_symptoms";
-import {TestRepository} from "../src/repositories/test_repository";
-import {TestType} from "../src/entities/test_type";
-import {TestResultType} from "../src/entities/test_result_type";
-import {LocationReportRepository} from "../src/repositories/location_report_repository";
-import {MessageRepository} from "../src/repositories/message_repository";
+import { Address } from "../src/entities/address";
+import { Gender } from "../src/entities/gender";
+import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
+import { sampleSymptoms } from "./seed_data/sample_symptoms";
+import { TestRepository } from "../src/repositories/test_repository";
+import { TestType } from "../src/entities/test_type";
+import { TestResultType } from "../src/entities/test_result_type";
+import { LocationReportRepository } from "../src/repositories/location_report_repository";
+import { MessageRepository } from "../src/repositories/message_repository";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();

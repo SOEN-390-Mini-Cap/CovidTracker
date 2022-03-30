@@ -41,10 +41,10 @@ import { LocationReportController } from "./controllers/location_report_controll
 import { LocationReportService } from "./services/location_report_service";
 import { LocationReportRepository } from "./repositories/location_report_repository";
 import { MessageController } from "./controllers/message_controller";
-import {DashboardController} from "./controllers/dashboard_controller";
-import {DashboardStrategy} from "./services/dashboard/dashboard_strategy";
-import {DashboardBuilder} from "./services/dashboard/dashboard_builder";
-import {DashboardRepository} from "./repositories/dashboard_repository";
+import { DashboardController } from "./controllers/dashboard_controller";
+import { DashboardStrategy } from "./services/dashboard/dashboard_strategy";
+import { DashboardBuilder } from "./services/dashboard/dashboard_builder";
+import { DashboardRepository } from "./repositories/dashboard_repository";
 
 const container = new Container();
 
