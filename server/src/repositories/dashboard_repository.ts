@@ -66,4 +66,17 @@ export class DashboardRepository {
         const res = await client.query(queryString, [minAge, maxAge]).finally(() => client.release());
         return res.rows[0].count;
     }
+
+    async findSymptomCountByDate(symptom: string, date: Date): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM statuses AS s
+            WHERE s.status_body::jsonb ? $1
+            AND DATE(s.created_on) = DATE($2);
+        `;
+        const res = await client.query(queryString, [symptom, date.toISOString()]).finally(() => client.release());
+        return res.rows[0].count;
+    }
 }

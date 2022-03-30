@@ -1,5 +1,12 @@
 import { inject, injectable, named } from "inversify";
-import {ChartWidget, Dashboard, SummaryWidget, Widget, WidgetComponentType} from "../../entities/dashboard";
+import {
+    ChartWidget,
+    Dashboard,
+    StackedDatapoint,
+    SummaryWidget,
+    Widget,
+    WidgetComponentType
+} from "../../entities/dashboard";
 import { DashboardRepository } from "../../repositories/dashboard_repository";
 
 @injectable()
@@ -152,7 +159,108 @@ export class DashboardBuilder {
     }
 
     setSymptomsChartWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const dates = [...Array(7)].map((_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                return d;
+            });
+
+            // Stack 0
+            const feverCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("fever", d)),
+            );
+            const coughCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("cough", d)),
+            );
+            const shortnessOfBreathCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("shortnessOfBreath", d)),
+            );
+            const lossOfTasteAndSmellCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("lossOfTasteAndSmell", d)),
+            );
+
+            // Stack 1
+            const nauseaCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("nausea", d)),
+            );
+            const stomachAchesCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("stomachAches", d)),
+            );
+            const vomitingCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("vomiting", d)),
+            );
+            const headacheCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("headache", d)),
+            );
+            const musclePainCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("musclePain", d)),
+            );
+            const soreThroatCountsByDate = await Promise.all(
+                dates.map((d) => this.dashboardRepository.findSymptomCountByDate("soreThroat", d)),
+            );
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.BAR_CHART,
+                labels: dates.map((d) => d.toISOString()),
+                dataset: [
+                    {
+                        label: "Fever",
+                        data: feverCountsByDate,
+                        stack: "Stack 0",
+                    },
+                    {
+                        label: "Cough",
+                        data: coughCountsByDate,
+                        stack: "Stack 0",
+                    },
+                    {
+                        label: "Shortness of Breath",
+                        data: shortnessOfBreathCountsByDate,
+                        stack: "Stack 0",
+                    },
+                    {
+                        label: "Loss of Taste and Smell",
+                        data: lossOfTasteAndSmellCountsByDate,
+                        stack: "Stack 0",
+                    },
+                    {
+                        label: "Nausea",
+                        data: nauseaCountsByDate,
+                        stack: "Stack 1",
+                    },
+                    {
+                        label: "Stomach Aches",
+                        data: stomachAchesCountsByDate,
+                        stack: "Stack 1",
+                    },
+                    {
+                        label: "Vomiting",
+                        data: vomitingCountsByDate,
+                        stack: "Stack 1",
+                    },
+                    {
+                        label: "Headache",
+                        data: headacheCountsByDate,
+                        stack: "Stack 1",
+                    },
+                    {
+                        label: "Muscle Pain",
+                        data: musclePainCountsByDate,
+                        stack: "Stack 1",
+                    },
+                    {
+                        label: "Sore Throat",
+                        data: soreThroatCountsByDate,
+                        stack: "Stack 1",
+                    },
+                ],
+            } as ChartWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 

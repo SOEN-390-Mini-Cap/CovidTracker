@@ -21,9 +21,7 @@ type Label = string;
 interface Datapoint {
     label: Label;
     data: number[];
-}
-interface StackedDatapoint extends Datapoint {
-    stack: string;
+    stack?: string;
 }
 type Dataset = Datapoint[];
 
