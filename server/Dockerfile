@@ -1,4 +1,4 @@
-FROM node:16 AS base
+FROM node:16-slim AS base
 WORKDIR /code
 EXPOSE 8080
 
