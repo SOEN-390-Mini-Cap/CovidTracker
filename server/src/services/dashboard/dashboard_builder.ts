@@ -114,12 +114,56 @@ export class DashboardBuilder {
     }
 
     setHealthOfficialPatientSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [patientCount, newStatusReportCount] = await Promise.all([
+                this.dashboardRepository.findPatientCount(),
+                this.dashboardRepository.findNewStatusReportCountByDate(new Date()),
+            ]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Patient Summary",
+                summaries: [
+                    {
+                        description: "Total Patients",
+                        value: patientCount,
+                        icon: "Heart",
+                    },
+                    {
+                        description: "New Status Reports",
+                        value: newStatusReportCount,
+                        icon: "NotesPurple",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
     setImmigrationOfficerPatientSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [patientCount] = await Promise.all([this.dashboardRepository.findPatientCount()]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Patient Summary",
+                summaries: [
+                    {
+                        description: "Total Patients",
+                        value: patientCount,
+                        icon: "Heart",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 

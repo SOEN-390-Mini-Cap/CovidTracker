@@ -183,4 +183,16 @@ export class DashboardRepository {
         const res = await client.query(queryString, [patientId, date.toISOString()]).finally(() => client.release());
         return res.rows[0].count;
     }
+
+    async findNewStatusReportCountByDate(date: Date): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM statuses AS s
+            WHERE DATE(s.created_on) = DATE($1);
+        `;
+        const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
+        return res.rows[0].count;
+    }
 }
