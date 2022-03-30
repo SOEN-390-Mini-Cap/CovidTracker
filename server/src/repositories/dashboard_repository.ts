@@ -79,4 +79,30 @@ export class DashboardRepository {
         const res = await client.query(queryString, [symptom, date.toISOString()]).finally(() => client.release());
         return res.rows[0].count;
     }
+
+    async findPatientCountByDoctor(doctorId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM patients AS p
+            WHERE p.assigned_doctor_id = $1;
+        `;
+        const res = await client.query(queryString, [doctorId]).finally(() => client.release());
+        return res.rows[0].count;
+    }
+
+    async findNewPatientCountByDoctor(doctorId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM patients AS p
+            JOIN users AS u ON u.user_id = p.patient_id
+            WHERE p.assigned_doctor_id = $1
+            AND DATE(u.created_on) = DATE(CURRENT_DATE);
+        `;
+        const res = await client.query(queryString, [doctorId]).finally(() => client.release());
+        return res.rows[0].count;
+    }
 }

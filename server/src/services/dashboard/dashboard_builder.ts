@@ -1,12 +1,5 @@
 import { inject, injectable, named } from "inversify";
-import {
-    ChartWidget,
-    Dashboard,
-    StackedDatapoint,
-    SummaryWidget,
-    Widget,
-    WidgetComponentType
-} from "../../entities/dashboard";
+import { ChartWidget, Dashboard, SummaryWidget, Widget, WidgetComponentType } from "../../entities/dashboard";
 import { DashboardRepository } from "../../repositories/dashboard_repository";
 
 @injectable()
@@ -63,8 +56,34 @@ export class DashboardBuilder {
         return this;
     }
 
-    setDoctorPatientSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+    setDoctorPatientSummaryWidget(doctorId: number): DashboardBuilder {
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [patientCount, newPatientCount] = await Promise.all([
+                this.dashboardRepository.findPatientCountByDoctor(doctorId),
+                this.dashboardRepository.findNewPatientCountByDoctor(doctorId),
+            ]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Patient Summary",
+                summaries: [
+                    {
+                        description: "Total Patients",
+                        value: patientCount,
+                        icon: "Heart",
+                    },
+                    {
+                        description: "New Patients Today",
+                        value: newPatientCount,
+                        icon: "NotesPlus",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
