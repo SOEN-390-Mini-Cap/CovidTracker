@@ -1,22 +1,22 @@
 import "dotenv/config";
-import { Pool } from "pg";
+import {Pool} from "pg";
 import * as bcrypt from "bcrypt";
-import { UserRepository } from "../src/repositories/user_repository";
-import { DoctorRepository } from "../src/repositories/doctor_repository";
-import { PatientRepository } from "../src/repositories/patient_repository";
-import { AdminRepository } from "../src/repositories/admin_repository";
-import { StatusRepository } from "../src/repositories/status_repository";
-import { HealthOfficialRepository } from "../src/repositories/health_official_repository";
+import {UserRepository} from "../src/repositories/user_repository";
+import {DoctorRepository} from "../src/repositories/doctor_repository";
+import {PatientRepository} from "../src/repositories/patient_repository";
+import {AdminRepository} from "../src/repositories/admin_repository";
+import {StatusRepository} from "../src/repositories/status_repository";
+import {HealthOfficialRepository} from "../src/repositories/health_official_repository";
 import faker from "@faker-js/faker";
-import { Address } from "../src/entities/address";
-import { Gender } from "../src/entities/gender";
-import { ImmigrationOfficerRepository } from "../src/repositories/immigration_officer_repository";
-import { sampleSymptoms } from "./seed_data/sample_symptoms";
-import { TestRepository } from "../src/repositories/test_repository";
-import { TestType } from "../src/entities/test_type";
-import { TestResultType } from "../src/entities/test_result_type";
-import { LocationReportRepository } from "../src/repositories/location_report_repository";
-import { MessageRepository } from "../src/repositories/message_repository";
+import {Address} from "../src/entities/address";
+import {Gender} from "../src/entities/gender";
+import {ImmigrationOfficerRepository} from "../src/repositories/immigration_officer_repository";
+import {sampleSymptoms} from "./seed_data/sample_symptoms";
+import {TestRepository} from "../src/repositories/test_repository";
+import {TestType} from "../src/entities/test_type";
+import {TestResultType} from "../src/entities/test_result_type";
+import {LocationReportRepository} from "../src/repositories/location_report_repository";
+import {MessageRepository} from "../src/repositories/message_repository";
 
 export async function seedDb(sizeSeed = 1): Promise<void> {
     const pool = new Pool();
@@ -183,22 +183,30 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
         }
     }
 
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 3,
-        testDate: new Date("01/11/1999"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.NEGATIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
+    // generate tests
+    for (let i = numPatients[0]; i < numPatients[1] - 1; i++) {
+        if (i < numPatients[1] - 2) {
+            const numTestsPerPatient = 10;
+            for (let j = 0; j < numTestsPerPatient; j++) {
+                await testRepository.insertTestResult({
+                    testId: null,
+                    patientId: i,
+                    testDate: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                    testType: faker.datatype.boolean() ? TestType.ANTIGEN : TestType.PCR,
+                    result: faker.datatype.boolean() ? TestResultType.POSITIVE : TestResultType.NEGATIVE,
+                    address: {
+                        addressId: faker.datatype.number({ min: numAddresses[0], max: numAddresses[1] - 1 }),
+                        streetAddress: null,
+                        streetAddressLineTwo: null,
+                        city: null,
+                        postalCode: null,
+                        province: null,
+                        country: null,
+                    },
+                });
+            }
+        }
+    }
 
     await testRepository.insertTestResult({
         testId: null,

@@ -16,10 +16,14 @@ export class DashboardBuilder {
 
     setCasesSummaryWidget(): DashboardBuilder {
         const widget = new Promise<Widget>(async (resolve) => {
+            const date = new Date();
+            const today = new Date(date.setUTCHours(0, 0, 0, 0)).toISOString();
+            const tomorrow = new Date(new Date(date.setDate(date.getDate() + 1)).setUTCHours(0, 0, 0, 0)).toISOString();
+
             const [totalCases, currentCases, newCasesToday] = await Promise.all([
                 this.dashboardRepository.findTotalCases(),
                 this.dashboardRepository.findCurrentCases(),
-                this.dashboardRepository.findNewCasesToday(),
+                this.dashboardRepository.findNewCasesToday(today, tomorrow),
             ]);
 
             const widget = {
