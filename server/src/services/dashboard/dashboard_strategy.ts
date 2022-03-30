@@ -21,7 +21,7 @@ export class DashboardStrategy {
             return this.patientDashboardStrategy;
         }
         if (reqUser.role === Role.DOCTOR) {
-            return this.doctorDashboardStrategy.bind(this.doctorDashboardStrategy, reqUser);
+            return this.doctorDashboardStrategy.bind(this, reqUser);
         }
         if (reqUser.role === Role.ADMIN) {
             return this.adminDashboardStrategy;
@@ -57,7 +57,7 @@ export class DashboardStrategy {
         return this.dashboardBuilder
             .setCasesSummaryWidget()
             .setDoctorPatientSummaryWidget(reqUser.userId)
-            .setDoctorTasksSummaryWidget()
+            .setDoctorTasksSummaryWidget(reqUser.userId)
             .setCasesChartWidget()
             .setCasesByAgeChartWidget()
             .setSymptomsChartWidget()

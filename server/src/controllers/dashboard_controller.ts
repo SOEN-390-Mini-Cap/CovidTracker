@@ -9,14 +9,14 @@ import { DashboardStrategy } from "../services/dashboard/dashboard_strategy";
 export class DashboardController implements interfaces.Controller {
     constructor(
         @inject("Service")
-        @named("DashboardService")
-        private readonly dashboardService: DashboardStrategy,
+        @named("DashboardStrategy")
+        private readonly dashboardStrategy: DashboardStrategy,
     ) {}
 
     @Get("/", "injectAuthDataMiddleware")
     private async getDashboards(req: Request, res: Response): Promise<void> {
         try {
-            const dashboard = await this.dashboardService.dashboardStrategyFactory(req["token"])();
+            const dashboard = await this.dashboardStrategy.dashboardStrategyFactory(req["token"])();
 
             res.json(200, dashboard);
         } catch (error) {

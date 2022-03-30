@@ -7,7 +7,7 @@ export class DashboardBuilder {
     private dashboard: Promise<Widget>[];
 
     constructor(
-        @inject("Service")
+        @inject("Repository")
         @named("DashboardRepository")
         private readonly dashboardRepository: DashboardRepository,
     ) {
@@ -97,8 +97,34 @@ export class DashboardBuilder {
         return this;
     }
 
-    setDoctorTasksSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+    setDoctorTasksSummaryWidget(doctorId: number): DashboardBuilder {
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [appointmentCount, unreadStatusReportCount] = await Promise.all([
+                this.dashboardRepository.findAppointmentCountByDoctor(doctorId),
+                this.dashboardRepository.findUnreadStatusReportCountByDoctor(doctorId),
+            ]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Today's Tasks",
+                summaries: [
+                    {
+                        description: "Appointments",
+                        value: appointmentCount,
+                        icon: "LifeLine",
+                    },
+                    {
+                        description: "Unread Status Reports",
+                        value: unreadStatusReportCount,
+                        icon: "NotesPurple",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
@@ -120,6 +146,7 @@ export class DashboardBuilder {
 
             const widget = {
                 widgetComponentType: WidgetComponentType.AREA_CHART,
+                title: "COVID-19 Cases",
                 labels: dates.map((d) => d.toISOString()),
                 dataset: [
                     {
@@ -161,6 +188,7 @@ export class DashboardBuilder {
 
             const widget = {
                 widgetComponentType: WidgetComponentType.POLAR_AREA_CHART,
+                title: "COVID-19 Cases by Age",
                 labels: ageRanges.map(([minAge, maxAge]) => `${minAge}-${maxAge}`),
                 dataset: [
                     {
@@ -221,6 +249,7 @@ export class DashboardBuilder {
 
             const widget = {
                 widgetComponentType: WidgetComponentType.BAR_CHART,
+                title: "Primary & Secondary Symptoms",
                 labels: dates.map((d) => d.toISOString()),
                 dataset: [
                     {

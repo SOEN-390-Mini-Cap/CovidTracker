@@ -41,6 +41,10 @@ import { LocationReportController } from "./controllers/location_report_controll
 import { LocationReportService } from "./services/location_report_service";
 import { LocationReportRepository } from "./repositories/location_report_repository";
 import { MessageController } from "./controllers/message_controller";
+import {DashboardController} from "./controllers/dashboard_controller";
+import {DashboardStrategy} from "./services/dashboard/dashboard_strategy";
+import {DashboardBuilder} from "./services/dashboard/dashboard_builder";
+import {DashboardRepository} from "./repositories/dashboard_repository";
 
 const container = new Container();
 
@@ -68,6 +72,7 @@ container
     .to(LocationReportController)
     .whenTargetNamed("LocationReportController");
 container.bind<interfaces.Controller>(TYPE.Controller).to(MessageController).whenTargetNamed("MessageController");
+container.bind<interfaces.Controller>(TYPE.Controller).to(DashboardController).whenTargetNamed("DashboardController");
 
 // Services
 container
@@ -96,6 +101,12 @@ container
     .to(LocationReportService)
     .inSingletonScope()
     .whenTargetNamed("LocationReportService");
+container
+    .bind<DashboardStrategy>("Service")
+    .to(DashboardStrategy)
+    .inSingletonScope()
+    .whenTargetNamed("DashboardStrategy");
+container.bind<DashboardBuilder>("Service").to(DashboardBuilder).inSingletonScope().whenTargetNamed("DashboardBuilder");
 
 // Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -156,6 +167,11 @@ container
     .to(LocationReportRepository)
     .inSingletonScope()
     .whenTargetNamed("LocationReportRepository");
+container
+    .bind<DashboardRepository>("Repository")
+    .to(DashboardRepository)
+    .inSingletonScope()
+    .whenTargetNamed("DashboardRepository");
 
 // Database
 container.bind<Pool>("DBConnectionPool").toConstantValue(new Pool());
