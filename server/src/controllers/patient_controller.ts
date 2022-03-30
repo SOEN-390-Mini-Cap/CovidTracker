@@ -4,6 +4,7 @@ import { Controller, Post, interfaces, Get, Put } from "inversify-restify-utils"
 import { inject, injectable, named } from "inversify";
 import * as Joi from "joi";
 import { PatientService } from "../services/patient_service";
+import { TestResultTypes } from "../entities/test_result_type";
 
 @Controller("/patients")
 @injectable()
@@ -59,8 +60,18 @@ export class PatientController implements interfaces.Controller {
     @Get("/", "injectAuthDataMiddleware")
     async getPatients(req: Request, res: Response): Promise<void> {
         try {
-            const patients = await this.patientService.getPatientsStrategy(req["token"])();
+            const { value, error } = patientFilterSchema.validate({
+                status: req.query.status?.toUpperCase(),
+                testDateFrom: req.query.testDateFrom,
+                testDateTo: req.query.testDateTo,
+            });
 
+            if (error) {
+                res.json(400, error);
+                return;
+            }
+
+            const patients = await this.patientService.getPatientsStrategy(req["token"], value)();
             res.json(200, patients);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
@@ -76,4 +87,10 @@ const doctorSchema = Joi.object({
 const putPatientPrioritizedSchema = Joi.object({
     patientId: Joi.number().required(),
     isPrioritized: Joi.bool().required(),
+}).required();
+
+const patientFilterSchema = Joi.object({
+    status: Joi.string().valid(...TestResultTypes),
+    testDateFrom: Joi.date().iso(),
+    testDateTo: Joi.date().iso(),
 }).required();

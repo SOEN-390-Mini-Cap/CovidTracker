@@ -200,6 +200,91 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
         },
     });
 
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 3,
+        testDate: new Date("01/11/2020"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.POSITIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
+
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 4,
+        testDate: new Date("01/11/2020"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.POSITIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
+
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 4,
+        testDate: new Date("01/12/2020"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.NEGATIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
+
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 5,
+        testDate: new Date("01/12/2020"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.NEGATIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
+
+    await testRepository.insertTestResult({
+        testId: null,
+        patientId: 2,
+        testDate: new Date("01/12/2020"),
+        testType: TestType.ANTIGEN,
+        result: TestResultType.POSITIVE,
+        address: {
+            addressId: 1,
+            streetAddress: faker.address.streetAddress(),
+            streetAddressLineTwo: "",
+            city: faker.address.city(),
+            postalCode: faker.address.zipCode(),
+            province: faker.address.state(),
+            country: "Canada",
+        },
+    });
+
     // generate location report addresses
     const numLocationReportAddresses = [1, numPatients[1] * 2 + 1];
     const locationReportAddresses: Address[] = [];
