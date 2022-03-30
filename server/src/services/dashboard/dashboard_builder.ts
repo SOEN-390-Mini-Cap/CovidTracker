@@ -1,5 +1,5 @@
 import { inject, injectable, named } from "inversify";
-import { Dashboard, SummaryWidget, Widget, WidgetComponentType } from "../../entities/dashboard";
+import {ChartWidget, Dashboard, SummaryWidget, Widget, WidgetComponentType} from "../../entities/dashboard";
 import { DashboardRepository } from "../../repositories/dashboard_repository";
 
 @injectable()
@@ -17,7 +17,7 @@ export class DashboardBuilder {
     setCasesSummaryWidget(): DashboardBuilder {
         const widget = new Promise<Widget>(async (resolve) => {
             const [totalCases, currentCases, newCasesToday] = await Promise.all([
-                this.dashboardRepository.findTotalCases(),
+                this.dashboardRepository.findTotalCases(new Date()),
                 this.dashboardRepository.findCurrentCases(),
                 this.dashboardRepository.findNewCasesToday(new Date()),
             ]);
@@ -82,7 +82,35 @@ export class DashboardBuilder {
     }
 
     setCasesChartWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const dates = [...Array(7)].map((_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                return d;
+            });
+
+            const totalCases = await Promise.all(dates.map((d) => this.dashboardRepository.findTotalCases(d)));
+            const newCases = await Promise.all(dates.map((d) => this.dashboardRepository.findNewCasesToday(d)));
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.AREA_CHART,
+                labels: dates.map((d) => d.toISOString()),
+                dataset: [
+                    {
+                        label: "Total",
+                        data: totalCases,
+                    },
+                    {
+                        label: "New",
+                        data: newCases,
+                    },
+                ],
+            } as ChartWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
