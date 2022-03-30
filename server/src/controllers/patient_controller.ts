@@ -62,8 +62,8 @@ export class PatientController implements interfaces.Controller {
         try {
             const { value, error } = patientFilterSchema.validate({
                 status: req.query.status?.toUpperCase(),
-                testDateFrom: req.query.testDateFrom?.toISOString(),
-                testDateTo: req.query.testDateTo?.toISOString(),
+                testDateFrom: req.query.testDateFrom,
+                testDateTo: req.query.testDateTo,
             });
 
             if (error) {
@@ -72,7 +72,6 @@ export class PatientController implements interfaces.Controller {
             }
 
             const patients = await this.patientService.getPatientsStrategy(req["token"], value)();
-
             res.json(200, patients);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });

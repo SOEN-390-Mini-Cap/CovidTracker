@@ -150,10 +150,10 @@ export class PatientRepository {
                 tr.test_date,
                 tr.address_id
                 FROM test_results as tr
+                WHERE  tr.test_date >= $2 AND
+                       tr.test_date <= $3
                 order by patient_id, test_date desc) As tr On tr.patient_id = p.patient_id
-            WHERE tr.result = $1 AND
-                tr.test_date >= $2 AND
-                tr.test_date <= $3
+            WHERE tr.result = $1
             ORDER BY u.is_prioritized DESC;
         `;
 
@@ -236,11 +236,11 @@ export class PatientRepository {
                 tr.test_date,
                 tr.address_id
                 FROM test_results as tr
+                WHERE tr.test_date >= $3 AND
+                      tr.test_date <= $4
                 order by patient_id, test_date desc) As tr On tr.patient_id = p.patient_id
             WHERE p.assigned_doctor_id = $1 AND
-                tr.result = $2 AND
-                tr.test_date >= $3 AND
-                tr.test_date <= $4
+                tr.result = $2
             ORDER BY u.is_prioritized DESC;
         `;
 
