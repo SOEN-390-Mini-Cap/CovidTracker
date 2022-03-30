@@ -38,17 +38,16 @@ export class DashboardRepository {
         return res.rows[0].count;
     }
 
-    async findNewCasesToday(today: string, tomorrow: string): Promise<number> {
+    async findNewCasesToday(date: Date): Promise<number> {
         const client = await this.pool.connect();
 
         const queryString = `
-            SELECT count(*)
+            SELECT count(tr.test_id)
             FROM test_results AS tr
             WHERE tr.result = 'POSITIVE'
-            AND tr.test_date > $1
-            AND tr.test_date < $2
+              AND DATE(tr.test_date) = DATE($1);
         `;
-        const res = await client.query(queryString, [today, tomorrow]).finally(() => client.release());
+        const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
         return res.rows[0].count;
     }
 }
