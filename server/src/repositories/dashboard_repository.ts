@@ -131,4 +131,56 @@ export class DashboardRepository {
         const res = await client.query(queryString, [doctorId]).finally(() => client.release());
         return res.rows[0].count;
     }
+
+    async findPatientCount(): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM patients AS p;
+        `;
+        const res = await client.query(queryString).finally(() => client.release());
+        return res.rows[0].count;
+    }
+
+    async findAvgPatientsPerDoctor(): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT avg(count)
+            FROM (
+                SELECT count(*) AS count
+                FROM patients AS p
+                WHERE p.assigned_doctor_id IS NOT NULL
+                GROUP BY p.assigned_doctor_id
+            ) AS counts;
+        `;
+        const res = await client.query(queryString).finally(() => client.release());
+        return res.rows[0].count;
+    }
+
+    async findAppointmentCountByPatient(patientId: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM appointments AS a
+            WHERE a.patient_id = $1;
+        `;
+        const res = await client.query(queryString, [patientId]).finally(() => client.release());
+        return res.rows[0].count;
+    }
+
+    async findStatusReportCountByPatientByDate(patientId: number, date: Date): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(*)
+            FROM statuses AS s
+            WHERE s.patient_id = $1
+            AND DATE(s.created_on) = DATE($2);
+        `;
+        const res = await client.query(queryString, [patientId, date.toISOString()]).finally(() => client.release());
+        return res.rows[0].count;
+    }
 }

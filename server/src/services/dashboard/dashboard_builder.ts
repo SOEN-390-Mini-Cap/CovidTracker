@@ -52,7 +52,33 @@ export class DashboardBuilder {
     }
 
     setAdminPatientSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [patientCount, avgPatientCount] = await Promise.all([
+                this.dashboardRepository.findPatientCount(),
+                this.dashboardRepository.findAvgPatientsPerDoctor(),
+            ]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Patient Summary",
+                summaries: [
+                    {
+                        description: "Total Patients",
+                        value: patientCount,
+                        icon: "Heart",
+                    },
+                    {
+                        description: "Patients per Doctor",
+                        value: avgPatientCount,
+                        icon: "LifeLine",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
@@ -128,8 +154,34 @@ export class DashboardBuilder {
         return this;
     }
 
-    setPatientTasksSummaryWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+    setPatientTasksSummaryWidget(patientId: number): DashboardBuilder {
+        const widget = new Promise<Widget>(async (resolve) => {
+            const [appointmentCount, statusReportCount] = await Promise.all([
+                this.dashboardRepository.findAppointmentCountByPatient(patientId),
+                this.dashboardRepository.findStatusReportCountByPatientByDate(patientId, new Date()),
+            ]);
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.SUMMARY,
+                title: "Today's Tasks",
+                summaries: [
+                    {
+                        description: "Appointments",
+                        value: appointmentCount,
+                        icon: "LifeLine",
+                    },
+                    {
+                        description: "Status Reports",
+                        value: statusReportCount,
+                        icon: "NotesPurple",
+                    },
+                ],
+            } as SummaryWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 

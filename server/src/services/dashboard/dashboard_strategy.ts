@@ -18,7 +18,7 @@ export class DashboardStrategy {
             return this.userDashboardStrategy;
         }
         if (reqUser.role === Role.PATIENT) {
-            return this.patientDashboardStrategy;
+            return this.patientDashboardStrategy.bind(this, reqUser);
         }
         if (reqUser.role === Role.DOCTOR) {
             return this.doctorDashboardStrategy.bind(this, reqUser);
@@ -44,10 +44,10 @@ export class DashboardStrategy {
             .build();
     }
 
-    private async patientDashboardStrategy(): Promise<Dashboard> {
+    private async patientDashboardStrategy(reqUser: ReqUser): Promise<Dashboard> {
         return this.dashboardBuilder
             .setCasesSummaryWidget()
-            .setPatientTasksSummaryWidget()
+            .setPatientTasksSummaryWidget(reqUser.userId)
             .setCasesChartWidget()
             .setCasesByAgeChartWidget()
             .build();
