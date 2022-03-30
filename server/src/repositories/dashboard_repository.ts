@@ -5,7 +5,7 @@ import { Pool } from "pg";
 export class DashboardRepository {
     constructor(@inject("DBConnectionPool") private readonly pool: Pool) {}
 
-    async findTotalCases(date: Date): Promise<number> {
+    async findTotalCasesToDate(date: Date): Promise<number> {
         const client = await this.pool.connect();
 
         const queryString = `
@@ -40,16 +40,30 @@ export class DashboardRepository {
         return res.rows[0].count;
     }
 
-    async findNewCasesToday(date: Date): Promise<number> {
+    async findNewCaseByDate(date: Date): Promise<number> {
         const client = await this.pool.connect();
 
         const queryString = `
             SELECT count(tr.test_id)
             FROM test_results AS tr
             WHERE tr.result = 'POSITIVE'
-              AND DATE(tr.test_date) = DATE($1);
+            AND DATE(tr.test_date) = DATE($1);
         `;
         const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
+        return res.rows[0].count;
+    }
+
+    async findCasesByAgeRange(minAge: number, maxAge: number): Promise<number> {
+        const client = await this.pool.connect();
+
+        const queryString = `
+            SELECT count(tr.test_id)
+            FROM test_results AS tr
+            JOIN users AS u ON tr.address_id = u.address_id
+            WHERE tr.result = 'POSITIVE'
+            AND EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM u.date_of_birth) BETWEEN $1 AND $2;
+        `;
+        const res = await client.query(queryString, [minAge, maxAge]).finally(() => client.release());
         return res.rows[0].count;
     }
 }

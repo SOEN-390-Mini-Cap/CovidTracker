@@ -17,9 +17,9 @@ export class DashboardBuilder {
     setCasesSummaryWidget(): DashboardBuilder {
         const widget = new Promise<Widget>(async (resolve) => {
             const [totalCases, currentCases, newCasesToday] = await Promise.all([
-                this.dashboardRepository.findTotalCases(new Date()),
+                this.dashboardRepository.findTotalCasesToDate(new Date()),
                 this.dashboardRepository.findCurrentCases(),
-                this.dashboardRepository.findNewCasesToday(new Date()),
+                this.dashboardRepository.findNewCaseByDate(new Date()),
             ]);
 
             const widget = {
@@ -89,8 +89,8 @@ export class DashboardBuilder {
                 return d;
             });
 
-            const totalCases = await Promise.all(dates.map((d) => this.dashboardRepository.findTotalCases(d)));
-            const newCases = await Promise.all(dates.map((d) => this.dashboardRepository.findNewCasesToday(d)));
+            const totalCases = await Promise.all(dates.map((d) => this.dashboardRepository.findTotalCasesToDate(d)));
+            const newCases = await Promise.all(dates.map((d) => this.dashboardRepository.findNewCaseByDate(d)));
 
             const widget = {
                 widgetComponentType: WidgetComponentType.AREA_CHART,
@@ -115,7 +115,39 @@ export class DashboardBuilder {
     }
 
     setCasesByAgeChartWidget(): DashboardBuilder {
-        this.dashboard.push(null);
+        const widget = new Promise<Widget>(async (resolve) => {
+            const ageRanges = [
+                [0, 10],
+                [11, 20],
+                [21, 30],
+                [31, 40],
+                [41, 50],
+                [51, 60],
+                [61, 70],
+                [71, 80],
+                [81, 90],
+                [91, 999],
+            ];
+
+            const casesByAgeRange = await Promise.all(
+                ageRanges.map(([minAge, maxAge]) => this.dashboardRepository.findCasesByAgeRange(minAge, maxAge)),
+            );
+
+            const widget = {
+                widgetComponentType: WidgetComponentType.POLAR_AREA_CHART,
+                labels: ageRanges.map(([minAge, maxAge]) => `${minAge}-${maxAge}`),
+                dataset: [
+                    {
+                        label: "Cases",
+                        data: casesByAgeRange,
+                    },
+                ],
+            } as ChartWidget;
+
+            resolve(widget);
+        });
+
+        this.dashboard.push(widget);
         return this;
     }
 
