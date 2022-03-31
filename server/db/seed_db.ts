@@ -132,6 +132,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             to: i,
             body: "",
             createdOn: new Date("1900-01-01T00:00:00.000Z"),
+            isPriority: false,
         });
     }
 

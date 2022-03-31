@@ -171,5 +171,8 @@ container.bind<RequestHandler>("isValidPatientMiddleware").toConstantValue(isVal
 container
     .bind<RequestHandler>("isValidPatientOrUserMiddleware")
     .toConstantValue(isValidRoleMiddleware([Role.PATIENT, Role.USER]));
+container
+    .bind<RequestHandler>("isValidPatientOrDoctorMiddleware")
+    .toConstantValue(isValidRoleMiddleware([Role.PATIENT, Role.DOCTOR]));
 
 export { container };

@@ -206,7 +206,7 @@ export class PatientRepository {
         const res = await client.query(sql, [traceTarget, testDateFrom, testDateTo]).finally(() => client.release());
         return this.userRepository.buildUsers(res);
     }
-
+  
     async findPatientsAssignedToDoctor(doctorId: number): Promise<User[]> {
         const client = await this.pool.connect();
 

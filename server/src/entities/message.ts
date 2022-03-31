@@ -6,6 +6,7 @@ export type Message = {
     to: number;
     body: string;
     createdOn?: Date;
+    isPriority: boolean;
 };
 
 export type UserMessages = {

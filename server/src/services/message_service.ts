@@ -47,6 +47,7 @@ export class MessageService {
                     senderId: messages[userId][lastMessageIndex].from,
                     message: messages[userId][lastMessageIndex].body,
                     time: messages[userId][lastMessageIndex].createdOn,
+                    isPriority: messages[userId][lastMessageIndex].isPriority,
                 },
             },
         } as ChatContact;
@@ -60,6 +61,7 @@ export class MessageService {
                 senderId: message.from,
                 message: message.body,
                 time: message.createdOn,
+                isPriority: message.isPriority,
             })),
         };
 
@@ -87,6 +89,7 @@ export class MessageService {
                             senderId: messages[userId][lastMessageIndex].from,
                             message: messages[userId][lastMessageIndex].body,
                             time: messages[userId][lastMessageIndex].createdOn,
+                            isPriority: messages[userId][lastMessageIndex].isPriority,
                         },
                     },
                 } as ChatContact;
@@ -154,6 +157,7 @@ export class MessageService {
             to,
             body,
             createdOn: new Date(),
+            isPriority: false,
         };
     }
 

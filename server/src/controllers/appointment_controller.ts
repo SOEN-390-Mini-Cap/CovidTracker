@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Controller, interfaces, Post } from "inversify-restify-utils";
+import { Controller, Get, interfaces, Post } from "inversify-restify-utils";
 import { inject, injectable, named } from "inversify";
 import { Request, Response } from "restify";
 import * as Joi from "joi";
@@ -14,8 +14,8 @@ export class AppointmentController implements interfaces.Controller {
         private readonly appointmentService: AppointmentService,
     ) {}
 
-    @Post("/", "injectAuthDataMiddleware")
-    private async postAppointments(req: Request, res: Response): Promise<void> {
+    @Post("/", "injectAuthDataMiddleware", "isValidDoctorMiddleware")
+    private async postAppointment(req: Request, res: Response): Promise<void> {
         try {
             const { value, error } = postAppointmentSchema.validate({
                 ...req.body,
@@ -42,6 +42,17 @@ export class AppointmentController implements interfaces.Controller {
             });
 
             res.json(201);
+        } catch (error) {
+            res.json(error.statusCode || 500, { error: error.message });
+        }
+    }
+
+    @Get("/", "injectAuthDataMiddleware", "isValidPatientOrDoctorMiddleware")
+    private async getAppointments(req: Request, res: Response): Promise<void> {
+        try {
+            const appointments = await this.appointmentService.getAppointments(req["token"]);
+
+            res.json(200, appointments);
         } catch (error) {
             res.json(error.statusCode || 500, { error: error.message });
         }
