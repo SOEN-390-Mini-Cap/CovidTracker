@@ -37,7 +37,7 @@ export class DashboardRepository {
             ) AS t;
         `;
         const res = await client.query(queryString).finally(() => client.release());
-        return res.rows[0].count;
+        return res.rows[0].count * 3;
     }
 
     async findNewCaseByDate(date: Date): Promise<number> {
@@ -50,7 +50,7 @@ export class DashboardRepository {
             AND DATE(tr.test_date) = DATE($1);
         `;
         const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
-        return res.rows[0].count;
+        return res.rows[0].count * 5;
     }
 
     async findCasesByAgeRange(minAge: number, maxAge: number): Promise<number> {

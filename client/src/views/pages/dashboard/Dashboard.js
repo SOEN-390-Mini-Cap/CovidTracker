@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getDashboard, getTest, getUser } from "../../../services/api";
 import { Col, Row } from "reactstrap";
 import SummaryWidget from "./SummaryWidget";
-import {FilePlus, FileText, TrendingUp} from "react-feather";
+import { FilePlus, FileText, TrendingUp } from "react-feather";
 import AreaChartWidget from "./AreaChartWidget";
 
 const selectToken = (state) => state.auth.userData.token;
@@ -32,9 +32,7 @@ export default function Dashboard() {
                     <SummaryWidget key={index} widget={widget} />
                 ))}
             </Row>
-            <Row className="match-height">
-                {areaChartWidget && (<AreaChartWidget widget={areaChartWidget} />)}
-            </Row>
+            <Row className="match-height">{areaChartWidget && <AreaChartWidget widget={areaChartWidget} />}</Row>
         </div>
     );
 }
