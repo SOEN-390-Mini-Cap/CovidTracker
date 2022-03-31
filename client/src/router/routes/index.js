@@ -1,11 +1,11 @@
 import { lazy } from "react";
 
-const DefaultRoute = "/home";
+const DefaultRoute = "/dashboard";
 
 const Routes = [
     {
-        path: "/home",
-        component: lazy(() => import("../../views/pages/Home")),
+        path: "/dashboard",
+        component: lazy(() => import("../../views/pages/Dashboard")),
         meta: {
             accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
         },

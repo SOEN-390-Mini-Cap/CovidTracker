@@ -5,7 +5,7 @@ export default (userId) => [
         id: "dashboard",
         title: "Dashboard",
         icon: <Home />,
-        navLink: "/home",
+        navLink: "/dashboard",
         accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
     },
     {
