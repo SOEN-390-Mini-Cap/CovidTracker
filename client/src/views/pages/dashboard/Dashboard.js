@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getDashboard, getTest, getUser } from "../../../services/api";
-import { Col, Row } from "reactstrap";
+import { getDashboard } from "../../../services/api";
+import { Row } from "reactstrap";
 import SummaryWidget from "./SummaryWidget";
-import { FilePlus, FileText, TrendingUp } from "react-feather";
 import AreaChartWidget from "./AreaChartWidget";
 import PolarAreaChartWidget from "./PolarAreaChartWidget";
 import BarChartWidget from "./BarChartWidget";
@@ -40,9 +39,7 @@ export default function Dashboard() {
                 {areaChartWidget && <AreaChartWidget widget={areaChartWidget} />}
                 {polarAreaChartWidget && <PolarAreaChartWidget widget={polarAreaChartWidget} />}
             </Row>
-            <Row className="match-height">
-                {barChartWidget && <BarChartWidget widget={barChartWidget} />}
-            </Row>
+            <Row className="match-height">{barChartWidget && <BarChartWidget widget={barChartWidget} />}</Row>
         </div>
     );
 }

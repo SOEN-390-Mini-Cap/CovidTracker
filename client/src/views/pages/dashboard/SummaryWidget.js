@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import {TrendingUp, FileText, FilePlus, File, Activity, Heart} from "react-feather";
+import { TrendingUp, FileText, FilePlus, File, Activity, Heart } from "react-feather";
 import Avatar from "@components/avatar";
 import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from "reactstrap";
 

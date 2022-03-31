@@ -1,5 +1,5 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
-import { Card, CardBody, CardFooter, CardTitle, Input, Label } from "reactstrap";
+import { Card, CardBody, CardFooter, CardTitle } from "reactstrap";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";

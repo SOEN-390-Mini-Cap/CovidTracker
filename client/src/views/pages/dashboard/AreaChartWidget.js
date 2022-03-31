@@ -1,7 +1,5 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
-import Flatpickr from "react-flatpickr";
-import { Calendar } from "react-feather";
 import { Card, CardHeader, CardTitle, CardBody, Col } from "reactstrap";
 
 ChartJS.register(...registerables);

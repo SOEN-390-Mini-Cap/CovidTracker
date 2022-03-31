@@ -10,8 +10,7 @@ import Flatpickr from "react-flatpickr";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { postLocationReport, submitTestResult } from "../../../services/api";
+import { postLocationReport } from "../../../services/api";
 
 const provinceOptions = [
     { value: "Alberta", label: "Alberta" },

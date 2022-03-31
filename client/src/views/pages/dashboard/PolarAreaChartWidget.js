@@ -1,18 +1,6 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import { PolarArea } from "react-chartjs-2";
-import Flatpickr from "react-flatpickr";
-import { Calendar, MoreVertical } from "react-feather";
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardBody,
-    Col,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from "reactstrap";
+import { Card, CardHeader, CardTitle, CardBody, Col } from "reactstrap";
 
 ChartJS.register(...registerables);
 
