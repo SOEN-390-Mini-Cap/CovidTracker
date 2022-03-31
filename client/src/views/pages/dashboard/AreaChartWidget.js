@@ -26,25 +26,20 @@ export default function AreaChartWidget(props) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 500 },
         layout: {
             padding: { top: -20 },
         },
+        hover: {
+            mode: "nearest",
+            intersect: false,
+        },
         scales: {
             x: {
-                grid: {
-                    color: "transparent",
-                    borderColor: gridLineColor,
-                },
                 ticks: { color: labelColor },
             },
             y: {
                 min: 0,
-                max: 300,
-                grid: {
-                    color: "transparent",
-                    borderColor: gridLineColor,
-                },
+                max: 200,
                 ticks: {
                     stepSize: 100,
                     color: labelColor,
@@ -61,6 +56,10 @@ export default function AreaChartWidget(props) {
                     color: labelColor,
                     usePointStyle: true,
                 },
+            },
+            tooltip: {
+                mode: "index",
+                intersect: false,
             },
         },
     };
@@ -102,14 +101,14 @@ export default function AreaChartWidget(props) {
     };
 
     return (
-        <Col>
+        <Col xl="7" md="6" xs="12">
             <Card>
                 <CardHeader className="d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column">
                     <CardTitle tag="h4">{props.widget.title}</CardTitle>
                 </CardHeader>
                 <CardBody>
-                    <div style={{ height: "450px" }}>
-                        <Line data={data} options={options} height={450} />
+                    <div style={{ height: "300px" }}>
+                        <Line data={data} options={options} height={300} />
                     </div>
                 </CardBody>
             </Card>
