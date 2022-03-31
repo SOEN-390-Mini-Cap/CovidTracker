@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { TrendingUp, FileText, FilePlus, File, Activity } from "react-feather";
+import {TrendingUp, FileText, FilePlus, File, Activity, Heart} from "react-feather";
 import Avatar from "@components/avatar";
 import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from "reactstrap";
 
@@ -69,5 +69,13 @@ const iconMap = {
     NotesGreen: {
         color: "light-success",
         icon: <File size={24} />,
+    },
+    Heart: {
+        color: "light-danger",
+        icon: <Heart size={24} />,
+    },
+    NotesPurple: {
+        color: "light-info",
+        icon: <FileText size={24} />,
     },
 };

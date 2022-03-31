@@ -147,7 +147,7 @@ export class DashboardRepository {
         const client = await this.pool.connect();
 
         const queryString = `
-            SELECT avg(count)
+            SELECT avg(counts.count)
             FROM (
                 SELECT count(*) AS count
                 FROM patients AS p
@@ -156,7 +156,7 @@ export class DashboardRepository {
             ) AS counts;
         `;
         const res = await client.query(queryString).finally(() => client.release());
-        return res.rows[0].count;
+        return Math.floor(res.rows[0].avg);
     }
 
     async findAppointmentCountByPatient(patientId: number): Promise<number> {

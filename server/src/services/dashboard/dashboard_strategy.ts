@@ -15,7 +15,7 @@ export class DashboardStrategy {
 
     dashboardStrategyFactory(reqUser: ReqUser): () => Promise<Dashboard> {
         if (reqUser.role === Role.USER) {
-            return this.userDashboardStrategy;
+            return this.userDashboardStrategy.bind(this);
         }
         if (reqUser.role === Role.PATIENT) {
             return this.patientDashboardStrategy.bind(this, reqUser);
@@ -24,13 +24,13 @@ export class DashboardStrategy {
             return this.doctorDashboardStrategy.bind(this, reqUser);
         }
         if (reqUser.role === Role.ADMIN) {
-            return this.adminDashboardStrategy;
+            return this.adminDashboardStrategy.bind(this);
         }
         if (reqUser.role === Role.HEALTH_OFFICIAL) {
-            return this.healthOfficialDashboardStrategy;
+            return this.healthOfficialDashboardStrategy.bind(this);
         }
         if (reqUser.role === Role.IMMIGRATION_OFFICER) {
-            return this.immigrationOfficerDashboardStrategy;
+            return this.immigrationOfficerDashboardStrategy.bind(this);
         }
 
         throw new AuthorizationError();
@@ -86,6 +86,7 @@ export class DashboardStrategy {
     private async immigrationOfficerDashboardStrategy(): Promise<Dashboard> {
         return this.dashboardBuilder //
             .setCasesSummaryWidget()
+            .setImmigrationOfficerPatientSummaryWidget()
             .setCasesChartWidget()
             .setCasesByAgeChartWidget()
             .build();

@@ -85,7 +85,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             lastName,
             phoneNumber: faker.phone.phoneNumber("###-###-####"),
             gender: rawGender === "Male" ? Gender.MALE : Gender.FEMALE,
-            dateOfBirth: faker.date.between("1920-01-01T00:00:00.000Z", "2020-01-01T00:00:00.000Z"),
+            dateOfBirth: faker.date.between("1930-01-01T00:00:00.000Z", "2020-01-01T00:00:00.000Z"),
             isPrioritized: false,
             role: null,
             address: {

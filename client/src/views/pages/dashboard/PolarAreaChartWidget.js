@@ -17,23 +17,6 @@ import {
 ChartJS.register(...registerables);
 
 export default function PolarAreaChartWidget(props) {
-    const labelColor = "#6e6b7b";
-    const tooltipShadow = "rgba(0, 0, 0, 0.25)";
-    const gridLineColor = "rgba(200, 200, 200, 0.2)";
-    const lineChartPrimary = "#666ee8";
-    const lineChartDanger = "#ff4961";
-    const warningColorShade = "#ffbd1f";
-    const warningLightColor = "#FDAC34";
-    const successColorShade = "#28dac6";
-    const primaryColorShade = "#836AF9";
-    const infoColorShade = "#299AFF";
-    const yellowColor = "#ffe800";
-    const greyColor = "#4F5D70";
-    const blueColor = "#2c9aff";
-    const blueLightColor = "#84D0FF";
-    const greyLightColor = "#EDF1F4";
-    const primary = "#666ee8";
-
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -57,7 +40,7 @@ export default function PolarAreaChartWidget(props) {
                 labels: {
                     padding: 15,
                     boxWidth: 9,
-                    color: labelColor,
+                    color: "#6e6b7b",
                     usePointStyle: true,
                 },
             },
@@ -72,12 +55,16 @@ export default function PolarAreaChartWidget(props) {
                 label: props.widget.dataset[0].label,
                 data: props.widget.dataset[0].data,
                 backgroundColor: [
-                    primary,
-                    yellowColor,
-                    warningColorShade,
-                    infoColorShade,
-                    greyColor,
-                    successColorShade,
+                    "#B7F153",
+                    "#FFE802",
+                    "#EC7FD3",
+                    "#00CFE8",
+                    "#28DAC6",
+                    "#6610F2",
+                    "#259EF0",
+                    "#FF9F43",
+                    "#28C76F",
+                    "#D63384",
                 ],
             },
         ],

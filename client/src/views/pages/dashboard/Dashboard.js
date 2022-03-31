@@ -6,6 +6,7 @@ import SummaryWidget from "./SummaryWidget";
 import { FilePlus, FileText, TrendingUp } from "react-feather";
 import AreaChartWidget from "./AreaChartWidget";
 import PolarAreaChartWidget from "./PolarAreaChartWidget";
+import BarChartWidget from "./BarChartWidget";
 
 const selectToken = (state) => state.auth.userData.token;
 
@@ -26,6 +27,7 @@ export default function Dashboard() {
     const summaryWidgets = dashboard?.filter((widget) => widget.widgetComponentType === "SUMMARY");
     const areaChartWidget = dashboard?.find((widget) => widget.widgetComponentType === "AREA_CHART");
     const polarAreaChartWidget = dashboard?.find((widget) => widget.widgetComponentType === "POLAR_AREA_CHART");
+    const barChartWidget = dashboard?.find((widget) => widget.widgetComponentType === "BAR_CHART");
 
     return (
         <div>
@@ -37,6 +39,9 @@ export default function Dashboard() {
             <Row className="match-height">
                 {areaChartWidget && <AreaChartWidget widget={areaChartWidget} />}
                 {polarAreaChartWidget && <PolarAreaChartWidget widget={polarAreaChartWidget} />}
+            </Row>
+            <Row className="match-height">
+                {barChartWidget && <BarChartWidget widget={barChartWidget} />}
             </Row>
         </div>
     );
