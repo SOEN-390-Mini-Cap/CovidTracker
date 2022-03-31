@@ -217,7 +217,7 @@ export class DashboardBuilder {
                     {
                         description: "Status Reports",
                         value: statusReportCount,
-                        icon: "NotesPurple",
+                        icon: "NotesGreen",
                     },
                 ],
             } as SummaryWidget;

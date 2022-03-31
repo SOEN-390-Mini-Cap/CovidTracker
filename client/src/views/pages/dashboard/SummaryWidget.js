@@ -1,33 +1,11 @@
 import classnames from "classnames";
-import { TrendingUp, User, Box } from "react-feather";
+import { TrendingUp, FileText, FilePlus, File, Activity } from "react-feather";
 import Avatar from "@components/avatar";
 import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from "reactstrap";
-import {iconMap} from "./Dashboard";
 
-export default function CasesSummaryWidget(props) {
-    const data = [
-        {
-            title: "230k",
-            subtitle: "Sales",
-            color: "light-primary",
-            icon: <TrendingUp size={24} />,
-        },
-        {
-            title: "8.549k",
-            subtitle: "Customers",
-            color: "light-info",
-            icon: <User size={24} />,
-        },
-        {
-            title: "1.423k",
-            subtitle: "Products",
-            color: "light-danger",
-            icon: <Box size={24} />,
-        },
-    ];
-
+export default function SummaryWidget(props) {
     const summaries = props.widget.summaries.map((item, index) => {
-        const cols = { xl: "4", sm: "6" };
+        const cols = props.widget.summaries.length === 3 ? { xl: "4", sm: "6" } : { sm: "6" };
         const colMargin = Object.keys(cols);
         const margin = index === 2 ? "sm" : colMargin[0];
         return (
@@ -35,7 +13,7 @@ export default function CasesSummaryWidget(props) {
                 key={index}
                 {...cols}
                 className={classnames({
-                    [`mb-2 mb-${margin}-0`]: index !== data.length - 1,
+                    [`mb-2 mb-${margin}-0`]: index !== props.widget.summaries.length - 1,
                 })}
             >
                 <div className="d-flex align-items-center">
@@ -49,7 +27,7 @@ export default function CasesSummaryWidget(props) {
         );
     });
 
-    return (
+    const summariesCard = (
         <Card className="card-statistics">
             <CardHeader>
                 <CardTitle tag="h4">{props.widget.title}</CardTitle>
@@ -59,4 +37,37 @@ export default function CasesSummaryWidget(props) {
             </CardBody>
         </Card>
     );
+
+    return props.widget.summaries.length === 3 ? (
+        <Col xl="7" md="6" xs="12">
+            {summariesCard}
+        </Col>
+    ) : (
+        <Col xl="5" md="6" xs="12">
+            {summariesCard}
+        </Col>
+    );
 }
+
+const iconMap = {
+    ArrowUp: {
+        color: "light-danger",
+        icon: <TrendingUp size={24} />,
+    },
+    Notes: {
+        color: "light-primary",
+        icon: <FileText size={24} />,
+    },
+    NotesPlus: {
+        color: "light-success",
+        icon: <FilePlus size={24} />,
+    },
+    LifeLine: {
+        color: "light-primary",
+        icon: <Activity size={24} />,
+    },
+    NotesGreen: {
+        color: "light-success",
+        icon: <File size={24} />,
+    },
+};
