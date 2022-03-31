@@ -5,7 +5,7 @@ const DefaultRoute = "/dashboard";
 const Routes = [
     {
         path: "/dashboard",
-        component: lazy(() => import("../../views/pages/Dashboard")),
+        component: lazy(() => import("../../views/pages/dashboard/Dashboard")),
         meta: {
             accessibleBy: ["USER", "PATIENT", "DOCTOR", "HEALTH_OFFICIAL", "IMMIGRATION_OFFICER", "ADMIN"],
         },

@@ -313,3 +313,13 @@ export async function postMessage(token, data) {
         },
     });
 }
+
+export async function getDashboard(token) {
+    const response = await axios.get(`${baseUrl}/dashboards`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response.data;
+}
