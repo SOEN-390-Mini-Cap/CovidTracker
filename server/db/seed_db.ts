@@ -183,107 +183,30 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
         }
     }
 
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 3,
-        testDate: new Date("01/11/1999"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.NEGATIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
-
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 3,
-        testDate: new Date("01/11/2020"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.POSITIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
-
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 4,
-        testDate: new Date("01/11/2020"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.POSITIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
-
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 4,
-        testDate: new Date("01/12/2020"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.NEGATIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
-
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 5,
-        testDate: new Date("01/12/2020"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.NEGATIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
-
-    await testRepository.insertTestResult({
-        testId: null,
-        patientId: 2,
-        testDate: new Date("01/12/2020"),
-        testType: TestType.ANTIGEN,
-        result: TestResultType.POSITIVE,
-        address: {
-            addressId: 1,
-            streetAddress: faker.address.streetAddress(),
-            streetAddressLineTwo: "",
-            city: faker.address.city(),
-            postalCode: faker.address.zipCode(),
-            province: faker.address.state(),
-            country: "Canada",
-        },
-    });
+    // generate tests
+    for (let i = numPatients[0]; i < numPatients[1] - 1; i++) {
+        if (i < numPatients[1] - 2) {
+            const numTestsPerPatient = 10;
+            for (let j = 0; j < numTestsPerPatient; j++) {
+                await testRepository.insertTestResult({
+                    testId: null,
+                    patientId: i,
+                    testDate: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                    testType: faker.datatype.boolean() ? TestType.ANTIGEN : TestType.PCR,
+                    result: faker.datatype.boolean() ? TestResultType.POSITIVE : TestResultType.NEGATIVE,
+                    address: {
+                        addressId: faker.datatype.number({ min: numAddresses[0], max: numAddresses[1] - 1 }),
+                        streetAddress: null,
+                        streetAddressLineTwo: null,
+                        city: null,
+                        postalCode: null,
+                        province: null,
+                        country: null,
+                    },
+                });
+            }
+        }
+    }
 
     // generate location report addresses
     const numLocationReportAddresses = [1, numPatients[1] * 2 + 1];
