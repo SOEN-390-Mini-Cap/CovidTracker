@@ -40,10 +40,24 @@ export class PatientService {
     }
 
     getPatientsStrategy(reqUser: ReqUser, filters: PatientFilters): () => Promise<User[]> {
-        const isFiltered: boolean = !!filters.testDateTo && !!filters.testDateFrom && !!filters.status;
+        const isResultFiltered: boolean = !!filters.testDateTo && !!filters.testDateFrom && !!filters.status;
+        const isTargetTraceFiltered: boolean = !!filters.testDateTo && !!filters.testDateFrom && !!filters.traceTarget;
+
+        if (isTargetTraceFiltered) {
+            if (reqUser.role == Role.HEALTH_OFFICIAL) {
+                return this.patientRepository.findPatientsFilteredByTraceTarget.bind(
+                    this.patientRepository,
+                    filters.traceTarget,
+                    filters.testDateFrom,
+                    filters.testDateTo,
+                );
+            } else {
+                throw new AuthorizationError();
+            }
+        }
 
         if (reqUser.role === Role.DOCTOR) {
-            if (isFiltered) {
+            if (isResultFiltered) {
                 return this.patientRepository.findPatientsAssignedToDoctorFiltered.bind(
                     this.patientRepository,
                     reqUser.userId,
@@ -56,8 +70,8 @@ export class PatientService {
             }
         }
         if (reqUser.role === Role.HEALTH_OFFICIAL) {
-            if (isFiltered) {
-                return this.patientRepository.findPatientsFiltered.bind(
+            if (isResultFiltered) {
+                return this.patientRepository.findPatientsFilteredByStatus.bind(
                     this.patientRepository,
                     filters.status,
                     filters.testDateFrom,
@@ -68,8 +82,8 @@ export class PatientService {
             }
         }
         if (reqUser.role === Role.IMMIGRATION_OFFICER) {
-            if (isFiltered) {
-                return this.patientRepository.findPatientsFiltered.bind(
+            if (isResultFiltered) {
+                return this.patientRepository.findPatientsFilteredByStatus.bind(
                     this.patientRepository,
                     filters.status,
                     filters.testDateFrom,

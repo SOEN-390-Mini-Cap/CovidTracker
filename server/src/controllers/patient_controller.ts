@@ -62,6 +62,7 @@ export class PatientController implements interfaces.Controller {
         try {
             const { value, error } = patientFilterSchema.validate({
                 status: req.query.status?.toUpperCase(),
+                traceTarget: req.query.traceTarget,
                 testDateFrom: req.query.testDateFrom,
                 testDateTo: req.query.testDateTo,
             });
@@ -89,8 +90,11 @@ const putPatientPrioritizedSchema = Joi.object({
     isPrioritized: Joi.bool().required(),
 }).required();
 
-const patientFilterSchema = Joi.object({
+const patientFilters = {
     status: Joi.string().valid(...TestResultTypes),
+    traceTarget: Joi.number(),
     testDateFrom: Joi.date().iso(),
     testDateTo: Joi.date().iso(),
-}).required();
+};
+
+const patientFilterSchema = Joi.object(patientFilters);
