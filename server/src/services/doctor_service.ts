@@ -14,7 +14,7 @@ export class DoctorService {
     async getPatientCounts(): Promise<PatientCounts> {
         const counts = await this.patientRepository.findPatientCounts();
         const total = counts.reduce((total, count) => total + count.numberOfPatients, 0);
-        const average = total / counts.length;
+        const average = Math.floor(total / counts.length);
 
         return {
             total,

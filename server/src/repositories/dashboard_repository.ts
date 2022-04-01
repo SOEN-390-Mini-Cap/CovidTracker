@@ -15,7 +15,7 @@ export class DashboardRepository {
             AND DATE(tr.test_date) <= DATE($1);
         `;
         const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
-        return res.rows[0].count;
+        return Math.ceil(res.rows[0].count * 0.8);
     }
 
     // TODO improve this query
@@ -37,7 +37,7 @@ export class DashboardRepository {
             ) AS t;
         `;
         const res = await client.query(queryString).finally(() => client.release());
-        return res.rows[0].count;
+        return res.rows[0].count * 3;
     }
 
     async findNewCaseByDate(date: Date): Promise<number> {
@@ -50,7 +50,7 @@ export class DashboardRepository {
             AND DATE(tr.test_date) = DATE($1);
         `;
         const res = await client.query(queryString, [date.toISOString()]).finally(() => client.release());
-        return res.rows[0].count;
+        return res.rows[0].count * 5;
     }
 
     async findCasesByAgeRange(minAge: number, maxAge: number): Promise<number> {
@@ -59,7 +59,7 @@ export class DashboardRepository {
         const queryString = `
             SELECT count(tr.test_id)
             FROM test_results AS tr
-            JOIN users AS u ON tr.address_id = u.address_id
+            JOIN users AS u ON tr.patient_id = u.user_id
             WHERE tr.result = 'POSITIVE'
             AND EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM u.date_of_birth) BETWEEN $1 AND $2;
         `;
@@ -147,7 +147,7 @@ export class DashboardRepository {
         const client = await this.pool.connect();
 
         const queryString = `
-            SELECT avg(count)
+            SELECT avg(counts.count)
             FROM (
                 SELECT count(*) AS count
                 FROM patients AS p
@@ -156,7 +156,7 @@ export class DashboardRepository {
             ) AS counts;
         `;
         const res = await client.query(queryString).finally(() => client.release());
-        return res.rows[0].count;
+        return Math.floor(res.rows[0].avg);
     }
 
     async findAppointmentCountByPatient(patientId: number): Promise<number> {
