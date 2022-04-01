@@ -75,7 +75,6 @@ export class PatientController implements interfaces.Controller {
             const patients = await this.patientService.getPatientsStrategy(req["token"], value)();
             res.json(200, patients);
         } catch (error) {
-            console.log(error.message);
             res.json(error.statusCode || 500, { error: error.message });
         }
     }
