@@ -5,6 +5,7 @@ import { PatientController } from "../../../src/controllers/patient_controller";
 describe("patient_controller.ts", () => {
     const patientService: any = {
         assignDoctor: Function,
+        getPatientsStrategy: Function,
     };
     const controller = new PatientController(patientService);
 
@@ -65,6 +66,40 @@ describe("patient_controller.ts", () => {
             await (controller as any).assignDoctor(req, res);
 
             expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("PatientController::getPatients", () => {
+        let getPatientsStrategyStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                query: {
+                    status: "POSITIVE",
+                    testDateFrom: "2022-01-01",
+                    testDateTo: "2022-01-01",
+                },
+            };
+
+            getPatientsStrategyStub = sandbox.stub(patientService, "getPatientsStrategy");
+        });
+
+        it("getPatientsStrategy should be called if data is valid", async () => {
+            await (controller as any).getPatients(req, res);
+            expect(getPatientsStrategyStub.called).to.equal(true);
+        });
+
+        it("getPatientsStrategy should be called if data is valid", async () => {
+            req.query.traceTarget = 1;
+            await (controller as any).getPatients(req, res);
+            expect(getPatientsStrategyStub.called).to.equal(true);
+        });
+
+        it("should return status 400 if data is invalid", async () => {
+            req.query.status = "x";
+            await (controller as any).getPatients(req, res);
+            expect(getPatientsStrategyStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledOnceWith(400)).to.equal(true);
         });
     });
 });
