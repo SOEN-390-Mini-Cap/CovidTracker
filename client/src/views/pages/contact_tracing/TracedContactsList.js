@@ -3,16 +3,18 @@ import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {ChevronDown, Eye, Users} from "react-feather";
+import { ChevronDown, Users } from "react-feather";
 import { getPositivePatientsByDate } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
 
 import "@styles/react/libs/flatpickr/flatpickr.scss";
-import {Link} from "react-router-dom";
+import {useParams} from "react-router-dom";
 
 const selectToken = (state) => state.auth.userData.token;
 
 export default function ContactTracing() {
+    const { patientId } = useParams();
+    console.log(patientId);
     const token = useSelector(selectToken);
 
     const [displayRange, setDisplayRange] = useState([]);
@@ -105,11 +107,9 @@ export default function ContactTracing() {
             allowOverflow: true,
             width: "120px",
             cell: (row) => (
-                <Link to={`/contact_tracing/contacts/${row.account.userId}`} className="m-auto">
-                    <div>
-                        <Users size={20} color="#5E5873" />
-                    </div>
-                </Link>
+                <div className="d-flex justify-content-center w-100">
+                    <Users size={18} color="#5E5873" />
+                </div>
             ),
         },
     ];
@@ -117,9 +117,9 @@ export default function ContactTracing() {
     return (
         <div>
             <BreadCrumbsPage
-                breadCrumbTitle="Contact Tracing"
+                breadCrumbTitle="Contacts"
                 breadCrumbParent="Patient"
-                breadCrumbActive="Contact Tracing"
+                breadCrumbActive="Contacts"
             />
             {patients && (
                 <Card className="overflow-hidden">
