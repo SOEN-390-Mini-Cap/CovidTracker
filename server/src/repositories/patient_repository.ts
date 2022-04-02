@@ -141,12 +141,13 @@ export class PatientRepository {
                 a.city,
                 a.province,
                 a.postal_code,
-                a.country
+                a.country,
+                tr.test_date
             FROM users AS u
-                     JOIN patients AS p ON u.user_id = p.patient_id
-                     JOIN roles AS r ON u.role_id = r.role_id
-                     JOIN addresses AS a ON u.address_id = a.address_id
-                     Join (SELECT DISTINCT ON (tr.patient_id)
+            JOIN patients AS p ON u.user_id = p.patient_id
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id
+            Join (SELECT DISTINCT ON (tr.patient_id)
                 tr.test_id,
                 tr.patient_id,
                 tr.result,
@@ -154,9 +155,10 @@ export class PatientRepository {
                 tr.test_date,
                 tr.address_id
                 FROM test_results as tr
-                WHERE  tr.test_date >= $2 AND
-                       tr.test_date <= $3
-                order by patient_id, test_date desc) As tr On tr.patient_id = p.patient_id
+                WHERE tr.test_date >= $2
+                AND tr.test_date <= $3
+                order by patient_id, test_date desc
+            ) As tr On tr.patient_id = p.patient_id
             WHERE tr.result = $1
             ORDER BY u.is_prioritized DESC;
         `;

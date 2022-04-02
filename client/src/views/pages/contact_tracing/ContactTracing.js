@@ -1,46 +1,46 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
-import { Badge, Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
+import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import { Flag, ChevronDown, MoreVertical } from "react-feather";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getPatients, putPatientPrioritized } from "../../../services/api";
+import { ChevronDown, Users} from "react-feather";
+import { getPositivePatientsByDate } from "../../../services/api";
+import Flatpickr from "react-flatpickr";
 
-function PrioritizeFlag({ row, setPatients }) {
-    const token = useSelector(selectToken);
-
-    const onClick = async () => {
-        await putPatientPrioritized(token, row.account.userId, !row.isPrioritized);
-        toast.success(!row.isPrioritized ? "Patient prioritized" : "Patient unprioritized", {
-            position: "top-right",
-            autoClose: 2000,
-        });
-
-        const patients = await getPatients(token);
-        setPatients(patients);
-    };
-
-    return <Flag color={row.isPrioritized ? "#EA5455" : "#5E5873"} size={20} onClick={onClick} />;
-}
+import "@styles/react/libs/flatpickr/flatpickr.scss";
 
 const selectToken = (state) => state.auth.userData.token;
 
 export default function ContactTracing() {
     const token = useSelector(selectToken);
-    const role = useSelector((state) => state.auth.userData.user.role);
 
+    const [displayRange, setDisplayRange] = useState([]);
     const [patients, setPatients] = useState(null);
+
     useEffect(() => {
         async function f() {
-            const patients = await getPatients(token);
+            const from = displayRange[0] || new Date("1900-01-01 00:00:0.000000 +00:00");
+            const to = displayRange[1] || new Date();
+            const patients = await getPositivePatientsByDate(token, from, to);
             setPatients(patients);
         }
         f();
-    }, [token]);
+    }, [token, displayRange]);
 
     const columns = [
+        {
+            name: "Result Date",
+            sortable: true,
+            maxWidth: "200px",
+            selector: (row) =>
+                new Date(row.lastTestDate).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                }),
+        },
         {
             name: "ID",
             sortable: true,
@@ -100,74 +100,40 @@ export default function ContactTracing() {
             selector: (row) => row.phoneNumber,
         },
         {
-            name: "Actions",
+            name: "Contacts",
             allowOverflow: true,
-            width: "80px",
-            cell: (row) => {
-                return (
-                    <div className="d-flex">
-                        <PrioritizeFlag row={row} setPatients={setPatients} />
-                        <UncontrolledDropdown>
-                            <DropdownToggle tag="span">
-                                <MoreVertical color="#5E5873" size={20} />
-                            </DropdownToggle>
-                            <DropdownMenu end>
-                                {(role === "DOCTOR" || role === "HEALTH_OFFICIAL") && (
-                                    <DropdownItem
-                                        tag={Link}
-                                        to={`/add_test/patients/${row.account.userId}`}
-                                        className="w-100"
-                                    >
-                                        Add Test Result
-                                    </DropdownItem>
-                                )}
-                                <DropdownItem tag={Link} to={`/tests/patients/${row.account.userId}`} className="w-100">
-                                    Test Results
-                                </DropdownItem>
-                                {role === "DOCTOR" && (
-                                    <DropdownItem
-                                        tag={Link}
-                                        to={`/statuses/define/${row.account.userId}`}
-                                        className="w-100"
-                                    >
-                                        Define Status Report
-                                    </DropdownItem>
-                                )}
-                                {(role === "DOCTOR" || role === "HEALTH_OFFICIAL") && (
-                                    <DropdownItem
-                                        tag={Link}
-                                        to={`/statuses/patients/${row.account.userId}`}
-                                        className="w-100"
-                                    >
-                                        Status Reports
-                                    </DropdownItem>
-                                )}
-                                {role === "DOCTOR" && (
-                                    <DropdownItem
-                                        tag={Link}
-                                        to={`/create_appointment/${row.account.userId}`}
-                                        className="w-100"
-                                    >
-                                        Book Appointment
-                                    </DropdownItem>
-                                )}
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
-                    </div>
-                );
-            },
+            width: "120px",
+            cell: (row) => (
+                <div className="d-flex justify-content-center w-100">
+                    <Users size={18} color="#5E5873" />
+                </div>
+            ),
         },
     ];
 
     return (
         <div>
             <BreadCrumbsPage
-                breadCrumbTitle="Patient List"
+                breadCrumbTitle="Contact Tracing"
                 breadCrumbParent="Patient"
-                breadCrumbActive="Patient List"
+                breadCrumbActive="Contact Tracing"
             />
             {patients && (
                 <Card className="overflow-hidden">
+                    <Row className='mt-1 mb-50 d-flex justify-content-end'>
+                        <Col lg='4' md='6' className='d-flex align-items-center'>
+                            <Label className='form-label' for='resultDate' style={{ whiteSpace: "nowrap", }}>
+                                Result Date
+                            </Label>
+                            <Flatpickr
+                                className='form-control mx-2'
+                                id='resultDate'
+                                value={displayRange}
+                                options={{ mode: 'range', dateFormat: 'm/d/Y' }}
+                                onChange={(range) => setDisplayRange(range)}
+                            />
+                        </Col>
+                    </Row>
                     <div className="react-dataTable">
                         <DataTable
                             noHeader
