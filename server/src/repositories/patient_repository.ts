@@ -174,36 +174,44 @@ export class PatientRepository {
     ): Promise<User[]> {
         const client = await this.pool.connect();
 
-        const sql = `SELECT
-                         u.user_id,
-                         u.email,
-                         u.password,
-                         u.first_name,
-                         u.last_name,
-                         u.phone_number,
-                         u.gender,
-                         u.date_of_birth,
-                         u.created_on,
-                         u.is_prioritized,
-                         r.role_name,
-                         a.address_id,
-                         a.street_address,
-                         a.street_address_line_two,
-                         a.city,
-                         a.province,
-                         a.postal_code,
-                         a.country
-                     FROM users AS u
-                              JOIN roles AS r ON u.role_id = r.role_id
-                              JOIN addresses AS a ON u.address_id = a.address_id
-                     WHERE u.user_id IN (SELECT DISTINCT lr.user_id
-                                         FROM location_reports as lr
-                                         WHERE (address_id, DATE(created_on)) in
-                                               (SELECT address_id, DATE(created_on)
-                     FROM location_reports as lr
-                     WHERE lr.user_id = $1 AND
-                         lr.created_on > $2 AND
-                         lr.created_on <= $3) AND lr.user_id <> $1);`;
+        const sql = `
+            SELECT DISTINCT ON (u.user_id)
+                u.user_id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.phone_number,
+                u.gender,
+                u.date_of_birth,
+                u.created_on,
+                u.is_prioritized,
+                r.role_name,
+                a.address_id,
+                a.street_address,
+                a.street_address_line_two,
+                a.city,
+                a.province,
+                a.postal_code,
+                a.country,
+                lr.created_on AS contact_date
+            FROM users AS u
+            JOIN roles AS r ON u.role_id = r.role_id
+            JOIN addresses AS a ON u.address_id = a.address_id
+            JOIN (
+                SELECT lr.user_id, lr.created_on
+                FROM location_reports as lr
+                WHERE (address_id, DATE(created_on)) in
+                    (
+                        SELECT address_id, DATE(created_on)
+                        FROM location_reports as lr
+                        WHERE lr.user_id = $1
+                        AND lr.created_on > $2
+                        AND lr.created_on <= $3
+                    )
+                AND lr.user_id <> $1
+            ) AS lr ON lr.user_id = u.user_id;
+        `;
 
         const res = await client.query(sql, [traceTarget, testDateFrom, testDateTo]).finally(() => client.release());
         return this.userRepository.buildUsers(res);

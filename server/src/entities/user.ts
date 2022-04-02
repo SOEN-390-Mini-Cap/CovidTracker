@@ -14,4 +14,5 @@ export interface User {
     address: Address;
     account: Account;
     lastTestDate?: Date;
+    contactDate?: Date;
 }
