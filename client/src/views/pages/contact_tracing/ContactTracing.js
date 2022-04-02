@@ -6,9 +6,9 @@ import DataTable from "react-data-table-component";
 import {ChevronDown, Eye, Users} from "react-feather";
 import { getPositivePatientsByDate } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
+import {Link} from "react-router-dom";
 
 import "@styles/react/libs/flatpickr/flatpickr.scss";
-import {Link} from "react-router-dom";
 
 const selectToken = (state) => state.auth.userData.token;
 
