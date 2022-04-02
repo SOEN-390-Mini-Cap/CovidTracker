@@ -80,6 +80,13 @@ export default (userId) => [
                 accessibleBy: ["DOCTOR", "PATIENT"],
             },
             {
+                id: "contactTracing",
+                title: "Contact Tracing",
+                icon: <Circle />,
+                navLink: "/contact_tracing",
+                accessibleBy: ["HEALTH_OFFICIAL"],
+            },
+            {
                 id: "patientList",
                 title: "Patient List",
                 icon: <Circle />,

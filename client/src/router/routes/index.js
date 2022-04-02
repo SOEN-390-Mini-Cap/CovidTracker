@@ -115,6 +115,13 @@ const Routes = [
         },
     },
     {
+        path: "/contact_tracing",
+        component: lazy(() => import("../../views/pages/contact_tracing/ContactTracing")),
+        meta: {
+            accessibleBy: ["HEALTH_OFFICIAL"],
+        },
+    },
+    {
         path: "/sign_in",
         component: lazy(() => import("../../views/pages/authentication/SignIn")),
         layout: "BlankLayout",
