@@ -109,6 +109,19 @@ export async function getPositivePatientsByDate(token, from, to) {
     return res.data;
 }
 
+export async function getTracedPatientsByDate(token, patientId, from, to) {
+    const res = await axios.get(
+        `${baseUrl}/patients?traceTarget=${patientId}&testDateFrom=${from.toISOString()}&testDateTo=${to.toISOString()}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+
+    return res.data;
+}
+
 export async function putPatientPrioritized(token, patientId, isPrioritized) {
     await axios.put(
         `${baseUrl}/patients/${patientId}/prioritize`,
@@ -335,4 +348,27 @@ export async function getDashboard(token) {
     });
 
     return response.data;
+}
+
+export async function postSMS(token, userId, body) {
+    await axios.post(`${baseUrl}/notifications/sms`, {
+        userId,
+        body,
+    }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
+
+export async function postEmail(token, userId, subject, body) {
+    await axios.post(`${baseUrl}/notifications/email`, {
+        userId,
+        subject,
+        body,
+    }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
 }

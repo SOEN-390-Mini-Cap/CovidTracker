@@ -3,38 +3,42 @@ import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {ChevronDown, Eye, Users} from "react-feather";
-import { getPositivePatientsByDate } from "../../../services/api";
+import { ChevronDown, Send} from "react-feather";
+import { getTracedPatientsByDate, postEmail, postSMS } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import { toast } from "react-toastify";
 
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 
 const selectToken = (state) => state.auth.userData.token;
 
 export default function ContactTracing() {
+    const { patientId } = useParams();
     const token = useSelector(selectToken);
 
     const [displayRange, setDisplayRange] = useState([]);
-    const [patients, setPatients] = useState(null);
+    const [patients, setPatients] = useState([]);
 
     useEffect(() => {
         async function f() {
             const from = displayRange[0] || new Date("1900-01-01 00:00:0.000000 +00:00");
             const to = displayRange[1] || new Date();
-            const patients = await getPositivePatientsByDate(token, from, to);
+            const patients = await getTracedPatientsByDate(token, patientId, from, to);
             setPatients(patients);
         }
         f();
-    }, [token, displayRange]);
+    }, [token, patientId, displayRange]);
+
+    const notificationBody = `You have been contact traced by the CovidTracker system. Someone you have been in contact with between the dates of ${displayRange[0]} and ${displayRange[1]} has tested positive for Covid-19. You should contact your doctor and self quarantine for the next 2 weeks.`;
 
     const columns = [
         {
-            name: "Result Date",
+            name: "Contact Date",
             sortable: true,
             maxWidth: "200px",
             selector: (row) =>
-                new Date(row.lastTestDate).toLocaleString("en-US", {
+                new Date(row.contactDate).toLocaleString("en-US", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
@@ -101,15 +105,29 @@ export default function ContactTracing() {
             selector: (row) => row.phoneNumber,
         },
         {
-            name: "Contacts",
+            name: "Notify",
             allowOverflow: true,
-            width: "120px",
+            width: "80px",
             cell: (row) => (
-                <Link to={`/contact_tracing/contacts/${row.account.userId}`} className="m-auto">
-                    <div>
-                        <Users size={20} color="#5E5873" />
-                    </div>
-                </Link>
+                <div className="m-auto">
+                    <Send
+                        size={18}
+                        color="#5E5873"
+                        onClick={() => {
+                            postSMS(token, row.account.userId, notificationBody);
+                            postEmail(
+                                token,
+                                row.account.userId,
+                                "CovidTracker Alert: Contact trace update",
+                                notificationBody,
+                            );
+                            toast.success(`Patient ${row.firstName} ${row.lastName} notified`, {
+                                position: "top-right",
+                                autoClose: 3000,
+                            });
+                        }}
+                    />
+                </div>
             ),
         },
     ];
@@ -117,16 +135,17 @@ export default function ContactTracing() {
     return (
         <div>
             <BreadCrumbsPage
-                breadCrumbTitle="Contact Tracing"
+                breadCrumbTitle="Contacts"
                 breadCrumbParent="Patient"
-                breadCrumbActive="Contact Tracing"
+                breadCrumbParent2={<Link to="/contact_tracing">Contact Tracing</Link>}
+                breadCrumbActive="Contacts"
             />
             {patients && (
                 <Card className="overflow-hidden">
                     <Row className="mt-1 mb-50 d-flex justify-content-end">
                         <Col lg="4" md="6" className="d-flex align-items-center">
                             <Label className="form-label" for="resultDate" style={{ whiteSpace: "nowrap" }}>
-                                Result Date
+                                Contact Date
                             </Label>
                             <Flatpickr
                                 className="form-control mx-2"

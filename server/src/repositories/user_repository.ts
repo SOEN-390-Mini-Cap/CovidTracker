@@ -237,6 +237,10 @@ export class UserRepository {
             user.lastTestDate = new Date(row.test_date);
         }
 
+        if (row.contact_date) {
+            user.contactDate = new Date(row.contact_date);
+        }
+
         return user;
     }
 }
