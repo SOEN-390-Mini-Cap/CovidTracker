@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import { ChevronDown, Users} from "react-feather";
+import { ChevronDown, Users } from "react-feather";
 import { getPositivePatientsByDate } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
 
@@ -120,16 +120,16 @@ export default function ContactTracing() {
             />
             {patients && (
                 <Card className="overflow-hidden">
-                    <Row className='mt-1 mb-50 d-flex justify-content-end'>
-                        <Col lg='4' md='6' className='d-flex align-items-center'>
-                            <Label className='form-label' for='resultDate' style={{ whiteSpace: "nowrap", }}>
+                    <Row className="mt-1 mb-50 d-flex justify-content-end">
+                        <Col lg="4" md="6" className="d-flex align-items-center">
+                            <Label className="form-label" for="resultDate" style={{ whiteSpace: "nowrap" }}>
                                 Result Date
                             </Label>
                             <Flatpickr
-                                className='form-control mx-2'
-                                id='resultDate'
+                                className="form-control mx-2"
+                                id="resultDate"
                                 value={displayRange}
-                                options={{ mode: 'range', dateFormat: 'm/d/Y' }}
+                                options={{ mode: "range", dateFormat: "m/d/Y" }}
                                 onChange={(range) => setDisplayRange(range)}
                             />
                         </Col>
