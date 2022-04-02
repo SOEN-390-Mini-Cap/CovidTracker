@@ -21,8 +21,6 @@ export default function Dashboard() {
         f();
     }, [token]);
 
-    console.log(dashboard);
-
     const summaryWidgets = dashboard?.filter((widget) => widget.widgetComponentType === "SUMMARY");
     const areaChartWidget = dashboard?.find((widget) => widget.widgetComponentType === "AREA_CHART");
     const polarAreaChartWidget = dashboard?.find((widget) => widget.widgetComponentType === "POLAR_AREA_CHART");

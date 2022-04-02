@@ -13,4 +13,5 @@ export interface User {
     role: Role;
     address: Address;
     account: Account;
+    lastTestDate?: Date;
 }

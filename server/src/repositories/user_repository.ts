@@ -208,7 +208,7 @@ export class UserRepository {
             return null;
         }
 
-        return {
+        const user = {
             firstName: row.first_name,
             lastName: row.last_name,
             phoneNumber: row.phone_number,
@@ -231,6 +231,12 @@ export class UserRepository {
                 password: keepPassword ? row.password : "",
                 createdOn: new Date(row.created_on),
             },
-        };
+        } as User;
+
+        if (row.test_date) {
+            user.lastTestDate = new Date(row.test_date);
+        }
+
+        return user;
     }
 }

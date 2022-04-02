@@ -96,6 +96,19 @@ export async function getPatients(token) {
     return res.data;
 }
 
+export async function getPositivePatientsByDate(token, from, to) {
+    const res = await axios.get(
+        `${baseUrl}/patients?status=positive&testDateFrom=${from.toISOString()}&testDateTo=${to.toISOString()}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+
+    return res.data;
+}
+
 export async function putPatientPrioritized(token, patientId, isPrioritized) {
     await axios.put(
         `${baseUrl}/patients/${patientId}/prioritize`,
