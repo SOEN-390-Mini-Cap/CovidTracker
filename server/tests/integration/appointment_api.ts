@@ -30,13 +30,14 @@ describe("appointment_controller.ts API", () => {
                     startDate: "2022-01-25 05:02:32.162000 +00:00",
                     endDate: "2022-01-25 06:02:32.162000 +00:00",
                     streetAddress: "1000th place",
+                    streetAddressLineTwo: "",
                     city: "city name",
                     postalCode: "A1B 2C3",
                     province: "Quebec",
                 })
                 .set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
-            expect(res.status).to.equal(200);
+            expect(res.status).to.equal(201);
         });
     });
 });
