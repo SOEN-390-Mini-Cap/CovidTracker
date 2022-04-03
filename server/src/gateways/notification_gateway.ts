@@ -22,11 +22,11 @@ export class NotificationGateway {
                 messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             })
             // eslint-disable-next-line @typescript-eslint/no-empty-function
-            .catch((e) => {});
+            .catch(() => {});
     }
 
     async sendEmail(email: Email): Promise<void> {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        await this.nodemailerTransporter.sendMail(email).catch((e) => {});
+        await this.nodemailerTransporter.sendMail(email).catch(() => {});
     }
 }

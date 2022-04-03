@@ -23,9 +23,7 @@ describe("messages_controller.ts API", () => {
 
     describe("GET /messages/chats endpoint", () => {
         it("should return 200 status and user chats", async () => {
-            const res = await agent(app)
-                .get("/messages/chats")
-                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+            const res = await agent(app).get("/messages/chats").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
         });

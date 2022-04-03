@@ -13,9 +13,7 @@ describe("appointment_controller.ts API", () => {
 
     describe("GET /appointments endpoint", () => {
         it("should return 200 status and appointment list", async () => {
-            const res = await agent(app)
-                .get("/appointments")
-                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+            const res = await agent(app).get("/appointments").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
         });

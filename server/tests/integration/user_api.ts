@@ -14,9 +14,7 @@ describe("user_controller.ts API", () => {
 
     describe("GET /users/me endpoint", () => {
         it("should return 200 status and user from token", async () => {
-            const res = await agent(app)
-                .get("/users/me")
-                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+            const res = await agent(app).get("/users/me").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
         });
@@ -24,9 +22,7 @@ describe("user_controller.ts API", () => {
 
     describe("GET /users/:userId endpoint", () => {
         it("should return 200 status and user from parameters", async () => {
-            const res = await agent(app)
-                .get("/users/6")
-                .set("Authorization", `Bearer ${tokensFixture.doctor}`);
+            const res = await agent(app).get("/users/6").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
         });

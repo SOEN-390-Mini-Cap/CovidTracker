@@ -27,17 +27,13 @@ describe("dashboard_controller.ts API", () => {
                 password: "Test123!",
             });
 
-            const res = await agent(app)
-                .get("/dashboards")
-                .set("Authorization", `Bearer ${signUpRes.body.token}`);
+            const res = await agent(app).get("/dashboards").set("Authorization", `Bearer ${signUpRes.body.token}`);
 
             expect(res.status).to.equal(200);
         });
 
         it("should return 200 status and patient dashboard", async () => {
-            const res = await agent(app)
-                .get("/dashboards")
-                .set("Authorization", `Bearer ${tokensFixture.patient3}`);
+            const res = await agent(app).get("/dashboards").set("Authorization", `Bearer ${tokensFixture.patient3}`);
 
             expect(res.status).to.equal(200);
         });
@@ -49,9 +45,7 @@ describe("dashboard_controller.ts API", () => {
         });
 
         it("should return 200 status and admin dashboard", async () => {
-            const res = await agent(app)
-                .get("/dashboards")
-                .set("Authorization", `Bearer ${tokensFixture.admin}`);
+            const res = await agent(app).get("/dashboards").set("Authorization", `Bearer ${tokensFixture.admin}`);
 
             expect(res.status).to.equal(200);
         });

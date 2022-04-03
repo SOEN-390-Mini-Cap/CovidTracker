@@ -4,7 +4,6 @@ import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 import { tokensFixture } from "../fixtures/tokens_fixture";
-import { get_patients_doctor_fixture, get_patients_health_official_fixture } from "../fixtures/get_patients_fixture";
 
 describe("patient_controller.ts API", () => {
     beforeEach(async () => {
