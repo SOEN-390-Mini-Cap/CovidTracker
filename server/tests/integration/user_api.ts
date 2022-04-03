@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 import { tokensFixture } from "../fixtures/tokens_fixture";
-import {Role} from "../../src/entities/role";
+import { Role } from "../../src/entities/role";
 
 describe("user_controller.ts API", () => {
     beforeEach(async () => {
@@ -34,7 +34,7 @@ describe("user_controller.ts API", () => {
 
     describe("PUT /users/:userId/roles endpoint", () => {
         it("should return 204 status and assign role", async () => {
-            await agent(app).put("/auth/sign_up").send({
+            await agent(app).post("/auth/sign_up").send({
                 firstName: "fname",
                 lastName: "lname",
                 phoneNumber: "1231231234",
@@ -49,7 +49,7 @@ describe("user_controller.ts API", () => {
             });
 
             const res = await agent(app)
-                .post("/users/10/roles")
+                .put("/users/10/roles")
                 .send({
                     role: Role.PATIENT,
                 })
