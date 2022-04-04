@@ -129,7 +129,7 @@ describe("test_controller.ts API", () => {
 
     describe("GET /tests/:testId endpoint", () => {
         it("should return 200 status if test is fetched successfully when patient access there own test", async () => {
-            const res = await agent(app).get("/tests/1").set("Authorization", `Bearer ${tokensFixture.patient3}`);
+            const res = await agent(app).get("/tests/22").set("Authorization", `Bearer ${tokensFixture.patient3}`);
             expect(res.status).to.equal(200);
         });
         it("should return 200 status if test is fetched successfully when health official access a test", async () => {

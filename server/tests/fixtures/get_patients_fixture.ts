@@ -4,7 +4,7 @@ export const get_patients_health_official_fixture = [
         lastName: "Hahn",
         phoneNumber: "482-056-9445",
         gender: "MALE",
-        dateOfBirth: "1954-06-16T00:17:35.655Z",
+        dateOfBirth: "1968-10-05T22:09:41.434Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {
@@ -28,7 +28,7 @@ export const get_patients_health_official_fixture = [
         lastName: "Schmidt",
         phoneNumber: "065-888-8080",
         gender: "FEMALE",
-        dateOfBirth: "1941-11-04T12:29:17.281Z",
+        dateOfBirth: "1954-07-29T16:46:21.182Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {
@@ -52,7 +52,7 @@ export const get_patients_health_official_fixture = [
         lastName: "Boyle",
         phoneNumber: "945-162-3167",
         gender: "MALE",
-        dateOfBirth: "1986-10-08T18:17:32.274Z",
+        dateOfBirth: "2005-02-11T19:33:47.979Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {
@@ -127,7 +127,7 @@ export const get_patients_doctor_fixture = [
         lastName: "Hahn",
         phoneNumber: "482-056-9445",
         gender: "MALE",
-        dateOfBirth: "1954-06-16T00:17:35.655Z",
+        dateOfBirth: "1968-10-05T22:09:41.434Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {
@@ -151,7 +151,7 @@ export const get_patients_doctor_fixture = [
         lastName: "Schmidt",
         phoneNumber: "065-888-8080",
         gender: "FEMALE",
-        dateOfBirth: "1941-11-04T12:29:17.281Z",
+        dateOfBirth: "1954-07-29T16:46:21.182Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {
@@ -175,7 +175,7 @@ export const get_patients_doctor_fixture = [
         lastName: "Boyle",
         phoneNumber: "945-162-3167",
         gender: "MALE",
-        dateOfBirth: "1986-10-08T18:17:32.274Z",
+        dateOfBirth: "2005-02-11T19:33:47.979Z",
         isPrioritized: false,
         role: "PATIENT",
         address: {

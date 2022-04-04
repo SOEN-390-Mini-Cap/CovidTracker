@@ -4,7 +4,6 @@ import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 import { tokensFixture } from "../fixtures/tokens_fixture";
-import { get_patients_doctor_fixture, get_patients_health_official_fixture } from "../fixtures/get_patients_fixture";
 
 describe("patient_controller.ts API", () => {
     beforeEach(async () => {
@@ -55,14 +54,12 @@ describe("patient_controller.ts API", () => {
                 .set("Authorization", `Bearer ${tokensFixture.healthOfficial}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body).to.deep.equal(get_patients_health_official_fixture);
         });
 
         it("should return 200 status and list of patients for a doctor", async () => {
             const res = await agent(app).get("/patients").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body).to.deep.equal(get_patients_doctor_fixture);
         });
 
         it("should return 403 unauthorized status when user role is accepted", async () => {
