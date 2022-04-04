@@ -52,7 +52,7 @@ export default function BarChartWidget(props) {
             borderColor: "transparent",
             maxBarThickness: 20,
             borderRadius: i === props.widget.dataset.length - 1 || i === 3 ? { topRight: 15, topLeft: 15 } : {},
-            data: dataset.data,
+            data: dataset.data.reverse(),
             stack: dataset.stack,
         })),
     };
