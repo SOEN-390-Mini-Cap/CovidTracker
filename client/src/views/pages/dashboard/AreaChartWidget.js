@@ -66,7 +66,7 @@ export default function AreaChartWidget(props) {
                 pointBorderColor: "transparent",
                 backgroundColor: blueLightColor,
                 pointHoverBackgroundColor: blueLightColor,
-                data: props.widget.dataset[1].data,
+                data: props.widget.dataset[1].data.reverse(),
             },
             {
                 fill: true,
@@ -81,7 +81,7 @@ export default function AreaChartWidget(props) {
                 pointHoverBorderColor: "#fff",
                 pointBorderColor: "transparent",
                 pointHoverBackgroundColor: blueColor,
-                data: props.widget.dataset[0].data,
+                data: props.widget.dataset[0].data.reverse(),
             },
         ],
     };

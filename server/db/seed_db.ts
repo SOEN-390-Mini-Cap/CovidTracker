@@ -170,7 +170,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
                     statusId: null,
                     patientId: i,
                     isReviewed: false,
-                    createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                    createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-05-01T00:00:00.000Z"),
                     statusBody: {
                         ...status,
                         weight: faker.datatype.number({ min: 120, max: 200, precision: 0.1 }),
@@ -191,7 +191,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
                 await testRepository.insertTestResult({
                     testId: null,
                     patientId: i,
-                    testDate: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                    testDate: faker.date.between("2022-01-01T00:00:00.000Z", "2022-05-01T00:00:00.000Z"),
                     testType: faker.datatype.boolean() ? TestType.ANTIGEN : TestType.PCR,
                     result: faker.datatype.boolean() ? TestResultType.POSITIVE : TestResultType.NEGATIVE,
                     address: {
@@ -231,9 +231,9 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
 
     // generate location reports
     for (let i = numPatients[0]; i < numPatients[1]; i++) {
-        // data is generated over a 3 month or 90-day period
+        // data is generated over a 4 month or 120-day period
         // this will produce on average 2 location reports per day
-        const numLocationReports = 2 * 90;
+        const numLocationReports = 2 * 120;
         for (let j = 0; j < numLocationReports; j++) {
             // pick a random address from location report address list
             const address =
@@ -241,7 +241,7 @@ export async function seedDb(sizeSeed = 1): Promise<void> {
             await locationReportRepository.insertLocationReport({
                 userId: i,
                 address,
-                createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-04-01T00:00:00.000Z"),
+                createdOn: faker.date.between("2022-01-01T00:00:00.000Z", "2022-05-01T00:00:00.000Z"),
             });
         }
     }
