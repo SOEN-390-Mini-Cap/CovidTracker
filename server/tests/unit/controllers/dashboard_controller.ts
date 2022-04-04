@@ -36,13 +36,11 @@ describe("dashboard_controller.ts", () => {
             expect(resJsonStub.calledWith(200)).to.be.true;
         });
 
-        describe("DashboardController::getDashboards", () => {
-            it("should call res.json with 200", async () => {
-                dashboardStrategyFactoryStub.rejects(new Error());
-                await (controller as any).getDashboards(req, res);
-                expect(resJsonStub.callCount).to.equal(1);
-                expect(resJsonStub.calledWith(500)).to.be.true;
-            });
+        it("should call res.json with 500", async () => {
+            dashboardStrategyFactoryStub.rejects(new Error());
+            await (controller as any).getDashboards(req, res);
+            expect(resJsonStub.callCount).to.equal(1);
+            expect(resJsonStub.calledWith(500)).to.be.true;
         });
     });
 });
