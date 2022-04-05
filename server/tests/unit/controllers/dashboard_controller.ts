@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { DashboardController } from "../../../src/controllers/dashboard_controller";
 import { createSandbox, SinonStub } from "sinon";
-import { DashboardStrategy } from "../../../src/services/dashboard/dashboard_strategy";
 
 describe("dashboard_controller.ts", () => {
     const dashboardStrategy: any = {
