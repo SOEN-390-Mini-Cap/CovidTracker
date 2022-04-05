@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { AppointmentController } from "../../../src/controllers/appointment_controller";
 import { createSandbox, SinonStub } from "sinon";
 
-describe("dashboard_controller.ts", () => {
+describe("appointment_controller.ts", () => {
     const appointmentService: any = {
         postAppointment: Function,
         getAppointments: Function,
