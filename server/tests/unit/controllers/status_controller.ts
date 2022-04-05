@@ -6,8 +6,11 @@ describe("status_controller.ts", () => {
     const statusService: any = {
         postStatus: Function,
         getStatus: Function,
+        getStatusesStrategy: Function,
         postStatusFields: Function,
         getStatusFields: Function,
+        getStatusesForPatient: Function,
+        putStatusReviewed: Function,
     };
     const controller = new StatusController(statusService);
 
@@ -191,6 +194,150 @@ describe("status_controller.ts", () => {
             postStatusStub.rejects(new Error("error message"));
 
             await (controller as any).postStatus(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+    describe("StatusController::getStatus", () => {
+        let getStatusStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: "ADMIN",
+                },
+                params: {
+                    statusId: 1,
+                },
+            };
+
+            getStatusStub = sandbox.stub(statusService, "getStatus");
+        });
+
+        it("should return status 200 when no errors", async () => {
+            await (controller as any).getStatus(req, res);
+            expect(resJsonStub.calledWith(200)).to.equal(true);
+        });
+
+        it("should return status 400 when data is wrong", async () => {
+            req.params.statusId = "text";
+            await (controller as any).getStatus(req, res);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            getStatusStub.rejects(new Error("error message"));
+
+            await (controller as any).getStatus(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("StatusController::getStatusForPatient", () => {
+        let getStatusesForPatientStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: "ADMIN",
+                },
+                params: {
+                    patientId: 1,
+                },
+            };
+
+            getStatusesForPatientStub = sandbox.stub(statusService, "getStatusesForPatient");
+        });
+
+        it("should return status 200 when no errors", async () => {
+            await (controller as any).getStatusesForPatient(req, res);
+            expect(resJsonStub.calledWith(200)).to.equal(true);
+        });
+
+        it("should return status 400 when data is wrong", async () => {
+            req.params.patientId = "text";
+            await (controller as any).getStatusesForPatient(req, res);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            getStatusesForPatientStub.rejects(new Error("error message"));
+
+            await (controller as any).getStatusesForPatient(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("StatusController::getStatuses", () => {
+        let getStatusesStrategyStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: "ADMIN",
+                },
+            };
+
+            getStatusesStrategyStub = sandbox.stub(statusService, "getStatusesStrategy");
+            getStatusesStrategyStub.returns(() => {
+                return null;
+            });
+        });
+
+        it("should return status 200 when no errors", async () => {
+            await (controller as any).getStatuses(req, res);
+            expect(resJsonStub.calledWith(200)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            getStatusesStrategyStub.rejects(new Error("error message"));
+
+            await (controller as any).getStatuses(req, res);
+
+            expect(resJsonStub.calledWith(500)).to.equal(true);
+        });
+    });
+
+    describe("StatusController::putStatusReviewed", () => {
+        let putStatusReviewedStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                token: {
+                    userId: 1,
+                    role: "ADMIN",
+                },
+                params: {
+                    statusId: 1,
+                },
+                body: {
+                    isReviewed: true,
+                },
+            };
+
+            putStatusReviewedStub = sandbox.stub(statusService, "putStatusReviewed");
+        });
+
+        it("should return status 204 when no errors", async () => {
+            await (controller as any).putStatusReviewed(req, res);
+            expect(resJsonStub.calledWith(204)).to.equal(true);
+        });
+
+        it("should return status 400 when data is invalid", async () => {
+            req.params.statusId = "text";
+            await (controller as any).putStatusReviewed(req, res);
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws an error", async () => {
+            putStatusReviewedStub.rejects(new Error("error message"));
+
+            await (controller as any).putStatusReviewed(req, res);
 
             expect(resJsonStub.calledWith(500)).to.equal(true);
         });

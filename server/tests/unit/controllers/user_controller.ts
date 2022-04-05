@@ -84,6 +84,13 @@ describe("user_controller.ts", () => {
             expect(resJsonStub.calledWithExactly(200, mockUser)).to.equal(true);
         });
 
+        it("should return status 400 if data invalid", async () => {
+            req.params = {};
+            await (controller as any).getUser(req, res);
+
+            expect(resJsonStub.calledWith(400)).to.equal(true);
+        });
+
         it("should return status 500 if service throws an error", async () => {
             req.token.userId = 2;
             findUserStub.rejects(new Error("error message"));

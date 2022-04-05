@@ -6,6 +6,7 @@ describe("patient_controller.ts", () => {
     const patientService: any = {
         assignDoctor: Function,
         getPatientsStrategy: Function,
+        putPatientPrioritized: Function,
     };
     const controller = new PatientController(patientService);
 
@@ -81,24 +82,63 @@ describe("patient_controller.ts", () => {
                 },
             };
 
-            getPatientsStrategyStub = sandbox.stub(patientService, "getPatientsStrategy");
+            getPatientsStrategyStub = sandbox.stub(patientService, "getPatientsStrategy").returns(() => {
+                return null;
+            });
         });
 
-        it("getPatientsStrategy should be called if data is valid", async () => {
+        it("should return status 200 if data is valid", async () => {
             await (controller as any).getPatients(req, res);
             expect(getPatientsStrategyStub.called).to.equal(true);
+            expect(resJsonStub.calledOnceWith(200)).to.equal(true);
         });
 
-        it("getPatientsStrategy should be called if data is valid", async () => {
-            req.query.traceTarget = 1;
+        it("should return status 500 if service throws error", async () => {
+            getPatientsStrategyStub.rejects(new Error());
             await (controller as any).getPatients(req, res);
-            expect(getPatientsStrategyStub.called).to.equal(true);
+            expect(resJsonStub.calledOnceWith(500)).to.equal(true);
         });
 
         it("should return status 400 if data is invalid", async () => {
             req.query.status = "x";
             await (controller as any).getPatients(req, res);
             expect(getPatientsStrategyStub.notCalled).to.equal(true);
+            expect(resJsonStub.calledOnceWith(400)).to.equal(true);
+        });
+    });
+
+    describe("PatientController::putPatientPrioritized", () => {
+        let putPatientPrioritizedStub: SinonStub;
+
+        beforeEach(() => {
+            req = {
+                params: {
+                    patientId: 1,
+                },
+                body: {
+                    isPrioritized: true,
+                },
+            };
+
+            putPatientPrioritizedStub = sandbox.stub(patientService, "putPatientPrioritized");
+        });
+        it("should return status 200 if data is valid", async () => {
+            await (controller as any).putPatientPrioritized(req, res);
+            expect(putPatientPrioritizedStub.called).to.equal(true);
+            expect(resJsonStub.calledOnceWith(204)).to.equal(true);
+        });
+
+        it("should return status 500 if service throws error", async () => {
+            putPatientPrioritizedStub.rejects(new Error());
+            await (controller as any).putPatientPrioritized(req, res);
+            expect(resJsonStub.calledOnceWith(500)).to.equal(true);
+        });
+
+        it("should return status 400 if data is invalid", async () => {
+            req.params = {};
+            req.body = {};
+            await (controller as any).putPatientPrioritized(req, res);
+            expect(putPatientPrioritizedStub.notCalled).to.equal(true);
             expect(resJsonStub.calledOnceWith(400)).to.equal(true);
         });
     });
