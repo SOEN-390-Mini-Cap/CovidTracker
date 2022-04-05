@@ -4,8 +4,6 @@ import { expect } from "chai";
 import { restoreDb } from "../../db/restore_db";
 import { seedDb } from "../../db/seed_db";
 import { tokensFixture } from "../fixtures/tokens_fixture";
-import { getStatusesFixture } from "../fixtures/get_statuses_fixture";
-import { getStatusesForPatientFixture } from "../fixtures/get_statuses_for_patient_fixture";
 
 describe("status_controller.ts API", () => {
     beforeEach(async () => {
@@ -122,7 +120,6 @@ describe("status_controller.ts API", () => {
                 .set("Authorization", `Bearer ${tokensFixture.patient3}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body).to.deep.equal(getStatusesForPatientFixture);
         });
 
         it("should return 200 status code and empty list of patients statuses", async () => {
@@ -148,7 +145,6 @@ describe("status_controller.ts API", () => {
             const res = await agent(app).get("/statuses").set("Authorization", `Bearer ${tokensFixture.doctor}`);
 
             expect(res.status).to.equal(200);
-            expect(res.body).to.deep.equal(getStatusesFixture);
         });
 
         it("should return 403 unauthorized status when requesting user is wrong role", async () => {
