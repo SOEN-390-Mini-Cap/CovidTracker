@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import { ChevronDown, Send} from "react-feather";
+import { ChevronDown, Send } from "react-feather";
 import { getTracedPatientsByDate, postEmail, postSMS } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "@styles/react/libs/flatpickr/flatpickr.scss";

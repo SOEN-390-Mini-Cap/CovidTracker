@@ -351,24 +351,32 @@ export async function getDashboard(token) {
 }
 
 export async function postSMS(token, userId, body) {
-    await axios.post(`${baseUrl}/notifications/sms`, {
-        userId,
-        body,
-    }, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    await axios.post(
+        `${baseUrl}/notifications/sms`,
+        {
+            userId,
+            body,
         },
-    });
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 }
 
 export async function postEmail(token, userId, subject, body) {
-    await axios.post(`${baseUrl}/notifications/email`, {
-        userId,
-        subject,
-        body,
-    }, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    await axios.post(
+        `${baseUrl}/notifications/email`,
+        {
+            userId,
+            subject,
+            body,
         },
-    });
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 }

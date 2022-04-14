@@ -1,13 +1,13 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
-import {selectChat, sendMsg} from "./store";
+import { selectChat, sendMsg } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { MessageSquare, Menu, Send, Flag } from "react-feather";
 import { Form, Input, Button, InputGroup, InputGroupText, Label } from "reactstrap";
 
-const useInterval = (callback, delay) => {
+const usePolling = (callback, delay) => {
     const savedCallback = useRef();
 
     useEffect(() => {
@@ -52,9 +52,8 @@ const ChatLog = (props) => {
         }
     }, [selectedUser]);
 
-    useInterval(() => {
+    usePolling(() => {
         if (selectedUser?.contact?.id) {
-            console.log(selectedUser.contact.id);
             dispatch(selectChat({ token, id: selectedUser.contact.id }));
         }
     }, 1000 * 3);

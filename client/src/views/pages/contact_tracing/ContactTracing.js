@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
 import { Badge, Card, Col, Label, Row } from "reactstrap";
 import DataTable from "react-data-table-component";
-import {ChevronDown, Eye, Users} from "react-feather";
+import { ChevronDown, Users } from "react-feather";
 import { getPositivePatientsByDate } from "../../../services/api";
 import Flatpickr from "react-flatpickr";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "@styles/react/libs/flatpickr/flatpickr.scss";
 
