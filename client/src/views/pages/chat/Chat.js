@@ -1,11 +1,29 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
-import { sendMsg } from "./store";
+import {selectChat, sendMsg} from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { MessageSquare, Menu, Send, Flag } from "react-feather";
 import { Form, Input, Button, InputGroup, InputGroupText, Label } from "reactstrap";
+
+const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            const id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
+};
 
 const ChatLog = (props) => {
     const { handleSidebar, store, userSidebarLeft } = props;
@@ -33,6 +51,13 @@ const ChatLog = (props) => {
             scrollToBottom();
         }
     }, [selectedUser]);
+
+    useInterval(() => {
+        if (selectedUser?.contact?.id) {
+            console.log(selectedUser.contact.id);
+            dispatch(selectChat({ token, id: selectedUser.contact.id }));
+        }
+    }, 1000 * 3);
 
     const formattedChatData = () => {
         let chatLog = [];
@@ -82,9 +107,9 @@ const ChatLog = (props) => {
                     })}
                 >
                     <div className="chat-body">
-                        {item.messages.map((chat) => (
+                        {item.messages.map((chat, index) => (
                             <div
-                                key={chat.msg}
+                                key={`${index}${chat.msg}`}
                                 className="chat-content"
                                 style={
                                     item.senderId === userId
