@@ -118,6 +118,16 @@ function ReportTestResult() {
         reset();
     };
 
+    const disableFutureDatesForFlatpickr = () => {
+        const currentDate = new Date();
+        const currentDateFormatted = `${current.getDate() + 1}-${current.getMonth() + 1}-${current.getFullYear()}`;
+        document.getElementById("#date-time-picker").flatpickr({
+            disable: [
+                { from: currentDateFormatted, to: "2500-01-01" }
+            ]
+        })
+    };
+
     return (
         <div>
             <BreadCrumbsPage
