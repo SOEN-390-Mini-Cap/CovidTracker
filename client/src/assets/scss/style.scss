@@ -18,6 +18,13 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   box-shadow: none !important;
 }
 
+.main-menu.menu-light .navigation > li.active > a,
+.main-menu.menu-light .navigation > li ul .active {
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  background-color: #259EF0 !important;
+}
+
 input[type="checkbox"] {
   cursor: pointer;
 }
