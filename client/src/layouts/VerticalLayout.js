@@ -7,6 +7,7 @@ import { handleLogout } from "@store/authentication";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { handleProfile } from "@store/authentication";
+import { User } from "react-feather";
 import * as Icon from "react-feather";
 import { getProfile } from "../services/api";
 
@@ -27,6 +28,21 @@ export const CustomNavbar = (props) => {
         }
         f();
     }, [dispatch, token]);
+
+    const getRole = () => {
+        switch (user?.role) {
+            case 'ADMIN':
+                return 'Administrator';
+            case 'PATIENT':
+                return 'Patient';
+            case 'HEALTH_OFFICIAL':
+                return 'Health Official';
+            case 'DOCTOR':
+                return 'Doctor'
+            case 'IMMIGRATION_OFFICER':
+                return 'Immigration Officer'
+        }
+    };
 
     return (
         <Fragment>
@@ -49,9 +65,13 @@ export const CustomNavbar = (props) => {
                             className="nav-link dropdown-user-link"
                             onClick={(e) => e.preventDefault()}
                         >
-                            <div className="user-nav ">
-                                <span className="user-name fw-bold mb-1">{`${user?.firstName} ${user?.lastName}`}</span>
-                                <span className="user-status">{user?.role}</span>
+                            <div className="user-nav d-sm-flex d-none">
+                                <span className="user-name fw-bold">{`${user?.firstName} ${user?.lastName}`}</span>
+                                <span className="user-status">{getRole()}</span>
+                                
+                            </div>
+                            <div className="user-nav d-sm-flex d-sm-none">
+                                <User color="#5E5873" size={20} />
                             </div>
                         </DropdownToggle>
                         <DropdownMenu end>

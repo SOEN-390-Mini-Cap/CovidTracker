@@ -29,6 +29,22 @@ export default function BarChartWidget(props) {
                 },
             },
         },
+        plugins: {
+            legend: {
+                align: "start",
+                position: "top",
+                labels: {
+                    padding: 14,
+                    boxWidth: 9,
+                    color: labelColor,
+                    usePointStyle: true,
+                },
+            },
+            tooltip: {
+                mode: "index",
+                intersect: false,
+            },
+        },
     };
 
     const barChartColors = [
@@ -50,6 +66,10 @@ export default function BarChartWidget(props) {
             label: dataset.label,
             backgroundColor: barChartColors[i],
             borderColor: "transparent",
+            pointRadius: 0.5,
+            pointHoverRadius: 5,
+            pointStyle: "circle",
+            pointHoverBorderWidth: 5,
             maxBarThickness: 20,
             borderRadius: i === props.widget.dataset.length - 1 || i === 3 ? { topRight: 15, topLeft: 15 } : {},
             data: dataset.data.reverse(),

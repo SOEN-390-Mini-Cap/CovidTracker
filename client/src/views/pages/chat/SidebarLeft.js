@@ -63,7 +63,7 @@ const SidebarLeft = (props) => {
                             })}
                         >
                             <div className="chat-info flex-grow-1">
-                                <h5 className="mb-0">{item.fullName}</h5>
+                                <h5 className="mb-0 chat-user-name">{item.fullName}</h5>
                                 <CardText className="text-truncate">
                                     {item.chat.lastMessage
                                         ? item.chat.lastMessage.message
