@@ -212,7 +212,7 @@ export default function ContactTracing() {
                                 className="form-control mx-2"
                                 id="resultDate"
                                 value={displayRange}
-                                options={{ mode: "range", dateFormat: "m/d/Y" }}
+                                options={{ mode: "range", dateFormat: "m/d/Y", maxDate: new Date() }}
                                 placeholder="MM/DD/YYYY to MM/DD/YYYY"
                                 onChange={(range) => setDisplayRange(range)}
                             />

@@ -89,9 +89,9 @@ function TestResult() {
                                 <br />
                                 {new Date(test.testDate).toDateString()}
                                 <br />
-                                {test.testType}
+                                { test.testType == "ANTIGEN" ? test.testType.charAt(0) +  test.testType.substring(1).toLowerCase() : test.testType}
                                 <br />
-                                {test.result}
+                                {test.result.charAt(0) +  test.result.substring(1).toLowerCase()}
                                 <br />
                                 {test.address.streetAddress}
                                 <br />

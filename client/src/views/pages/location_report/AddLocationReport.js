@@ -104,6 +104,7 @@ function AddLocationReport() {
                                     render={({ field }) => (
                                         <Flatpickr
                                             placeholder="MM/DD/YYYY"
+                                            options={{maxDate: new Date()}}
                                             className={classnames("flatpickr form-control", {
                                                 "is-invalid": errors.createdOn,
                                             })}

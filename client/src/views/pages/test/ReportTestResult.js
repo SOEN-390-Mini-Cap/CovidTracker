@@ -11,11 +11,23 @@ import "@styles/react/libs/flatpickr/flatpickr.scss";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { submitTestResult } from "../../../services/api";
+import { submitTestResult, getUser } from "../../../services/api";
+import { useEffect, useState } from "react";
 
 function ReportTestResult() {
     const selectToken = (state) => state.auth.userData.token;
     const token = useSelector(selectToken);
+
+    const { patientId } = useParams();
+    const [patient, setPatient] = useState(null);
+
+    useEffect(() => {
+        async function f() {
+            const patient = await getUser(token, patientId);
+            setPatient(patient);
+        }
+        f();
+    }, [patientId, token]);
 
     const defaultValues = {
         testResult: null,
@@ -74,13 +86,13 @@ function ReportTestResult() {
     });
 
     const testResultOptions = [
-        { value: "POSITIVE", label: "POSITIVE" },
-        { value: "NEGATIVE", label: "NEGATIVE" },
+        { value: "POSITIVE", label: "Positive" },
+        { value: "NEGATIVE", label: "Negative" },
     ];
 
     const typeOfTestOptions = [
         { value: "PCR", label: "PCR" },
-        { value: "ANTIGEN", label: "ANTIGEN" },
+        { value: "ANTIGEN", label: "Antigen" },
     ];
 
     const provinceOptions = [
@@ -97,9 +109,7 @@ function ReportTestResult() {
         { value: "Quebec", label: "Quebec" },
         { value: "Saskatshewan", label: "Saskatshewan" },
         { value: "Yukon", label: "Yukon" },
-    ];
-
-    const { patientId } = useParams();
+    ];  
 
     const onSubmit = async (data) => {
         try {
@@ -120,12 +130,15 @@ function ReportTestResult() {
 
     return (
         <div>
-            <BreadCrumbsPage
-                breadCrumbTitle={`Add Test Result for ${patientId}`}
-                breadCrumbParent="Patient"
-                breadCrumbParent2={<Link to="/patients">Patient List</Link>}
-                breadCrumbActive="Add Test Result"
-            />
+            {patient && (
+                <BreadCrumbsPage
+                    breadCrumbTitle={`Add Test Result for ${patient.firstName} ${patient.lastName}`}
+                    breadCrumbParent="Patient"
+                    breadCrumbParent2={<Link to="/patients">Patient List</Link>}
+                    breadCrumbActive="Add Test Result"
+                />
+            )}
+            
             <Card className="basic-card small-margin-card mx-auto">
                 <CardBody>
                     <CardTitle className="mb-0">Add a Test Result</CardTitle>
@@ -192,8 +205,9 @@ function ReportTestResult() {
                                     render={({ field }) => (
                                         <Flatpickr
                                             data-enable-time
-                                            placeholder="YYYY-mm-dd 00:00"
+                                            placeholder="MM/DD/YYYY 00:00 AM/PM"
                                             id="date-time-picker"
+                                            options={{minDate: new Date(2020, 0, 1), maxDate: new Date()}}
                                             className={classnames("flatpickr form-control", {
                                                 "is-invalid": errors.typeOfTest,
                                             })}
