@@ -108,16 +108,6 @@ function CreateAppointment() {
         reset();
     };
 
-    const disablePastDatesForFlatpickr = () => {
-        const currentDate = new Date();
-        const currentDateFormatted = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`;
-        document.getElementById("#startDate").flatpickr({
-            disable: [
-                { from: "1500-01-01", to: currentDateFormatted }
-            ]
-        })
-    };
-
     return (
         <div>
             {patient && (
@@ -147,6 +137,8 @@ function CreateAppointment() {
                                         <Flatpickr
                                             {...field}
                                             data-enable-time
+                                            placeholder="MM/DD/YYYY 00:00 AM/PM"
+                                            options={{minDate: new Date()}}
                                             className={classnames("flatpickr form-control", {
                                                 "is-invalid": errors.startDate,
                                             })}
@@ -169,6 +161,8 @@ function CreateAppointment() {
                                         <Flatpickr
                                             {...field}
                                             data-enable-time
+                                            placeholder="MM/DD/YYYY 00:00 AM/PM"
+                                            options={{minDate: new Date().setMinutes(new Date().getMinutes() + 1)}}
                                             className={classnames("flatpickr form-control", {
                                                 "is-invalid": errors.endDate,
                                             })}
