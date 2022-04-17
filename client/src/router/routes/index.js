@@ -24,7 +24,7 @@ const Routes = [
         },
     },
     {
-        path: "/patients_assigned",
+        path: "/assigned_patients",
         component: lazy(() => import("../../views/pages/doctor/PatientsAssigned")),
         meta: {
             accessibleBy: ["ADMIN"],

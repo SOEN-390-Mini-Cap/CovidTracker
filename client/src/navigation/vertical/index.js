@@ -47,7 +47,7 @@ export default (userId) => [
                 id: "patientsAssigned",
                 title: "Patients Assigned",
                 icon: <Circle />,
-                navLink: "/patients_assigned",
+                navLink: "/assigned_patients",
                 accessibleBy: ["ADMIN"],
             },
         ],
