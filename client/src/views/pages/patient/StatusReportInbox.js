@@ -1,16 +1,18 @@
 import BreadCrumbsPage from "@components/breadcrumbs";
 import { useSelector } from "react-redux";
 import { Fragment, useState, useEffect } from "react";
-import { Card, Input } from "reactstrap";
+import { Card, Input, Label, Row, Col } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { Eye, ChevronDown } from "react-feather";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { getPatients, getStatuses, putStatusReviewed } from "../../../services/api";
+import ReactPaginate from "react-paginate";
+
+import "@styles/react/libs/tables/react-dataTable-component.scss";
 
 const columns = (statuses, setStatuses) => [
     {
-        width: "80px",
+        width: "60px",
         selector: (row) => <ReviewCheckbox statuses={statuses} setStatuses={setStatuses} row={row} />,
     },
     {
@@ -22,7 +24,8 @@ const columns = (statuses, setStatuses) => [
     {
         name: "Name",
         sortable: true,
-        minWidth: "280px",
+        allowOverflow: true,
+        minWidth: "300px",
         selector: (row) => (
             <Fragment>
                 <span className="fw-bold">
@@ -57,11 +60,9 @@ const columns = (statuses, setStatuses) => [
     },
     {
         name: "Actions",
-        allowOverflow: true,
-        width: "80px",
         cell: (row) => {
             return (
-                <Link to={`/statuses/${row.statusId}`} className="m-auto">
+                <Link to={`/statuses/${row.statusId}`}>
                     <div>
                         <Eye color="#5E5873" size={20} />
                     </div>
@@ -76,10 +77,6 @@ function ReviewCheckbox({ row, statuses, setStatuses }) {
 
     const onChange = async () => {
         await putStatusReviewed(token, row.statusId, !row.isReviewed);
-        toast.success(!row.isReviewed ? "Status marked as reviewed" : "Status marked as unreviewed", {
-            position: "top-right",
-            autoClose: 2000,
-        });
 
         const patientStatuses = statuses.map((status) => {
             if (status.statusId === row.statusId) {
@@ -105,6 +102,7 @@ const selectToken = (state) => state.auth.userData.token;
 function StatusReportInbox() {
     const token = useSelector(selectToken);
     const [statuses, setStatuses] = useState(null);
+
     useEffect(() => {
         async function f() {
             const statuses = await getStatuses(token);
@@ -117,10 +115,68 @@ function StatusReportInbox() {
                     patient,
                 };
             });
+
             setStatuses(patientStatuses);
         }
         f();
     }, [token]);
+
+    // ** States
+    const [currentPage, setCurrentPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    let lowerBound = rowsPerPage*(currentPage+1)-rowsPerPage;
+    let upperBound = rowsPerPage*(currentPage+1);  
+
+    // ** Function to handle Pagination
+    const handlePagination = (page) => {
+        setCurrentPage(page.selected);
+    };
+
+    // ** Function to handle per page
+    const handlePerPage = (e) => {
+        setCurrentPage(0);
+        setRowsPerPage(parseInt(e.target.value));
+    };
+
+    // ** Custom Pagination
+    const CustomPagination = () => (
+        <Row>
+            <Col className="d-none d-sm-block" sm="5">
+                <label className="justify-content-start ps-1 mt-2 mb-1" for="sort-select">Showing {lowerBound+1} to {lowerBound+dataToRender().length} of {statuses.length} entries</label>
+            </Col>
+            <Col sm="7">
+            <ReactPaginate
+                nextLabel=""
+                breakLabel="..."
+                previousLabel=""
+                pageRangeDisplayed={2}
+                forcePage={currentPage}
+                marginPagesDisplayed={2}
+                activeClassName="active"
+                pageClassName="page-item"
+                breakClassName="page-item"
+                nextLinkClassName="page-link"
+                pageLinkClassName="page-link"
+                breakLinkClassName="page-link"
+                previousLinkClassName="page-link"
+                nextClassName="page-item next-item"
+                previousClassName="page-item prev-item"
+                pageCount={Math.ceil(statuses.length / rowsPerPage) || 1}                    
+                onPageChange={(page) => handlePagination(page)}
+                containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-center justify-content-sm-end pe-1 mt-1"
+            />
+            </Col>
+        </Row>
+    );
+
+    // ** Table data to render
+    const dataToRender = () => {
+        if (statuses.length) {
+            return statuses.slice(lowerBound, upperBound);;
+        } else {
+            return []
+        }
+    };
 
     return (
         <div>
@@ -130,19 +186,43 @@ function StatusReportInbox() {
                 breadCrumbActive="Status Report Inbox"
             />
             {statuses && (
-                <Card className="overflow-hidden">
+                <Fragment>
+                <Card>
+                <Row className="mx-0 mt-1 mb-50">
+                    <Col sm="2">
+                        <div className="d-flex align-items-center">
+                            <Label className="me-1" for="sort-select">Show</Label>
+                            <Input
+                                className="dataTable-select"
+                                type="select"
+                                id="sort-select"
+                                value={rowsPerPage}
+                                onChange={(e) => handlePerPage(e)}
+                            >
+                                <option value={10}>10</option>
+                                <option value={25}>25</option>
+                                <option value={50}>50</option>
+                                <option value={75}>75</option>
+                                <option value={100}>100</option>
+                            </Input>
+                        </div>
+                    </Col>
+                </Row>
                     <div className="react-dataTable">
                         <DataTable
                             noHeader
                             pagination
-                            data={statuses}
+                            paginationServer
+                            data={dataToRender()}
                             columns={columns(statuses, setStatuses)}
                             className="react-dataTable"
                             sortIcon={<ChevronDown size={10} />}
-                            paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                            paginationComponent={CustomPagination}
+                            paginationDefaultPage={currentPage + 1}
                         />
                     </div>
                 </Card>
+                </Fragment>
             )}
         </div>
     );
